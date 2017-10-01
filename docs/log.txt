@@ -1,0 +1,80 @@
+*  Come up with definition of starter problem
+*  Decide what stack
+*  Decide what deployment
+*  Think ahead to visualisation
+*  Persisted data model
+*  Make sure visualisation can be form and url driven
+    *  form values
+    *  urls
+*  Design template model
+    *  Complete content
+    *  Template hierarchy or inclusion composition (defer)
+*  OOD and functional design of python
+    *  algorithm
+    *  settings oriented
+    *  end points and helpers
+    *  view centric
+o  Dev plan
+    *  Bring up flask, hello world in docker scratch mode
+        *  Decide if use flask dev server, or cherrypy or gunicorn.
+        *  Find reputable looking tutorial and do throwaway try.
+            *  https://hub.docker.com/r/tiangolo/uwsgi-nginx-flask/
+        *  Follow tutorial and make notes in studies
+    o  Migrate to a code in repo
+        *  Consider if the demo docker folder system is ok for the project, or
+           needs wrapper levels
+            *  Can use example project with package structure
+        o  Create repo in pete-dnae with readme
+        o  Clone to linux space
+    o  Put docs alongside
+    o  Put static where recommended
+    o  Mix in this docco folder to the repo
+    o  Get running from flask runner
+        o  TDD up suitable venv and requirements.txt or is it yaml?
+    o  Quick experiment get running from IDE
+    o  Mix in templating to app
+    o  Mix in bootstrap UI viewwise and static serving wise
+        o  make sure resources are in app/static so that prodn nginx will
+           serve them
+        o  but configure flask to auto serve them too during dev
+    o  Mix in flask-shelve
+    o  Validate db is going to work when need it
+    o  Start top down TDD from view just basics
+    o  Move rapidly to rough coding of starter models
+    o  Refine them and get them to work using TDD
+    o  Then bring up rest of non persisted view
+    o  Add persisted named assay sets
+
+-------------------------------------------------------------------------------
+Stack
+-------------------------------------------------------------------------------
+Requirements
+
+o  Has to be web app from the get go to make it easy for people to engage with
+o  Has to be simple and familiar - cannot spend time on this
+o  Need persistence
+o  Nice if could very simple deploy using docker or app engine
+o  Will need to move to enterprise IT eventually
+
+Implications
+
+o  Has to be Python
+o  Can be trad server side html templating
+o  Rule out server based DB
+o  Rule out GAE
+o  Can use Flask-Shelve for persistence.
+
+Conclusions
+
+o  Flask should be baseline
+o  Find trivial file based key value store (value is entire db in yaml, or
+   json)
+
+-------------------------------------------------------------------------------
+Deployment
+-------------------------------------------------------------------------------
+Docker image comprising Flask, Shelve, and Bootstrap with GUnicorn or CherryPy
+as WSGI server.
+Using mounted volume to allow dev iteration.
+Deployed eventually on DNAe server, but in mean time, GCE or EC2 instance, and
+even sooner locally.

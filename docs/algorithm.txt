@@ -1,0 +1,121 @@
+Concepts, and Nomenclature.
+---------------------------
+
+We refer to our set of assays as (A1, A2, A3, A4...).
+And use A<n> or A<m> to refer to an example particular assay.
+
+Chambers similarly: (C1, C2, C3, C4...)
+And C<i>, C<j>
+
+We use the words allocate, place, and locate, interchangeably to suit the
+sentence context.
+
+We call every pair of assays that exists in a single chamber a "colocated
+assay pair".
+
+
+Explicit Mandates
+-----------------
+Every assay must be located in not less than [Rep] distinct chambers.
+
+We have access to a list of assay-pairs that must not be co-located. [a_excl]
+We have access to a similar list of those that we are encouraged to co-locate
+[a_incl].
+
+
+Inferred Mandates
+-----------------
+
+Any set of colocated assays in a chamber C<i> generates a new set of 
+complementary location mandates. Specifically, for every pair of colocated 
+assays (A<n>, A<m>) we must ensure the presence of the same number of
+complimentary pairs, in another chambers:
+    - A<n> in a chamber that does not contain A<m>
+    - A<m> in a chamber that does not contain A<n>.
+
+
+A Potential Bin-Packing-Styled Solution
+---------------------------------------
+
+This solution is in the style of a bin-packing algorithm, which allocates
+assays to chambers based on both constraint rules and heuristics that try to
+keep the choices open for later allocations as open as possible. Each
+allocation can stimulate new allocation demands in order to create
+complimentary pairs. The algorithm has a recursive design.
+
+This algorithm holds conceptually, a single, shared, state model that defines 
+the location decisions made thus far. The model is updated both by iterating
+loops, but also by recursively made new allocations - which the loops will not
+know about. It follows that each iteration around a loop must ensure it is
+referring to the most recent state.
+
+A real implementation would require careful housekeeping of the shared state,
+including taking some snapshots of the state, and then restoring this state
+when placement hypotheses fail - to rebaseline the state for another attempt.
+The psuedo code here omits that aspect to avoid a distraction from the basic
+idea.
+
+
+""" Where the Program Starts
+"""
+def entry_point():
+    for A<n> in (A1, A2, A3...):
+        while placement_count(A<n>) remains less than [Rep]:
+            # Recursive.
+            place_assay_somewhere(A<n>, disallowed_pairs=[a_excl])
+
+
+""" Place A<n> in any chamber that satisfies all of the following:
+- Does not contain A<n> already.
+- Would not constitutue a colocated pair outlawed by the [disallowed_pairs] 
+  parameter.
+- Favouring some chambers over others, according to a merit heuristic.
+- Infers new demands created for complimentary pairs and recurses to satisfy
+  these.
+"""
+def place_assay_somewhere(A<n>, disallowed_pairs):
+    initialise list of chambers tried
+    forever():
+        candidate_chamber = most_favoured_legal_and_untried_chamber_for(
+                A<n>, disallowed_pairs):
+        if no chambers left_untried:
+            abort - failed
+        succeeded = place_assay_here(A<n>, candidate_chamber, disallowed_pairs)
+        if succeeded:
+            return
+    abort - failed
+
+
+""" Tell me which of the chambers that it would be legal to place A<n> in, and
+which we have not tried already, is the most favoured.
+"""
+def most_favoured_legal_and_untried_chamber_for(A<n>, tried_already):
+    # The most favoured is based on heuristics that attach merit to:
+    # - The chamber having fewer existing assays allocated to it than others.
+    # - Following the guidance in [a_incl].
+    # - Any new heuristics we discover in the future.
+
+
+""" Attempt to place A<n> into C<i>, including making additional complementary 
+placements as required by this placement creating a new colocated pair of 
+assays.
+"""
+def place_assay_here(A<n>, C<i>, disallowed_pairs):
+    colocated = current_occupants_of(C<i>)
+    register_as_allocated(A<n>, C<i>)
+    for counterpart in colocated:
+        # Seeing as we just mixed A<n> with <counterpart), we must create a
+        # new allocation of A<n> to a place that does not have <counterpart>.
+        # (Causes recursion)
+        place_assay_somewhere(A<n>, disallowed_pairs + counterpart)
+        # And vice versa
+        # (Causes recursion)
+        place_assay_somewhere(counterpart, disallowed_pairs + A<n>)
+
+
+Consider Later
+--------------
+Backtracking on earlier decisions when no solution is found.
+Dealing with the disambiguation of co-located pairs with a strategy that does
+not demand a simple binary complement in another cell.
+

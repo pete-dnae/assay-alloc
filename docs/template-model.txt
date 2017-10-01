@@ -1,0 +1,22 @@
+View Model
+----------
+
+template_model {
+    home_visible: true
+    settings_visible: true
+    chamber: 160
+    replicants: 3
+    assays: [
+        - name: E-Coli
+          checked: true
+          chambers: '001, 002, 003'
+          depends: '001, 002, 003'
+        - etc
+    ]
+    catalog: [
+        - name: E-Coli
+          never_mix: 'Foo-B, Baz-Z'
+          good_mix: 'Foo-B, Baz-Z'
+        - etc
+    ]
+}

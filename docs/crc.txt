@@ -1,0 +1,132 @@
+Nb. Alphabetical Order
+
+Model Side
+----------
+
+ChamberColocations          Encapsulates all the assay colocations in a given
+                            chamber.
+
+                                Holds ColocatedAssayPair(s).
+
+ColocatedAssayPair          Encapsulates one pair of assays that are colocated
+                            in a chamber.
+
+                                assay_a
+                                assay_b
+                                chamber
+
+BinPackingAlgorithm         A thing that can produce a PlacementSolution from
+                            an ExperimentMandate. Encapsulates an algorithmic
+                            approach and relevant heuristics.
+
+                                solve()
+
+DoMix                       Cut down version of DontMix
+
+DontMix                     Models a set of assay pairs that must not be mixed.
+                        
+                                convenience_queries()
+                                make_copy()
+                                append(assay_name_a, assay_name_b)
+
+ExperimentMandate           Knows the contraints and guidelines for the
+                            complete allocation problem to solve.
+
+                                num_chambers
+                                num replicates
+                                has-a DontMix
+                                has-a DoMix
+
+GeneratedLocationDemands    A set of LocationDemands that have been generated
+                            or inferred to be necessary as a side effect of
+                            having just colocated A<n> with other assays in a
+                            chamber.
+
+LocationDemand              Encapsulates the instruction (or need) to place a
+                            given assay A<n>, "somewhere", including  the
+                            conditions that must be met by "somewhere" for it
+                            to be legal. E.g. a list of assays that must not
+                            be already incumbent.
+
+LocationDemandGenerator     A factory for GeneratedLocationDemands, that
+                            encapsulates the inference decisions.
+
+NoSolutionError             An exception that carries the message that no
+                            solution is available.
+
+PlacementInProgress         Holds the allocation to chamber allocation
+                            decisions made so far whilst a solution is being
+                            searched for.
+
+                                place_here(A<n>, C<i>)
+                                make_copy()
+                                convenient_queries()
+
+PlacementSolution           A thing that holds a PlacementInProgress, which is
+                            known to be a satisfactory solution. Has extra
+                            capabilities that are only relevant to a
+                            successful solution, like specialised queries /
+                            export functions.
+
+SetOfAssays                 Models a set of assays
+
+                                data is just a set of name strings
+
+Solver                      Can take high level responsibility for creating a
+                            PlacementSolution, by "choosing" a
+                            BinPackingAlgorithm, introducing it to an
+                            ExperimentMandate, and firing the solve() method.
+
+
+Settings
+--------
+
+AssayCatalog                Owns the complete list of assay names that all
+                            users have edited into the system over time.
+
+AssayCollection             A user-specified subset of names from the
+                            AssayCatalog, to which a user has given a name
+                            to refer to it by.
+
+AssayCollections            A library of AssayCollection(s)
+
+                                Holds AssayCollection(s) in such a way to
+                                provide convenience functions. E.g.
+
+                                get('collection_fred')
+
+                                all_collections_that_reference(assay_1)
+
+Settings                    The top-level container for all settings.
+
+                                has-an AssayCatalog
+                                has-an AssayCollections
+
+WebApp
+------
+
+It will help to understand the context of the classes on this section, to read
+the "web app structure" sister document.
+
+ViewModel                   The data model that holds all the values,
+                            required to parameterise the html rendering.
+                            Used in calls to Flasks html template renderer.
+                            See "template-model.txt".
+
+ViewModelBuilder            A thing that knows how to build a ViewModel, from 
+                            incoming form values and a provided PlacementSolution.
+                            Excluding which parts should be made invisible.
+
+ViewRenderer                A thing that generates the html to render the app,
+                            using a provided ViewModel.
+
+                                Uses Flask's html templating library.
+
+SettingsSerializer          A duck-typed thing that offers the service of 
+                            persisting a Settings object in whatever (black
+                            box) storage solution it uses behind the scenes),
+                            and the service of building a Settings from its
+                            behind the scenes storage on demand.
+
+                                Initial implementation likely to be 
+                                Flask-Shelve, or TinyDB.
