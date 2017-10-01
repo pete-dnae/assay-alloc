@@ -30,16 +30,18 @@ o  Dev plan
     *  Leave readme behind in old place
     *  Put static where recommended
     *  Mix in this docco folder to the repo
-    o  Get running from flask runner
+    *  Get running from flask runner
         *  Create venv
         *  TDD up suitable venv and requirements.txt or is it yaml?
             *  try cmd line flask run and see what happens
     *  Mix in token templating to app
     *  Get auto code reload and debug going from dev script
-    o  Mix in bootstrap UI viewwise and static serving wise
-        o  make sure resources are in app/static so that prodn nginx will
+    *  Mix in bootstrap UI viewwise and static serving wise
+        *  make sure resources are in app/static so that prodn nginx will
            serve them
-        o  but configure flask to auto serve them too during dev
+           *  test with static_thing.html
+        *  but configure flask to auto serve them too during dev
+        *  use trivial bootstrap example from tutorial
     o  Mix in flask-shelve
     o  Validate db is going to work when need it
     o  Start top down TDD from view just basics
@@ -47,6 +49,7 @@ o  Dev plan
     o  Refine them and get them to work using TDD
     o  Then bring up rest of non persisted view
     o  Add persisted named assay sets
+    o  Download popper rather than using cdn
 
 -------------------------------------------------------------------------------
 Stack
