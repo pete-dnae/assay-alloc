@@ -20,19 +20,22 @@ o  Dev plan
         *  Find reputable looking tutorial and do throwaway try.
             *  https://hub.docker.com/r/tiangolo/uwsgi-nginx-flask/
         *  Follow tutorial and make notes in studies
-    o  Migrate to a code in repo
+    *  Migrate to a code in repo
         *  Consider if the demo docker folder system is ok for the project, or
            needs wrapper levels
             *  Can use example project with package structure
-        o  Create repo in pete-dnae with readme
-        o  Clone to linux space
-    o  Put docs alongside
-    o  Put static where recommended
-    o  Mix in this docco folder to the repo
+        *  Create repo in pete-dnae with readme
+        *  Clone to linux space
+    *  Put docs alongside
+    *  Leave readme behind in old place
+    *  Put static where recommended
+    *  Mix in this docco folder to the repo
     o  Get running from flask runner
-        o  TDD up suitable venv and requirements.txt or is it yaml?
-    o  Quick experiment get running from IDE
-    o  Mix in templating to app
+        *  Create venv
+        *  TDD up suitable venv and requirements.txt or is it yaml?
+            *  try cmd line flask run and see what happens
+    *  Mix in token templating to app
+    *  Get auto code reload and debug going from dev script
     o  Mix in bootstrap UI viewwise and static serving wise
         o  make sure resources are in app/static so that prodn nginx will
            serve them
