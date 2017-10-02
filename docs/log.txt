@@ -55,11 +55,17 @@ o  Dev plan
         *  when working - ditch assay-alloc from ~/home
 
     o  Mix in flask-shelve
-        o  Remind how to add packages to container
-        o  Add flask-shelve to the container
-        o  Follow flask-shelve tutorial
+        *  Remind how to add packages to container
+        *  Add flask-shelve to the container
+        *  Checkin
+        *  Follow flask-shelve tutorial
+            *  import it
+            *  code the use of it
+            *  try it
+            *  need debug mode for flask - revert to tutorial
+            *  tmp remove call to shelve
         o  Checkin
-    o  Validate db is going to work when need it
+    o  Get serving static resources to work in dev mode from flask itself
     o  Start top down serving view - just basics
     o  Move rapidly to rough coding of starter models
     o  Refine them and get them to work using TDD
