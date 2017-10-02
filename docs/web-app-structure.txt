@@ -2,10 +2,11 @@ Overview
 --------
 
 The web app is delivered to the browser, as one single homogeneous html web
-page.  There is no client side javascript app.  Although the "smart" Bootstrap
-CSS library is used by this page. The user's perception that there is a
-separate "home" page and "settings" page is created by both being present in
-the html delivered, but always with one or the other set to be invisible.
+page.  There is no client side javascript app.  (Apart from Bootstrap.css).
+
+The user's perception that there is a separate "home" page and "settings" page
+is created by both being present in the html delivered, but always with one or
+the other set to be invisible.
 
 This design obviates the need for either client or server to hold the user's
 interaction state (for example which assays they have checked on the home

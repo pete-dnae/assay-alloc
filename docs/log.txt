@@ -46,17 +46,19 @@ o  Dev plan
     *  How about running docker from windows client?
     *  Try recipe here: = successful
     https://rominirani.com/docker-on-windows-mounting-host-directories-d96f3f056a2c
-    o  Back to volume style development
+    *  Back to volume style development
         *  Ditch venv
         *  Remove local run dev script
         *  Make sure committed and pushed
         *  clone into c:/shared - maybe shortened name
         *  resume tutorial and note it to get volumes and restart working
-        o  when working - ditch assay-alloc from ~/home
+        *  when working - ditch assay-alloc from ~/home
 
-    o  Fall back on bringing up container and deriving pip requirements from it
-       to make local env identical.
     o  Mix in flask-shelve
+        o  Remind how to add packages to container
+        o  Add flask-shelve to the container
+        o  Follow flask-shelve tutorial
+        o  Checkin
     o  Validate db is going to work when need it
     o  Start top down serving view - just basics
     o  Move rapidly to rough coding of starter models
