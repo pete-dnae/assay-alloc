@@ -42,9 +42,22 @@ o  Dev plan
            *  test with static_thing.html
         *  but configure flask to auto serve them too during dev
         *  use trivial bootstrap example from tutorial
+    *  Re try docker mount experiment post reboot
+    *  How about running docker from windows client?
+    *  Try recipe here: = successful
+    https://rominirani.com/docker-on-windows-mounting-host-directories-d96f3f056a2c
+    o  Back to volume style development
+        o  Ditch venv
+        o  Remove local run dev script
+        o  Make sure committed and pushed
+        o  clone into c:/shared - maybe shortened name
+        o  resume tutorial and note it to get volumes and restart working
+
+    o  Fall back on bringing up container and deriving pip requirements from it
+       to make local env identical.
     o  Mix in flask-shelve
     o  Validate db is going to work when need it
-    o  Start top down TDD from view just basics
+    o  Start top down serving view - just basics
     o  Move rapidly to rough coding of starter models
     o  Refine them and get them to work using TDD
     o  Then bring up rest of non persisted view
