@@ -54,7 +54,7 @@ o  Dev plan
         *  resume tutorial and note it to get volumes and restart working
         *  when working - ditch assay-alloc from ~/home
 
-    o  Mix in flask-shelve
+    *  Mix in flask-shelve
         *  Remind how to add packages to container
         *  Add flask-shelve to the container
         *  Checkin
@@ -64,8 +64,12 @@ o  Dev plan
             *  try it
             *  need debug mode for flask - revert to tutorial
             *  tmp remove call to shelve
-        o  Checkin
-    o  Get serving static resources to work in dev mode from flask itself
+        *  Checkin
+    o  Get flask to serve /app/static files itself (eg css)
+        *  Read about
+        *  try
+        *  fix failure to find templates
+        o  check in
     o  Start top down serving view - just basics
     o  Move rapidly to rough coding of starter models
     o  Refine them and get them to work using TDD
