@@ -6,6 +6,11 @@ class LocationDemand(object):
     already been incumbent.
     """
 
-    def __init__(self, demanding_chamber, demanding_assay):
+    def __init__(self, demanding_assay, demanding_chamber=None):
+        """
+        The demanding chamber parameter is for when the demand for this
+        placement demand has come into being as a knock-on effect of placing a
+        different assay somewhere else.
+        """
         self.demanding_chamber =  demanding_chamber
         self.demanding_assay = demanding_assay

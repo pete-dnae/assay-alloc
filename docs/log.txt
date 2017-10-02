@@ -72,13 +72,14 @@ o  Dev plan
         *  check in
     o  Move rapidly to rough coding of starter models
         *  Decide on top level directory structure for model view etc
-        o  Put in headers for a few classes
-        o  Rename to make common words at start
-        o  Add a few tests
-        o  Hypothesise what home handler will look like
-        o  Code it in rough style
-        o  TDD solver bottom up
+        *  Put in headers for a few classes
+        *  Rename to make common words at start
+        *  Flesh out how the bin packing alg might be built recursively
+        o  Separate out heuristics
+        o  Code newly implied classes and methods, drilling down
+        o  Add tests bottom up
         o  Backlog - some classes need equals() implementations.
+    o  Extend implementation back upwards towards web app handler
     o  Start top down serving view - just basics
         o  Template that uses no vars
             o  Choose outer screen template for responsiveness and columns
