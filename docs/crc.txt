@@ -68,10 +68,6 @@ PlacementSolution           A thing that holds a PlacementInProgress, which is
                             successful solution, like specialised queries /
                             export functions.
 
-SetOfAssays                 Models a set of assays
-
-                                data is just a set of name strings
-
 Solver                      Can take high level responsibility for creating a
                             PlacementSolution, by "choosing" a
                             BinPackingAlgorithm, introducing it to an

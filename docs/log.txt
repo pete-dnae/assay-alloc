@@ -65,13 +65,27 @@ o  Dev plan
             *  need debug mode for flask - revert to tutorial
             *  tmp remove call to shelve
         *  Checkin
-    o  Get flask to serve /app/static files itself (eg css)
+    *  Get flask to serve /app/static files itself (eg css)
         *  Read about
         *  try
         *  fix failure to find templates
-        o  check in
-    o  Start top down serving view - just basics
+        *  check in
     o  Move rapidly to rough coding of starter models
+        *  Decide on top level directory structure for model view etc
+        o  Put in headers for a few classes
+        o  Rename to make common words at start
+        o  Add a few tests
+        o  Hypothesise what home handler will look like
+        o  Code it in rough style
+        o  TDD solver bottom up
+        o  Backlog - some classes need equals() implementations.
+    o  Start top down serving view - just basics
+        o  Template that uses no vars
+            o  Choose outer screen template for responsiveness and columns
+            *  stick in some approx of header and footer and placholders for
+               different pages
+            o  replace different pages with includes to isolate
+        o  Introduce view model to serve from - initially with hard coded vars
     o  Refine them and get them to work using TDD
     o  Then bring up rest of non persisted view
     o  Add persisted named assay sets
@@ -110,3 +124,9 @@ as WSGI server.
 Using mounted volume to allow dev iteration.
 Deployed eventually on DNAe server, but in mean time, GCE or EC2 instance, and
 even sooner locally.
+
+
+-------------------------------------------------------------------------------
+struct html
+-------------------------------------------------------------------------------
+    settings page div
