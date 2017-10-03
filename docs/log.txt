@@ -83,6 +83,12 @@ o  Dev plan
         *  Separate out heuristics / merit
         *  Code into seperate directories?
         o  Code newly implied classes and methods, drilling down
+            o  allocation
+                o  fields
+                o  api signatures
+                o  contructor
+                o  api impl
+            o  tests possible yet
         o  Add tests bottom up
         o  Backlog - some classes need equals() implementations.
     o  Extend implementation back upwards towards web app handler
