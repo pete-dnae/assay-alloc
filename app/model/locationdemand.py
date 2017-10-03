@@ -1,16 +1,16 @@
 class LocationDemand:
     """
     The LocationDemand class encapsulates the instruction (or need) to place a
-    given assay A<n> "somewhere", including the conditions that must be met by
-    "somewhere" for it to be legal. For example, a  list of assays that must not
-    already been incumbent.
-    """
+    given assay A<n> "somewhere", including some conditions that must be met by
+    "somewhere" for it to be legal.
+   """
 
-    def __init__(self, demanding_assay, demanding_chamber=None):
+    def __init__(self, assay, exclude_chambers, exclude_assays):
+        """ 
+        Provide the constructor with a set of chambers that should be
+        excluded because they are known in advance to be unsuitable. Also
+        provide, similarly, a set of assays that are deemed unsuitable.
         """
-        The demanding chamber parameter is for when the demand for this
-        placement demand has come into being as a knock-on effect of placing a
-        different assay somewhere else.
-        """
-        self.demanding_chamber =  demanding_chamber
-        self.demanding_assay = demanding_assay
+        self.assay = assay
+        self.exclude_chambers = exclude_chambers
+        self.exclude_assays = exclude_assays

@@ -22,11 +22,26 @@ class TestAllocation(unittest.TestCase):
 
     def test_barring_an_assay(self):
         a = Allocation(3)
-        a.place_assay_here('foo', 2)
-        a.bar_this_assay_from_chamber('bar', 2)
-        chamber_meta = a.chambers_info[2]
-        self.assertTrue('bar' in chamber_meta.now_barred)
 
+        # We bar the assay 'foo' from chamber 2 and assert that the accessor
+        # method rejects 'foo' in 2, but accepts 'bar' in 2.
+        a.bar_this_assay_from_chamber('foo', 2)
+        self.assertTrue(a.chamber_rejects_assay(2, 'foo'))
+        self.assertFalse(a.chamber_rejects_assay(2, 'bar'))
+
+        # Assert the accessor accepts anything in a chamber from which nothing
+        # has been barred.
+        self.assertFalse(a.chamber_rejects_assay(1, 'fibble'))
+
+
+    def test_chamber_contains_assay(self):
+        a = Allocation(3)
+        a.place_assay_here('placed_in_1', 1)
+        a.place_assay_here('placed_in_2', 2)
+        self.assertTrue(a.chamber_contains_assay(1, 'placed_in_1'))
+        self.assertFalse(a.chamber_contains_assay(1, 'placed_in_2'))
+        self.assertTrue(a.chamber_contains_assay(2, 'placed_in_2'))
+        self.assertFalse(a.chamber_contains_assay(2, 'placed_in_1'))
 
     def test_copying_an_allocation(self):
         a = Allocation(3)

@@ -82,13 +82,18 @@ o  Dev plan
         *  Git structure a bit wrong
         *  Separate out heuristics / merit
         *  Code into seperate directories?
-        o  Code newly implied classes and methods, drilling down
-            o  allocation
-                o  fields
-                o  api signatures
-                o  contructor
-                o  api impl
-            o  tests possible yet
+        o  Code and test newly implied classes and methods, drilling down
+            *  allocation
+            *  allocation.chamber_contains_assay()
+            *  allocation.chamber_rejects_assay
+            o  location demand assessor
+                *  code
+                o  test
+                    o  wip
+            o  chamber legality think gone?
+            o  heuristics
+            o  upgrade use of the two above in binpacking
+            o  heuristics
         o  Add tests bottom up
         o  Backlog - some classes need equals() implementations.
     o  Extend implementation back upwards towards web app handler
