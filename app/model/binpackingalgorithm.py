@@ -77,8 +77,9 @@ class BinPackingAlg:
         """
         chambers_tried = set()
         while True:
-            next_chamber_to_try = self._most_promising_legal_untried_chamber(
-                    allocation, chambers_tried)
+            heuristics = AllocationHeuristics()
+            next_chamber_to_try = heuristics.next_chamber_to_try(
+                    chambers_tried, allocation)
             if next_chamber_to_try is None:
                 raise NoSolutionError()
             succeeded, updated_allocation = \

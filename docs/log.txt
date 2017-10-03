@@ -79,11 +79,9 @@ o  Dev plan
         *  Names of demand things not right
         *  Names of locationprogress not right
         *  Don't derive from object
-        o  Git structure a bit wrong
-            o  commit / push
-            o  which is right?
-        o  Separate out heuristics
-        o  Code into seperate directories?
+        *  Git structure a bit wrong
+        *  Separate out heuristics / merit
+        *  Code into seperate directories?
         o  Code newly implied classes and methods, drilling down
         o  Add tests bottom up
         o  Backlog - some classes need equals() implementations.

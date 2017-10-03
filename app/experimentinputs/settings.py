@@ -1,6 +1,6 @@
 class Settings:
     """
-    The Settings class encapsulates all the persisted settings for the app.
+    The Settings class wraps all the persisted settings for the app.
     It is a container for an AssayCatalog and a AssayCollections object.
     """
 
