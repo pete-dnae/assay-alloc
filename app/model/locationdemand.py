@@ -1,4 +1,4 @@
-class LocationDemand(object):
+class LocationDemand:
     """
     The LocationDemand class encapsulates the instruction (or need) to place a
     given assay A<n> "somewhere", including the conditions that must be met by

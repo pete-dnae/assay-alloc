@@ -1,4 +1,4 @@
-class ColocatedAssayPair(object):
+class ColocatedAssayPair:
     """
     The ColocatedAssayPair class encapsulates two assays that are colocated in
     a chamber in terms of the assay names and the chamber.

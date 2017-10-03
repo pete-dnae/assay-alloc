@@ -1,4 +1,4 @@
-class DontMix(object):
+class DontMix:
     """
     The DontMix class encapsulates a set of assay pairs that must not be mixed.
     """

@@ -1,10 +1,9 @@
-class AssayCollections(object):
+class AssayCollections:
     """
-    The AssayCollections class is a library of AssayCollection(s).
-    It exists mainly to make it convenient to serialise a the whole thing so that
-    it can be persisted in a database.
+    The AssayCollections class is a container that helps clients to create 
+    and maintain named collections of assays. I.e. named collections of
+    strings.
     """
 
     def __init__(self):
         self._collections = set()
-k

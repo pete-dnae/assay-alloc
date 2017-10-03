@@ -1,4 +1,4 @@
-class Solver(object):
+class Solver:
     """
     The Solver class can take high-level responsibility for creating a
     PlacementSolution, by "choosing" a bin packing algorithm, introducing it to a

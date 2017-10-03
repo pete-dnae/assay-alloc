@@ -1,4 +1,4 @@
-class ExperimentMandate(object):
+class ExperimentMandate:
     """
     The ExperimentMandate class knows the constraints and parameters for the
     allocation problem to solve.

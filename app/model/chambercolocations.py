@@ -1,4 +1,4 @@
-class ChamberColocations(object):
+class ChamberColocations:
     """
     The ChamberColocations class encapsulates the set of ColocatedAssayPair(s)
     that exist in a given chamber.

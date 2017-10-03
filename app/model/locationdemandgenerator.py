@@ -1,24 +1,25 @@
-class LocationDemandGenerator(object):
+class LocationDemandGenerator:
     """
-    The LocationDemandGenerator is a factory for making GeneratedLocationDemands.
-    It exists so that the data model of GeneratedLocationDemands is kept separate
-    from the reasoning that brings them into being. The idea being that the
-    reasoning and inference required is a black box that can be altered without
-    affecting any other code.
-
-    For example the first implementation might deal only with pairs of chambers
-    helping each other out in disambiguation, whereas later implementations might
-    be more ambitious and consider sets of 3.
+    Preamble: When an assay is placed into a chamber creates a new colocated
+    assay pair, then new knock-on location demands are created implicitly to
+    disambiguate the calling. This LocationDemandGenerator class knows how to
+    make these inferences. This idea is ring-fenced by this class, so that more
+    exotic knock-on effects can be considered in the future, without requiring
+    any other code to change.
     """
 
-    def __init__(self):
+    def __init__(self, trigger_location_demand, placement_progress):
+        """
+        The constructor parameters specify an assay and a chamber to which it
+        has been added - which are potentially creating the location demands.
+        """
+        self._trigger_location_demand = trigger_location_demand
+        self._placement_progress = placement_progress
+
+
+    def generate(self):
+        """
+        Works out which new location demands are implicitly created, and
+        returns these as a sequence of LocationDemand(s).
+        """
         pass
-
-
-    def generate(self, assay_just_added, chamber):
-        """
-        Returns a GeneratedLocationDemands object.
-        """
-        demands = self._build_generated_location_demands(
-                assay_just_added, chamber)
-        return demands

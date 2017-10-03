@@ -1,4 +1,4 @@
-class PlacementSolution(object):
+class PlacementSolution:
     """
     The PlacementSolution class encapsulates a successful placement solution
     being found. It holds the PlacementInProgress that has been decreed to be a

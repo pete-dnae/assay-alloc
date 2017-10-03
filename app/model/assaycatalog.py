@@ -1,7 +1,7 @@
-class AssayCatalog(object):
+class AssayCatalog:
     """
-    The AssayCatalog class is is the complete list of assay names known to the
-    system.
+    The AssayCatalog class is the single source of truth about all the assays
+    known to the system.
     """
 
     def __init__(self):

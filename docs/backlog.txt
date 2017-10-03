@@ -2,3 +2,6 @@ o  Get better db storage solution
     o  Using local db is naff for concurrent users
     o  Switch to S3 buckets later
     o  And can the remove dependency on flask-shelve
+o  Some classes need equals() implementation.
+o  Research better use of cookies
+o  Show calling login in output

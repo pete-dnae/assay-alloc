@@ -1,4 +1,4 @@
-class SettingsSerializer(object):
+class SettingsSerializer:
     """
     The SettingsSerializer class is capable of serializing a Settings object into
     a byte stream, and creating a Settings object by hydrating a previously
