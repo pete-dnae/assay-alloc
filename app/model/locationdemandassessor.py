@@ -8,7 +8,7 @@ class LocationDemandAssessor:
     """
 
     @classmethod
-    def assess_demand_is_met(self, location_demand, chamber, allocation):
+    def assess_demand_is_met(cls, location_demand, chamber, allocation):
 
         assay = location_demand.assay
 
@@ -34,3 +34,15 @@ class LocationDemandAssessor:
 
 
         return True # Demand is met.
+
+
+    @classmethod
+    def chambers_that_satisfy_demand(cls, location_demand, allocation):
+        """
+        Returns the set of chambers known to the given Allocation object, which
+        satisfy the LocationDemand provided.
+        """
+        chambers = allocation.all_chambers()
+        chambers = [ch for ch in chambers if 
+                cls.assess_demand_is_met(location_demand, ch, allocation)]
+        return set(chambers)

@@ -28,6 +28,10 @@ class Allocation:
             self.chambers_info[chamber] = _ChamberMeta(chamber)
 
 
+    def all_chambers(self):
+        return set(self.chambers_info.keys())
+
+
     def place_assay_here(self, assay, chamber):
         """
         Place the given assay in the given chamber.
@@ -54,6 +58,12 @@ class Allocation:
         """ Returns the set of assays that are in the given chamber.
         """
         return self.chambers_info[chamber].assays
+
+
+    def number_of_assays_in_chamber(self, chamber):
+        """ Returns the number of assays that are in the given chamber.
+        """
+        return len(self.chambers_info[chamber].assays)
 
 
     def chamber_rejects_assay(self, chamber, assay):

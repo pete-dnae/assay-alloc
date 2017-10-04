@@ -76,16 +76,19 @@ class BinPackingAlg:
         """
         chambers_tried = set()
         while True:
-            heuristics = AllocationHeuristics()
-            next_chamber_to_try = heuristics.next_chamber_to_try(
-                    chambers_tried, allocation)
-            if next_chamber_to_try is None:
+            legal_chambers = LocationDemandAssessor.chambers_that_satisfy_demand(
+                    location_demand, allocation)
+            available_chambers = legal_chambers - chambers_tried
+            if len(available_chambers) == 0:
                 raise NoSolutionError()
+            next_chamber_to_try = AllocationHeuristics.preferred_chamber(
+                    available_chambers, allocation)
+            chambers_tried.add(next_chamber_to_try)
+
             succeeded, updated_allocation = \
                     self._attempt_to_place_assay_here(
                             location_demand.assay, next_chamber_to_try,
                             allocation)
-            chambers_tried.add(next_chamber_to_try)
             if succeeded:
                 return updated_allocation
 
