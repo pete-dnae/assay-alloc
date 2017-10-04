@@ -87,10 +87,8 @@ o  Dev plan
             *  allocation.chamber_contains_assay()
             *  allocation.chamber_rejects_assay
             o  location demand assessor
-                *  code
-                o  test
-                    o  wip
             o  chamber legality think gone?
+            o  locationdemandgenerator
             o  heuristics
             o  upgrade use of the two above in binpacking
             o  heuristics

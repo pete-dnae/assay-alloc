@@ -1,6 +1,6 @@
 o  Bugs
-    o  Some classes need equals() implementation.
-    o  Allocation needs per chamber, dynamic barred customers
+    o  Some classes need equals() implementation to work in sets.
+    o  Set assay bars on chambers when used to reconcile colocations.
     o  Get better db storage solution
         o  Using local db is naff for concurrent users
         o  Switch to S3 buckets later

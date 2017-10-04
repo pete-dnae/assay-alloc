@@ -9,7 +9,8 @@ class LocationDemand:
         """ 
         Provide the constructor with a set of chambers that should be
         excluded because they are known in advance to be unsuitable. Also
-        provide, similarly, a set of assays that are deemed unsuitable.
+        provide, similarly, a set of assays that are deemed unsuitable to be
+        colocated..
         """
         self.assay = assay
         self.exclude_chambers = exclude_chambers

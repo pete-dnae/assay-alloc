@@ -63,8 +63,7 @@ class BinPackingAlg:
         Places the assay specified in the given LocationDemand, with respect to
         the given current allocation, in any chamber that satisfies the 
         following:
-        o  Does not contain A<n> already.
-        o  Would not cause a colocation that is disallowed.
+        o  The rules in the LocationDemand.
         o  Any generated, knock-on location demands have also been satisfied
           (recursively).
 

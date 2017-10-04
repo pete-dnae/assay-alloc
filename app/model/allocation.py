@@ -50,6 +50,12 @@ class Allocation:
         return assay in chamber_meta.assays
 
 
+    def assays_in_chamber(self, chamber):
+        """ Returns the set of assays that are in the given chamber.
+        """
+        return self.chambers_info[chamber].assays
+
+
     def chamber_rejects_assay(self, chamber, assay):
         """
         Returns true if the given assay is in the reject list for the given
@@ -67,7 +73,7 @@ class Allocation:
 
 class _ChamberMeta:
     """
-    Models stuff we no about one chamber.
+    Models stuff we know about one chamber.
     """
 
     def __init__(self, chamber):
@@ -87,4 +93,7 @@ class _ChamberMeta:
 
 
     def blocks_assay(self, assay):
+        """
+        Does this chamber bar the given assay?
+        """
         return assay in self.now_barred

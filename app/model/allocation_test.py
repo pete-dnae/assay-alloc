@@ -43,6 +43,14 @@ class TestAllocation(unittest.TestCase):
         self.assertTrue(a.chamber_contains_assay(2, 'placed_in_2'))
         self.assertFalse(a.chamber_contains_assay(2, 'placed_in_1'))
 
+
+    def test_assays_in_chamber(self):
+        a = Allocation(3)
+        a.place_assay_here('foo', 1)
+        a.place_assay_here('bar', 1)
+        self.assertTrue('foo' in a.assays_in_chamber(1))
+        self.assertTrue('bar' in a.assays_in_chamber(1))
+
     def test_copying_an_allocation(self):
         a = Allocation(3)
         a.place_assay_here('foo', 2)
