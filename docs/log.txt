@@ -89,13 +89,31 @@ o  Dev plan
             *  location demand assessor
             *  LocationDemandAssessor.chambers_that_satisfy_deman
             *  AllocationHeuristics.preferred_chamber()
-
-
+            o  LocationDemand must be able to convey that the chamber used to
+               satisfy it, must not only not contain 'B', but also that it
+               must never in the future contain it either.
+                *  We can define the exclude assays on a LocationDemand as
+                   assays that must not already exist in the chosen chamber,
+                   and which oblige the chosen chamber to never accept those
+                   assays in the future either.
+                *  Upgrade place_assay_here() to take also a set of assays
+                   that must never be added to the chamber subsequently.
+                *  Modify the signature of packer.attempt_to_place_assay_here
+                   to take a locationdemand, in place of raw assay
+                *  Upgrade place_assay_here to use a locationdemand, instead
+                   of primitives and unit test.
+                o  Test banning for life in allocation unit tests
+                o  Do we need to expose bar_this_assay_from_chamber()?
+                o  When attempt_to_place_assay_here calls
+                   allocation.place_assay_here() it should furnish the never
+                   mix these assays parameter from the exclude assays field in
+                   the location demand
             o  locationdemandgenerator
+                o  fix comments
+                o  make sure location demand generated carry the future assay 
+                   exclusions
             o  upgrade use of the two above in binpacking
-            o  heuristics
-        o  Add tests bottom up
-        o  Backlog - some classes need equals() implementations.
+        o  Backlog - some classes need equals() implementations?
     o  Extend implementation back upwards towards web app handler
     o  Start top down serving view - just basics
         o  Template that uses no vars

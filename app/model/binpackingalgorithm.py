@@ -93,7 +93,7 @@ class BinPackingAlg:
                 return updated_allocation
 
 
-    def _attempt_to_place_assay_here(self, assay, chamber, allocation):
+    def _attempt_to_place_assay_here(self, location_demand, chamber, allocation):
         """
         Places the assay specified in the given LocationDemand into the chamber
         specified. Then works out what knock-on effect LocationDemand(s) can be
@@ -106,7 +106,8 @@ class BinPackingAlg:
         Allocation object - updated accordingly.
         """
         local_allocation = allocation.copy()
-        local_allocation.place_assay_here(location_demand.assay, chamber)
+        local_allocation.place_assay_here(
+                location_demand.assay, location_demand.chamber)
 
         # Work out if this assay placement created any new colocations, and when
         # so, the corresponding additional allocations we must make to

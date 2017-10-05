@@ -1,6 +1,7 @@
 import unittest
 
 from allocation import Allocation
+from locationdemand import LocationDemand
 
 class TestAllocation(unittest.TestCase):
 
@@ -10,12 +11,12 @@ class TestAllocation(unittest.TestCase):
 
     def test_construction(self):
         alloc = Allocation(3)
-        self.assertEqual(alloc.num_chambers, 3)
+        self.assertEqual(len(alloc.chambers_info), 3)
 
 
     def test_placing_of_assay(self):
         a = Allocation(3)
-        a.place_assay_here('foo', 2)
+        a.place_assay_here(2, LocationDemand('foo'))
         chamber_meta = a.chambers_info[2]
         self.assertTrue('foo' in chamber_meta.assays)
 
@@ -36,8 +37,8 @@ class TestAllocation(unittest.TestCase):
 
     def test_chamber_contains_assay(self):
         a = Allocation(3)
-        a.place_assay_here('placed_in_1', 1)
-        a.place_assay_here('placed_in_2', 2)
+        a.place_assay_here(1, LocationDemand('placed_in_1'))
+        a.place_assay_here(2, LocationDemand('placed_in_2'))
         self.assertTrue(a.chamber_contains_assay(1, 'placed_in_1'))
         self.assertFalse(a.chamber_contains_assay(1, 'placed_in_2'))
         self.assertTrue(a.chamber_contains_assay(2, 'placed_in_2'))
@@ -46,22 +47,22 @@ class TestAllocation(unittest.TestCase):
 
     def test_assays_in_chamber(self):
         a = Allocation(3)
-        a.place_assay_here('foo', 1)
-        a.place_assay_here('bar', 1)
+        a.place_assay_here(1, LocationDemand('foo'))
+        a.place_assay_here(1, LocationDemand('bar'))
         self.assertTrue('foo' in a.assays_in_chamber(1))
         self.assertTrue('bar' in a.assays_in_chamber(1))
 
 
     def test_number_of_assays_in_chamber(self):
         a = Allocation(3)
-        a.place_assay_here('foo', 1)
-        a.place_assay_here('bar', 1)
+        a.place_assay_here(1, LocationDemand('foo'))
+        a.place_assay_here(1, LocationDemand('bar'))
         self.assertEqual(2, a.number_of_assays_in_chamber(1))
 
 
     def test_copying_an_allocation(self):
         a = Allocation(3)
-        a.place_assay_here('foo', 2)
+        a.place_assay_here(1, LocationDemand('foo'))
         a.bar_this_assay_from_chamber('bar', 2)
 
         b = a.copy()

@@ -5,12 +5,12 @@ class LocationDemand:
     "somewhere" for it to be legal.
    """
 
-    def __init__(self, assay, exclude_chambers, exclude_assays):
+    def __init__(self, assay, exclude_chambers=set(), exclude_assays=set()):
         """ 
         Provide the constructor with a set of chambers that should be
         excluded because they are known in advance to be unsuitable. Also
         provide, similarly, a set of assays that are deemed unsuitable to be
-        colocated..
+        colocated.
         """
         self.assay = assay
         self.exclude_chambers = exclude_chambers

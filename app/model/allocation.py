@@ -18,7 +18,6 @@ class Allocation:
     # bring in a long tail of downstream references.
 
     def __init__(self, num_chambers):
-        self.num_chambers = num_chambers
 
         # Holds allocation info about each chamber. Keyed on chamber number.
         # Values are _ChamberData objects.
@@ -32,11 +31,17 @@ class Allocation:
         return set(self.chambers_info.keys())
 
 
-    def place_assay_here(self, assay, chamber):
+    def place_assay_here(self, chamber, location_demand):
         """
-        Place the given assay in the given chamber.
+        Place the assay specified in the given LocationDemand in the given 
+        chamber. Conveying to the Allocation object, that any assay mentioned by
+        the location demand's "exclude_assays" attribute must never be added to
+        this chamber going forward.
         """
-        self.chambers_info[chamber].add_assay(assay)
+        ci = self.chambers_info[chamber]
+        ci.add_assay(location_demand.assay)
+        for chamber in location_demand.exclude_assays:
+            self.bar_this_assay_from_chamber(assay, chamber)
 
 
     def bar_this_assay_from_chamber(self, assay, chamber):

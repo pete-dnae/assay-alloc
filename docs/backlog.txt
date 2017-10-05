@@ -1,9 +1,13 @@
 o  Bugs
     o  Some classes need equals() implementation to work in sets.
-    o  Set assay bars on chambers when used to reconcile colocations.
     o  Get better db storage solution
         o  Using local db is naff for concurrent users
         o  Switch to S3 buckets later
         o  And can the remove dependency on flask-shelve
+o  Allocation Quality
+    o  We are neglecting the possibility that generated location demands
+       might already be met by coincidence by a current Allocation. If we go
+       on to exploit these, we must avoid using them more than once as sisters
+       for the same trigger assay.
 o  Research better use of cookies
 o  Show calling login in output
