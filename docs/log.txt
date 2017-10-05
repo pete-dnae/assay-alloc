@@ -102,8 +102,7 @@ o  Dev plan
                    to take a locationdemand, in place of raw assay
                 *  Upgrade place_assay_here to use a locationdemand, instead
                    of primitives and unit test.
-                o  Test banning for life in allocation unit tests
-                o  Do we need to expose bar_this_assay_from_chamber()?
+                *  Test banning for life in allocation unit tests
                 o  When attempt_to_place_assay_here calls
                    allocation.place_assay_here() it should furnish the never
                    mix these assays parameter from the exclude assays field in
