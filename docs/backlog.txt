@@ -9,5 +9,7 @@ o  Allocation Quality
        might already be met by coincidence by a current Allocation. If we go
        on to exploit these, we must avoid using them more than once as sisters
        for the same trigger assay.
+o  Allow each assay its own replica count
+o  Group chambers into "chips" for use with heuristics and demands
 o  Research better use of cookies
-o  Show calling login in output
+o  Show calling logic in output
