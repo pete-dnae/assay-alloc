@@ -16,8 +16,8 @@ behaviour.
 We endeavour systematically to remove from the set of {all assays deployed},
 those assays that we can prove are not present. Provided that we design the
 assay subset allocation to give every assay the opportunity to furnish proof
-that it is not present, then the assays that survice in the reduced set, are
-by definition, those present.
+that it is not present, then the assays that survive in the reduced set, are
+by definition, the assays that are present.
 
 We have two independent means of proof that an assay is not present, which we 
 can combine.
@@ -45,23 +45,21 @@ proof, respectively.
 Consider our search for evidence that assay C is not present. A chamber might
 contain the assay set {ABC}. If by chance, none of {ABC} are present the chamber
 will not fire and this result delivers us the evidence we seek about C not being
-present. However, if either A or B is present, it does fire, and we learn 
-nothing.
-
-We will only get a no-fire result from a chamber when none of its assay subset is
-present.
+present. However, if either A or B is present, it will fire, and we learn 
+nothing about an assay absences.
 
 XXX How to satisfy - maybe with assumption that fewer than 3 pathogens present or
 cannot rely.
 
 ## (B) Not-All-Chambers-Fired
 
-The assay Z existing in only one chamber's assay subset, and that chamber 
-not firing, is sufficient proof that Z is not present. But it won't happen 
+The assay Z existing in just one chamber (N), and that chamber 
+not firing, is sufficient proof that Z is not present. But we won't collect this
+evidence unless none of the other assays in N are also absent.
 
 
 
-
+# Todo
 
 depdnent on giving v high prob of proof not fire
 Softer
