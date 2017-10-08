@@ -1,167 +1,55 @@
-*  Come up with definition of starter problem
-*  Decide what stack
-*  Decide what deployment
-*  Think ahead to visualisation
-*  Persisted data model
-*  Make sure visualisation can be form and url driven
-    *  form values
-    *  urls
-*  Design template model
-    *  Complete content
-    *  Template hierarchy or inclusion composition (defer)
-*  OOD and functional design of python
-    *  algorithm
-    *  settings oriented
-    *  end points and helpers
-    *  view centric
-o  Dev plan
-    *  Bring up flask, hello world in docker scratch mode
-        *  Decide if use flask dev server, or cherrypy or gunicorn.
-        *  Find reputable looking tutorial and do throwaway try.
-            *  https://hub.docker.com/r/tiangolo/uwsgi-nginx-flask/
-        *  Follow tutorial and make notes in studies
-    *  Migrate to a code in repo
-        *  Consider if the demo docker folder system is ok for the project, or
-           needs wrapper levels
-            *  Can use example project with package structure
-        *  Create repo in pete-dnae with readme
-        *  Clone to linux space
-    *  Put docs alongside
-    *  Leave readme behind in old place
-    *  Put static where recommended
-    *  Mix in this docco folder to the repo
-    *  Get running from flask runner
-        *  Create venv
-        *  TDD up suitable venv and requirements.txt or is it yaml?
-            *  try cmd line flask run and see what happens
-    *  Mix in token templating to app
-    *  Get auto code reload and debug going from dev script
-    *  Mix in bootstrap UI viewwise and static serving wise
-        *  make sure resources are in app/static so that prodn nginx will
-           serve them
-           *  test with static_thing.html
-        *  but configure flask to auto serve them too during dev
-        *  use trivial bootstrap example from tutorial
-    *  Re try docker mount experiment post reboot
-    *  How about running docker from windows client?
-    *  Try recipe here: = successful
-    https://rominirani.com/docker-on-windows-mounting-host-directories-d96f3f056a2c
-    *  Back to volume style development
-        *  Ditch venv
-        *  Remove local run dev script
-        *  Make sure committed and pushed
-        *  clone into c:/shared - maybe shortened name
-        *  resume tutorial and note it to get volumes and restart working
-        *  when working - ditch assay-alloc from ~/home
-
-    *  Mix in flask-shelve
-        *  Remind how to add packages to container
-        *  Add flask-shelve to the container
-        *  Checkin
-        *  Follow flask-shelve tutorial
-            *  import it
-            *  code the use of it
-            *  try it
-            *  need debug mode for flask - revert to tutorial
-            *  tmp remove call to shelve
-        *  Checkin
-    *  Get flask to serve /app/static files itself (eg css)
-        *  Read about
-        *  try
-        *  fix failure to find templates
-        *  check in
-    o  Move rapidly to rough coding of starter models
-        *  Decide on top level directory structure for model view etc
-        *  Put in headers for a few classes
-        *  Rename to make common words at start
-        *  Flesh out how the bin packing alg might be built recursively
-        *  Assay stuff is not right
-        *  Names of demand things not right
-        *  Names of locationprogress not right
-        *  Don't derive from object
-        *  Git structure a bit wrong
-        *  Separate out heuristics / merit
-        *  Code into seperate directories?
-        o  Code and test newly implied classes and methods, drilling down
-            *  allocation
-            *  allocation.chamber_contains_assay()
-            *  allocation.chamber_rejects_assay
-            *  location demand assessor
-            *  LocationDemandAssessor.chambers_that_satisfy_deman
-            *  AllocationHeuristics.preferred_chamber()
-            o  LocationDemand must be able to convey that the chamber used to
-               satisfy it, must not only not contain 'B', but also that it
-               must never in the future contain it either.
-                *  We can define the exclude assays on a LocationDemand as
-                   assays that must not already exist in the chosen chamber,
-                   and which oblige the chosen chamber to never accept those
-                   assays in the future either.
-                *  Upgrade place_assay_here() to take also a set of assays
-                   that must never be added to the chamber subsequently.
-                *  Modify the signature of packer.attempt_to_place_assay_here
-                   to take a locationdemand, in place of raw assay
-                *  Upgrade place_assay_here to use a locationdemand, instead
-                   of primitives and unit test.
-                *  Test banning for life in allocation unit tests
-                o  When attempt_to_place_assay_here calls
-                   allocation.place_assay_here() it should furnish the never
-                   mix these assays parameter from the exclude assays field in
-                   the location demand
-            o  locationdemandgenerator
-                o  fix comments
-                o  make sure location demand generated carry the future assay 
-                   exclusions
-            o  upgrade use of the two above in binpacking
-        o  Backlog - some classes need equals() implementations?
-    o  Extend implementation back upwards towards web app handler
-    o  Start top down serving view - just basics
-        o  Template that uses no vars
-            o  Choose outer screen template for responsiveness and columns
-            *  stick in some approx of header and footer and placholders for
-               different pages
-            o  replace different pages with includes to isolate
-        o  Introduce view model to serve from - initially with hard coded vars
-    o  Refine them and get them to work using TDD
-    o  Then bring up rest of non persisted view
-    o  Add persisted named assay sets
-    o  Download popper rather than using cdn
-
+*  How progress random alloc with probabilities?
+    *  Decide kernel scope
+    *  Decide runtime mo
+    *  CRC mk 2
+    *  Folder org - all model, alongside orig
+    *  Decide dev milestones
+*  Experiment input model
+    *  Tweak existing experiment input model to suit
+    *  Test helper to make fixed one
+*  Class to generate and skip subsets
+o  Just do top down from kernel runner entry point
 -------------------------------------------------------------------------------
-Stack
+Kernel Scope
 -------------------------------------------------------------------------------
-Requirements
 
-o  Has to be web app from the get go to make it easy for people to engage with
-o  Has to be simple and familiar - cannot spend time on this
-o  Need persistence
-o  Nice if could very simple deploy using docker or app engine
-o  Will need to move to enterprise IT eventually
+Define experiments as
+    num chambers avail
+    list of assay names
+    how many replicas of each assay wanted
+    list of mutex assay pairs
 
-Implications
+Define exp simulation as which assay targets present (up to 5)
 
-o  Has to be Python
-o  Can be trad server side html templating
-o  Rule out server based DB
-o  Rule out GAE
-o  Can use Flask-Shelve for persistence.
+Create and Allocate Assay subsets to chambers in loops until placed
+sufficient.
 
-Conclusions
+Create from feed of random alloc sets (seeded).
+Skip any which contravene pair rules.
 
-o  Flask should be baseline
-o  Find trivial file based key value store (value is entire db in yaml, or
-   json)
-
--------------------------------------------------------------------------------
-Deployment
--------------------------------------------------------------------------------
-Docker image comprising Flask, Shelve, and Bootstrap with GUnicorn or CherryPy
-as WSGI server.
-Using mounted volume to allow dev iteration.
-Deployed eventually on DNAe server, but in mean time, GCE or EC2 instance, and
-even sooner locally.
+Create results capability (object)
+    assays in each chamber looku up both ways
+    count of each assay type in firing chambers
+        (should incriminate which assays)
+    summary result = believe these assays present cos of these characteristics
+    vs reference char
 
 
 -------------------------------------------------------------------------------
-struct html
+Runtime mo
 -------------------------------------------------------------------------------
-    settings page div
+run_experiment -f experiment_setup 
+outputs to screen
+-------------------------------------------------------------------------------
+Dev Milestones
+- Defn of model and test helper to make fixed one
+- Loop to generate and skip subsets
+- Allocate them to chambers until sufficient
+- Interpreter
+- Create results model
+- Report results to screen
+- Entry point that uses cmd line args to build models from file
+- Comments
+- Tests
+- Consider deployment
+-------------------------------------------------------------------------------

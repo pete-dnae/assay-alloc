@@ -1,0 +1,34 @@
+Nb. Alphabetical Order
+
+Model Side
+----------
+
+
+ExperimentDesign            Knows the contraints and guidelines for the
+                            complete allocation problem to solve.
+
+                                num_chambers
+                                assay names
+                                num replicates
+                                dont mix pairs
+
+                                targets present
+
+AssaySubsetGenerator
+
+Allocation
+
+Interpreter
+
+Results                     Container for results
+                            
+                                assays in chambers 2 way lookup
+                                count of each assay type in firing chambers
+                                how many targets present with numbers vs those
+                                for 1,2,3,4 targets.
+                                which assays present cf group sizes expected
+
+
+
+
+
