@@ -9,6 +9,21 @@
     *  Test helper to make fixed one
 *  Class to generate and skip subsets
 o  Just do top down from kernel runner entry point
+    o  experiment defines sub set size, no replicas
+    o  Is allocation working?
+        *  Some allocated?
+        *  random looking
+        *  Right number altogether? 
+        *  Right reps of each
+        *  no mutex
+        o  any incompat pairs being expunged?
+
+Todo / Debt
+    o  Decide how to introduce replicas and make sure we don't break the
+       stats assumptions.
+    o  Make sure the allocation algorithm is not skewing stats by variance in
+       how many of each assay gets allocated, and some chambers having fewer
+       assays than others.
 -------------------------------------------------------------------------------
 Kernel Scope
 -------------------------------------------------------------------------------
@@ -19,8 +34,7 @@ Define experiments as
     how many replicas of each assay wanted
     list of mutex assay pairs
 
-Define exp simulation as which assay targets present (up to 5)
-
+Define exp simulation as which assay targets present k
 Create and Allocate Assay subsets to chambers in loops until placed
 sufficient.
 

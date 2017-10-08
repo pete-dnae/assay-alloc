@@ -5,9 +5,9 @@ class MakeReferenceExperiment:
     @classmethod
     def make(cls):
         exp = ExperimentDesign()
-        exp.assays = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split()
+        exp.assays = set(list('ABCDEFGHIJKLMNOPQRSTUVWXYZ'))
         exp.num_chambers = 100
-        exp.replicas = 3
+        exp.stack_height = 4
         exp.dontmix = (('A', 'B'), ('C', 'D'))
 
         return exp
