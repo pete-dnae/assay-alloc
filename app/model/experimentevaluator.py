@@ -8,10 +8,10 @@ class ExperimentEvaluator:
 
         num_firing = len(cls._firing_chambers(allocation, experiment_design))
         num_not_firing = experiment_design.num_chambers - num_firing
+        fired_histogram = cls._fired_histogram(allocation, experiment_design)
+
         results['chambers fired'] = num_firing
         results['chambers not fired'] = num_not_firing
-
-        fired_histogram = cls._fired_histogram(allocation, experiment_design)
         results['assay stats in firing chambers'] = fired_histogram
 
         return results

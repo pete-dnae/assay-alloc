@@ -8,10 +8,9 @@
     *  Tweak existing experiment input model to suit
     *  Test helper to make fixed one
 *  Class to generate and skip subsets
-o  Just do top down from kernel runner entry point
-    o  Work out how to pretty print nested data as yaml or json
-    o  Precede with summary data like for each assay presence in firing
-       chambers vs presence in non firing chambers - abs and ratio
+*  Just do top down from kernel runner entry point
+o  Got something so clean up and decide deploy before finish io and stats
+    o  Ditch redundant modules
 
 Todo / Debt
     o  Decide how to introduce replicas and make sure we don't break the
@@ -61,4 +60,20 @@ Dev Milestones
 - Comments
 - Tests
 - Consider deployment
+
 -------------------------------------------------------------------------------
+Report
+-------------------------------------------------------------------------------
+
+This many chambers fired: 17
+
+
+100% hits suggests 1 assay present.
+Circa 50% hits suggests 2 assays present
+Circa 33% hits suggests 3 assays present
+Circa 25% hits suggests 3 assays present
+
+100% hits: N
+66% hits: P and N
+22% hits: A,B,G,H
+Fewer than 10% hits: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
