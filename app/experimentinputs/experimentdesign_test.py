@@ -10,4 +10,6 @@ class MakeReferenceExperiment:
         exp.stack_height = 4
         exp.dontmix = (('A', 'B'), ('C', 'D'))
 
+        exp.targets_present = {'N', 'F'}
+
         return exp
