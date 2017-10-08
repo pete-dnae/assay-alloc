@@ -8,9 +8,7 @@ When a chamber registers a positive, we describe that chamber as having
 "fired". 
 
 Assumptions:
-    o  Idealised / perfect performance of assays and system.
-    o  Selection and distribution of 4-assay subsets approximates to a 
-       statistically meaningful random distribution.
+- Idealised / perfect performance of assays and system.
 
 We talk about the following later:
 - assay replication
