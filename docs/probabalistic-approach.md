@@ -1,27 +1,23 @@
 # Background
 
-Assumes idealised / perfect behaviour
+We have, let us say, 20 assays to deploy combinatorially to 100 chambers.
+We spread a diverse range of 4-assay subsets to each chamber.
+
+## Terminology
+When a chamber registers a positive, we describe that chamber as having
+"fired". 
+
+Assumptions:
+    o  Idealised / perfect performance of assays and system.
+    o  Selection and distribution of 4-assay subsets approximates to a 
+       statistically meaningful random distribution.
 
 We talk about the following later:
-- replication
-- error tolerance from the real world
+- assay replication
+- error tolerance from real world imperfections
 - error tolerance from probability calcs with small samples
 - assays that don't mix
 - implementation considerations
-
-# Worked example with literal numbers
-
-## Parameters
-20 assay types {ABC...T}
-100 chambers
-4 assays per chamber in randomly chosen sets
-
-## Derived numbers
-400 deployed assays
-Deploys circa 20 of each assay type.
-Hence the number of chambers that contain a given assay is circa 20.
-And...
-The number of chambers that do not contain a given assay is circa 80.
 
 ## Visualisation
 1 2 3 4 5 ... 100 Chambers
@@ -35,55 +31,55 @@ E L E P H ...
   +-- This column is the assay subset deployed to chamber 2.
       4 assays drawn from a set of 20
 
-## Expectations for firing vs. non-firing chambers as f(number assays present)
+# Worked example with literal numbers
+See probability-support.xlsx
 
-When 1 assay only is present -> 20 fires    80 non-fires      ratio = 0.25
-When 2 assay is present      -> 40 fires    60 non-fires      ratio = 0.67
-When 3 assay is present      -> 60 fires    40 non-fires      ratio = 1.50
-When 4 assay is present      -> 80 fires    20 non-fires      ratio = 4.00
+# Combinatorial Calling
 
-These absolute numbers and the ratios taken together - being so spread, 
-give strong evidence of how many assays are present.
+We can hypothesise what will happen in terms of how many chambers fire, and the
+assay constitution of those that do, in the presence of either 1,2,3,4... assay
+targets.
 
-## Expectations for firing chamber content as f(number assays present)
+It transpires that when we use these characteristics for the example numbers
+above, they strongly indicate how MANY assay targets are present, when
+this is 1, 2, 3 or 4, but then falls off. You can see this clearly in the
+spreadsheet.
 
-When one assay(M) only is present:
-    - the 20 firing chambers comprise 80 assays
-    - in which can expect that 20 are M (all of the Ms)
-    - and that the remaining 60 are a mix of the other 19 assays, 
-      with circa 3 copies of each.
+For example the presence of just one assay target will cause 20 chambers to fire,
+and 80 not to fire. Whereas the presence of two targets causes very different
+numbers: 40 to fire, and 60 not to fire.
 
-When two assays only are present (P,Q):
-    - the 40 firing chambers comprise 160 assays
-    - in which we can expect that 20 are P (all of the P)
-    - in which we can expect that 20 are Q (all of the Q)
-    - and that the remaining 120 are a mix of the other 18 assays,
-      with circa 7 copies of each.
+Once we have concluded how many targets are present we can go on to call which
+they are.
 
-When three assays only are present (A,B,C):
-    - the 60 firing chambers comprise 240 assays
-    - in which we can expect that 20 are A (all of the A)
-    - in which we can expect that 20 are B (all of the B)
-    - in which we can expect that 20 are C (all of the C)
-    - and that the remaining 180 are a mix of the other 17 assays,
-      with circa 10 copies of each.
+In the case of 2 targets present, we study the 40 chambers that fire and expect 
+to see among their constituent assays, the following pattern.
 
-# Abstracted to formulaic probabilities
+- 2 distinct assays represented 20 times apiece. (our two called targets)
+- The remainder spread between circa 18 groups of 7.
 
-We have just 3 input parameters:
+# Assay Replication to Cope with Real World Practicalities
+We know that some of our assays are temperatmental, and we know that our system
+will produce some level of false positives and negatives, and we wish to build in
+some resilience to these things in the combinatorial assay allocation and
+calling.
 
-## Independent Parameters
-Number of assay types           AssayTypes
-Number of chambers              NumChambers
-Number of assays per chamber    NPlex // make divisor of NumChambers
+We can do this by simply doubling (or x3 or x4) up on on assays. We can treat 
+these (for the most part) as if they were actually completely different assays.
+Before we embarked on the calling above, we could post process the results to
+aggregate the deliberately replicated  assays back to one. 
 
-## Derived Parameters
-a
+We can also cope by allowing some latitude on the pattern recognition. For
+example treating a grouping of 18 firing targets as being a good enough match for
+20 that might be expected.
 
-## Calling one only assay present
+# Implementation Considerations
 
-Expected number of chambers to fire = 
+There are parts of an implementation that must know that assay replicas are
+really the same - like making sure two replicas of the same assay don't end up in
+the same chamber.
 
+# Todo
 
-
-When 1 assay only is present -> 20 fires    80 non-fires      ratio = 0.25
+- error tolerance from probability calcs with small samples
+- assays that don't mix
