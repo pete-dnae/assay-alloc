@@ -1,0 +1,6 @@
+# An aide-memoir
+# Paths need to suit local dev env
+
+cd c:\docker-share\assay-alloc\app>
+
+python c:\Users\pete\Anaconda3\Scripts\cxfreeze --include-path=c:\docker-share\assay-alloc\app assay-alloc.py

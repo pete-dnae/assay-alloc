@@ -13,8 +13,8 @@ if __name__ == '__main__':
     #experiment_design = MakeReferenceExperiment.make()
 
     assay_allocation = AssayAllocator().allocate(experiment_design)
-    evaluator = ExperimentReporter(assay_allocation, experiment_design)
-    results = evaluator.evaluate()
+    reporter = ExperimentReporter(assay_allocation, experiment_design)
+    results = reporter.report()
 
     print(results)
 

@@ -3,11 +3,8 @@
     *  Design what want to see
     *  Make it so
 *  Report in order of % pop deployed
-o  Would cmd line args work
-    *  assay-alloc --assays=23 --chambers=100 --stack=4 --dontmix=3 targets=2
-    o  where do
-    o  try
-    o  how do usage
+*  Cmd line usage
+o  Quick freeze experiment
 
 
 o  Send 3 example files to interested parties

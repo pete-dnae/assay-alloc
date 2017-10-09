@@ -10,7 +10,7 @@ class ExperimentReporter:
         self.design = experiment_design
         self.qry = AllocQuery(allocation)
 
-    def evaluate(self):
+    def report(self):
         d = [self._mk_header(),
              self._mk_design(),
              self._mk_allocation(),
