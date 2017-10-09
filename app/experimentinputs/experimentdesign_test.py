@@ -8,9 +8,8 @@ class MakeReferenceExperiment:
         exp.assays = set(list('ABCDEFGHIJKLMNOPQRSTUVWXYZ'))
         exp.num_chambers = 100
         exp.stack_height = 4
-        exp.dontmix = (('A', 'B'), ('C', 'D'))
+        exp.dontmix = [['A', 'B'], ['C', 'D']]
 
         exp.targets_present = {'N', 'F'}
-        exp.targets_present = {'N'}
 
         return exp

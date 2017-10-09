@@ -1,23 +1,15 @@
-*  How progress random alloc with probabilities?
-    *  Decide kernel scope
-    *  Decide runtime mo
-    *  CRC mk 2
-    *  Folder org - all model, alongside orig
-    *  Decide dev milestones
-*  Experiment input model
-    *  Tweak existing experiment input model to suit
-    *  Test helper to make fixed one
-*  Class to generate and skip subsets
-*  Just do top down from kernel runner entry point
-o  Got something so clean up and decide deploy before finish io and stats
-    o  Ditch redundant modules
+o  Get decent ascii report coming out
+    *  Work out how to pretty print a data structure
+    *  Design what want to see
+    o  Make it so
+o  Get to read from exp design file
+o  Sort deployment
+    o  Incl dependency on pyyaml
+o  Write usage intructions
 
-Todo / Debt
-    o  Decide how to introduce replicas and make sure we don't break the
-       stats assumptions.
-    o  Make sure the allocation algorithm is not skewing stats by variance in
-       how many of each assay gets allocated, and some chambers having fewer
-       assays than others.
+
+
+
 -------------------------------------------------------------------------------
 Kernel Scope
 -------------------------------------------------------------------------------
@@ -64,16 +56,31 @@ Dev Milestones
 -------------------------------------------------------------------------------
 Report
 -------------------------------------------------------------------------------
+- Note: This is machine readable YAML format.
+- Experiment Setup:
+    - Number of chambers: 100
+    - ssay Set Deployed: ABCDEFGHI
+    - Assays per chamber: 4
+    - Dont mix:
+      - DC
+      - NM
+    - Targets present: FI
 
-This many chambers fired: 17
+- Allocation:
 
+    - Chamber map:
+      - 001 ADFH
+      - 002 BNPS
 
-100% hits suggests 1 assay present.
-Circa 50% hits suggests 2 assays present
-Circa 33% hits suggests 3 assays present
-Circa 25% hits suggests 3 assays present
+    - Assays Deployed Count:
+      - 17: ABDE
+      - 15: NZPQ
+      - 09: ZPQSTRM
 
-100% hits: N
-66% hits: P and N
-22% hits: A,B,G,H
-Fewer than 10% hits: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+- Calling:
+  - 17 chambers fired
+  - 88 chambers did not fire
+  - In order of prevalance among firing chambers
+    - 17 fires: N
+    -  5 fires: PZH
+}

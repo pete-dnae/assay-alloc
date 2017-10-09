@@ -8,7 +8,8 @@ if __name__ == '__main__':
 
     experiment_design = MakeReferenceExperiment.make()
     assay_allocation = AssayAllocator().allocate(experiment_design)
-    results = ExperimentEvaluator.evaluate(assay_allocation, experiment_design)
+    evaluator = ExperimentEvaluator(assay_allocation, experiment_design)
+    results = evaluator.evaluate()
 
-    print('Results:\n%s' % results)
+    print(results)
 
