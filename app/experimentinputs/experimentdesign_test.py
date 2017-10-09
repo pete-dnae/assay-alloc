@@ -11,5 +11,7 @@ class MakeReferenceExperiment:
         exp.dontmix = [['A', 'B'], ['C', 'D']]
 
         exp.targets_present = {'N', 'F'}
+        exp.targets_present = {'F'}
+        exp.targets_present = {'N', 'F', 'P'}
 
         return exp

@@ -1,7 +1,17 @@
-o  Get decent ascii report coming out
+*  Get decent ascii report coming out
     *  Work out how to pretty print a data structure
     *  Design what want to see
-    o  Make it so
+    *  Make it so
+*  Report in order of % pop deployed
+o  Send 3 example files to interested parties
+    o  using capital letters to rep 26 assays
+    o  what they see
+    o  next steps
+        o  output order of % not abs
+        o  make read exp setup from file (cur) coded
+        o  get it to you
+        o  discuss impl / improve
+o  Improve randomness
 o  Get to read from exp design file
 o  Sort deployment
     o  Incl dependency on pyyaml
@@ -52,35 +62,3 @@ Dev Milestones
 - Comments
 - Tests
 - Consider deployment
-
--------------------------------------------------------------------------------
-Report
--------------------------------------------------------------------------------
-- Note: This is machine readable YAML format.
-- Experiment Setup:
-    - Number of chambers: 100
-    - ssay Set Deployed: ABCDEFGHI
-    - Assays per chamber: 4
-    - Dont mix:
-      - DC
-      - NM
-    - Targets present: FI
-
-- Allocation:
-
-    - Chamber map:
-      - 001 ADFH
-      - 002 BNPS
-
-    - Assays Deployed Count:
-      - 17: ABDE
-      - 15: NZPQ
-      - 09: ZPQSTRM
-
-- Calling:
-  - 17 chambers fired
-  - 88 chambers did not fire
-  - In order of prevalance among firing chambers
-    - 17 fires: N
-    -  5 fires: PZH
-}
