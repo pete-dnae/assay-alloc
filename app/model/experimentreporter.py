@@ -89,7 +89,7 @@ class ExperimentReporter:
         for assay in assays_sorted_by_count:
             count = assay_counts[assay]
             line = [assay,
-                    '%%%d of those deployed' % count]
+                    '%d%% of those deployed' % count]
             res.append(line)
         return res
 

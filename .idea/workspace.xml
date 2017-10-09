@@ -12,31 +12,33 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="log.txt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="log.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/docs/log.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="1" lean-forward="false" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+            <state relative-caret-position="102">
+              <caret line="6" column="77" lean-forward="true" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="77" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="experimentdesign_test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/experimentinputs/experimentdesign_test.py">
+      <file leaf-file-name="assay-alloc.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/cmdlineapp/assay-alloc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="24" lean-forward="false" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
-              <folding />
+            <state relative-caret-position="340">
+              <caret line="20" column="0" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="experimentreporter.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="experimentreporter.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/model/experimentreporter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="91" column="52" lean-forward="false" selection-start-line="91" selection-start-column="52" selection-end-line="91" selection-end-column="52" />
+            <state relative-caret-position="570">
+              <caret line="100" column="0" lean-forward="true" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -44,33 +46,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="assayallocator.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/model/assayallocator.py">
+      <file leaf-file-name="experimentfromcmdline.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/cmdlineapp/experimentfromcmdline.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="476">
+              <caret line="36" column="31" lean-forward="true" selection-start-line="36" selection-start-column="31" selection-end-line="36" selection-end-column="31" />
               <folding>
-                <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#0#10#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="allocation.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/model/allocation.py">
+      <file leaf-file-name="experimentdesign_test.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/experimentinputs/experimentdesign_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="17" lean-forward="true" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="allocquery.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/model/allocquery.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="15" column="34" lean-forward="false" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+            <state relative-caret-position="0">
+              <caret line="0" column="9" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -114,14 +106,15 @@
         <option value="$PROJECT_DIR$/app/webapp/__init__.py" />
         <option value="$PROJECT_DIR$/app/uwsgi.ini" />
         <option value="$PROJECT_DIR$/Dockerfile" />
-        <option value="$PROJECT_DIR$/app/cmdlineapp/assay-alloc.py" />
         <option value="$PROJECT_DIR$/app/model/alloc_queries.py" />
         <option value="$PROJECT_DIR$/app/model/allocation.py" />
         <option value="$PROJECT_DIR$/app/model/allocquery.py" />
         <option value="$PROJECT_DIR$/app/model/experimentevaluator.py" />
         <option value="$PROJECT_DIR$/app/experimentinputs/experimentdesign_test.py" />
-        <option value="$PROJECT_DIR$/app/model/experimentreporter.py" />
         <option value="$PROJECT_DIR$/docs/log.txt" />
+        <option value="$PROJECT_DIR$/app/cmdlineapp/assay-alloc.py" />
+        <option value="$PROJECT_DIR$/app/cmdlineapp/experimentfromcmdline.py" />
+        <option value="$PROJECT_DIR$/app/model/experimentreporter.py" />
       </list>
     </option>
   </component>
@@ -252,6 +245,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\docker-share\assay-alloc\app\cmdlineapp" />
       <recent name="C:\docker-share\assay-alloc\app\model" />
     </key>
   </component>
@@ -565,14 +559,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/cmdlineapp/assay-alloc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="10" column="26" lean-forward="false" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/experimentinputs/experimentdesign.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -607,29 +593,49 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/docs/log.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="77" lean-forward="true" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/experimentinputs/experimentdesign_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="24" lean-forward="false" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
+        <state relative-caret-position="0">
+          <caret line="0" column="9" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/cmdlineapp/experimentfromcmdline.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="36" column="31" lean-forward="true" selection-start-line="36" selection-start-column="31" selection-end-line="36" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/cmdlineapp/assay-alloc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="0" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/model/experimentreporter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="91" column="52" lean-forward="false" selection-start-line="91" selection-start-column="52" selection-end-line="91" selection-end-column="52" />
+        <state relative-caret-position="570">
+          <caret line="100" column="0" lean-forward="true" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/docs/log.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="1" lean-forward="false" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
