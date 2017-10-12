@@ -4,65 +4,81 @@
     *  Make it so
 *  Report in order of % pop deployed
 *  Cmd line usage
-o  Quick freeze experiment
-
-
-o  Send 3 example files to interested parties
-    o  using capital letters to rep 26 assays
-    o  what they see
-    o  next steps
-        o  output order of % not abs
-        o  make read exp setup from file (cur) coded
-        o  get it to you
-        o  discuss impl / improve
+*  Quick freeze experiment
+*  Doc freeze deploy
 o  Improve randomness
-o  Get to read from exp design file
+    o  Test new allocation algorithm up to getting stuck point.
+        *  Make an assay class
+        *  Define experiment design in terms of assay objects
+        *  Give experiment design a make reference example method
+        *  Make a pool class
+        *  Code allocator in terms of Pool and Assay
+        *  Test up Assay
+        o  Test up Pool
+        o  Test Allocator so far
+o  Get to read from exp design file or Qt?
 o  Sort deployment
     o  Incl dependency on pyyaml
 o  Write usage intructions
 
+----------------------------------------------------------------------------
+Randomness
+----------------------------------------------------------------------------
+
+Specify assay deployment demands like this:
+
+A   4
+B   3
+C   4
+etc...
+
+We initialise a "pool" to consume during placement like this:
+As the algorithm proceeds, we depete this pool.
+
+{ A1 A2 A3 A4 B1 B2 B3 C1 etc.. }
+
+We are obliged to:
+    o  Deploy not less than these counts.
+    o  Respect no-mix requirements.
+
+We aspire to:
+    o  Deploy exactly these counts.
+    o  Minimise the number of assays in chambers.
+
+def algorithm():
+    initialise_pool()
+    until_get_stuck():
+        assay_types_to_place = assay_types_in_preferential_order()
+        for assay_type in assay_types:
+            assay_to_place = one of this type's replicas from pool() # e.g C3
+            chambers_to_try = rank_chambers_in_preferential_order()
+            chamber_found = False
+            assay_placed =  False
+            for each of these chambers():
+                if this assay is not already present in this chamber AND it is 
+                        allowed with this chambers incumbent assays:
+                    place assay in this chamber
+                    remove this assay replica from pool
+                    assay_placed =  True
+                else
+                    iterate to try this assay in next chamber
+            # If the chambers loop placed an assay, we 
 
 
 
--------------------------------------------------------------------------------
-Kernel Scope
--------------------------------------------------------------------------------
 
-Define experiments as
-    num chambers avail
-    list of assay names
-    how many replicas of each assay wanted
-    list of mutex assay pairs
-
-Define exp simulation as which assay targets present k
-Create and Allocate Assay subsets to chambers in loops until placed
-sufficient.
-
-Create from feed of random alloc sets (seeded).
-Skip any which contravene pair rules.
-
-Create results capability (object)
-    assays in each chamber looku up both ways
-    count of each assay type in firing chambers
-        (should incriminate which assays)
-    summary result = believe these assays present cos of these characteristics
-    vs reference char
+def assay_types_in_preferential_order()
+    # Work out how many of each assay type is present in the pool.
+    # Sort them into preferential order, i.e put the ones we are most in need of
+    # placing at the front of the queue.
+    # Provide this queue.
 
 
--------------------------------------------------------------------------------
-Runtime mo
--------------------------------------------------------------------------------
-run_experiment -f experiment_setup 
-outputs to screen
--------------------------------------------------------------------------------
-Dev Milestones
-- Defn of model and test helper to make fixed one
-- Loop to generate and skip subsets
-- Allocate them to chambers until sufficient
-- Interpreter
-- Create results model
-- Report results to screen
-- Entry point that uses cmd line args to build models from file
-- Comments
-- Tests
-- Consider deployment
+def rank_chambers_in_preferential_order():
+    # Put those with lowest occupancy at the front of the queue, because we
+    # would rather succeed in placing an assay in these than others, because
+    # that will minimise the number of assays in chambers.
+
+
+
+

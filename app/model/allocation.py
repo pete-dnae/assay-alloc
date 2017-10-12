@@ -4,7 +4,7 @@ class Allocation:
 
     def __init__(self, num_chambers):
         self.chamber_to_assays = defaultdict(set)
-        self.assay_to_chambers = defaultdict(set)
+        self.assay_type_to_chambers = defaultdict(set) # 
 
 
     def allocate(self, chamber, assay_mix):

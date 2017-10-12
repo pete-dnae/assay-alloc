@@ -1,42 +1,66 @@
-import random
-
 from model.allocation import Allocation
 
 class AssayAllocator:
 
-    _MAX_ATTEMPTS = 20
+    def __init__(self, experiment_design):
+        self._design = experiment_design
+        self.allocation = Allocation()
+        self.qry = AllocQuery(self.allocation)
 
-    @classmethod
-    def allocate(cls, experiment_design):
-        chamber = 0
-        allocation = Allocation(experiment_design.num_chambers)
-        for i in range(experiment_design.num_chambers):
-            chamber = i + 1
-            assay_mix = cls._make_random_legal_assay_mix(experiment_design)
-            allocation.allocate(chamber, assay_mix)
-
-        return allocation
+    def allocate(self):
+        pool = Pool(experiment_design)
+        self._allocate_from_pool_until_get_stuck(pool)
+        #self._attempt_to_finish_allocation_by_swapping(pool)
+        if pool.is_empty():
+            return self.allocation
+        # Failed to allocate everything.
+        raise RuntimeError(
+                'Allocation failed because these were left over: %s' %
+                ', '.join(pool))
 
 
     #------------------------------------------------------------------------
     # Private below.
     #------------------------------------------------------------------------
 
-    @classmethod
-    def _make_random_legal_assay_mix(cls, experiment_design):
-        # Make random assay mixes until reach one that doesn't contain
-        #  banned assay pairs.
-        for i in range(cls._MAX_ATTEMPTS):
-            mix = random.sample(
-                experiment_design.assays, experiment_design.stack_height)
-            if cls._does_not_contain_illegal_pair(mix, experiment_design):
-                return mix
-        raise RuntimeError(
-            'Too many attempts to find legal assay mix (%d)' % cls._MAX_ATTEMPTS)
+    def _allocate_from_pool_until_get_stuck(self, pool):
+        """
+        Place just the most favourable assay choice from the pool into a chamber,
+        if there is a chamber that will accept it. Then recurse to re-enter 
+        this method without that assay in the pool.
+        """
+        assay = pool.most_favoured_assay()
+        self._allocate_this_assay_if_possible(assay)
+        pool.remove_assay(assay)
+        self._allocate_from_pool_until_get_stuck(self, pool):
 
-    @classmethod
-    def _does_not_contain_illegal_pair(cls, mix, experiment_design):
-        for a,b in experiment_design.dontmix:
-            if ((a in mix) and (b in mix)):
-                return False
-        return True
+
+    def _allocate_this_assay_if_possible(self, assay):
+        """
+        Place the given assay into a chamber - trying all chambers. If one is
+        available that will accept it.
+        """
+        for chamber in self._chambers_in_preference_order():
+            succeeded = self._allocate_here_if_legal(assay, chamber)
+            if succeeded
+                return
+
+
+    def _allocate_here_if_legal(self, assay, chamber):
+        incumbent_types = self.qry.assay_types_present_in(chamber)
+        if assay.type in incumbent_types:
+            return
+        wont_mix = self._design.assay_types_that_wont_mix_with(assay.type)
+        if wont_mix.intersection(incumbent_types):
+            return
+        self.allocation.allocate(assay, chamber)
+
+
+    def _chambers_in_preference_order(self):
+        """
+        Provide a sequence of all chambers, sorted according to how eager we are
+        to put something in them.
+        """
+
+        # We favour chambers with the fewest occupants so far.
+        return self.allocation.chambers_in_order_of_occupant_count()
