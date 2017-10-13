@@ -17,9 +17,10 @@ o  Improve randomness
         *  Make simpler
         *  Ditch bits of pool that no longer needed
         *  Finish test up utils
-        o  Redo tests for Allocation
-        o  Redo tests for AllocationQry
+        *  Redo tests for Allocation
         o  Test up assayallocator thus far
+            o  Allocation constructor should init keys in dicts so clients can
+               navigate all chambers from the get go.
 o  Move experiment inputs into model
 o  Get to read from exp design file or Qt?
 o  Sort deployment

@@ -10,13 +10,62 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="assay-alloc" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="log.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/docs/log.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="9" lean-forward="false" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
+            <state relative-caret-position="357">
+              <caret line="21" column="39" lean-forward="false" selection-start-line="21" selection-start-column="39" selection-end-line="21" selection-end-column="39" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="assayallocator_test.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/model/assayallocator_test.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" column="24" lean-forward="false" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="assayallocator.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/model/assayallocator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" column="20" lean-forward="false" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="20" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pool_test.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/model/pool_test.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="544">
+              <caret line="32" column="43" lean-forward="false" selection-start-line="32" selection-start-column="43" selection-end-line="32" selection-end-column="43" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="allocation.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/model/allocation.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="61" column="30" lean-forward="false" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -25,8 +74,8 @@
       <file leaf-file-name="allocation_test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/model/allocation_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="383">
-              <caret line="67" column="57" lean-forward="false" selection-start-line="67" selection-start-column="57" selection-end-line="67" selection-end-column="57" />
+            <state relative-caret-position="361">
+              <caret line="100" column="0" lean-forward="false" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -34,11 +83,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="allocation.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/model/allocation.py">
+      <file leaf-file-name="pool.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/model/pool.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="349">
-              <caret line="41" column="43" lean-forward="false" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="43" />
+            <state relative-caret-position="408">
+              <caret line="24" column="25" lean-forward="false" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -57,12 +106,12 @@
     <findStrings>
       <find>H</find>
       <find>Hello</find>
-      <find>Hello</find>
       <find>Hello W</find>
       <find>Hello Wo</find>
       <find>Hello Wor</find>
       <find>Hello Worl</find>
       <find>Hello World</find>
+      <find>print</find>
     </findStrings>
     <dirStrings>
       <dir>C:\docker-share\assay-alloc</dir>
@@ -93,12 +142,13 @@
         <option value="$PROJECT_DIR$/app/experimentinputs/experimentdesign_test.py" />
         <option value="$PROJECT_DIR$/app/model/assay.py" />
         <option value="$PROJECT_DIR$/app/model/assay_test.py" />
+        <option value="$PROJECT_DIR$/app/model/assayallocator_test.py" />
         <option value="$PROJECT_DIR$/app/model/pool.py" />
-        <option value="$PROJECT_DIR$/app/model/assayallocator.py" />
         <option value="$PROJECT_DIR$/app/model/pool_test.py" />
         <option value="$PROJECT_DIR$/docs/log.txt" />
-        <option value="$PROJECT_DIR$/app/model/allocation.py" />
         <option value="$PROJECT_DIR$/app/model/allocation_test.py" />
+        <option value="$PROJECT_DIR$/app/model/allocation.py" />
+        <option value="$PROJECT_DIR$/app/model/assayallocator.py" />
       </list>
     </option>
   </component>
@@ -230,7 +280,23 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Nosetests for allocation_test.TestAllocation.test_number_of_this_assay_type_allocated">
+  <component name="RunManager" selected="Python tests.Nosetests for assayallocator_test.TestAssayAllocator.test_doesnt_crash">
+    <configuration default="false" name="Nosetests for assayallocator_test.TestAssayAllocator.test_doesnt_crash" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/model" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="assay-alloc" />
+      <option name="_new_regexPattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;assayallocator_test.TestAssayAllocator.test_doesnt_crash&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method />
+    </configuration>
     <configuration default="false" name="Nosetests in allocation_test.py" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -247,7 +313,7 @@
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method />
     </configuration>
-    <configuration default="false" name="Nosetests for allocation_test.TestAllocation.test_which_chambers_contain_assay_types" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="Nosetests for allocation_test.TestAllocation.test_chambers_in_fewest_occupants_order" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -259,11 +325,11 @@
       <module name="assay-alloc" />
       <option name="_new_regexPattern" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;allocation_test.TestAllocation.test_which_chambers_contain_assay_types&quot;" />
+      <option name="_new_target" value="&quot;allocation_test.TestAllocation.test_chambers_in_fewest_occupants_order&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method />
     </configuration>
-    <configuration default="false" name="Nosetests for allocation_test.TestAllocation.test_can_allocate" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="Nosetests in assayallocator_test.py" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -275,40 +341,26 @@
       <module name="assay-alloc" />
       <option name="_new_regexPattern" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;allocation_test.TestAllocation.test_can_allocate&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/app/model/assayallocator_test.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method />
     </configuration>
-    <configuration default="false" name="Nosetests for allocation_test.TestAllocation.test_number_of_chambers_that_contain_assay_type" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="assayallocator" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/model" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="assay-alloc" />
-      <option name="_new_regexPattern" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;allocation_test.TestAllocation.test_number_of_chambers_that_contain_assay_type&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Nosetests for allocation_test.TestAllocation.test_number_of_this_assay_type_allocated" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/model" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="assay-alloc" />
-      <option name="_new_regexPattern" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;allocation_test.TestAllocation.test_number_of_this_assay_type_allocated&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/model/assayallocator.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -377,19 +429,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python tests.Nosetests in allocation_test.py" />
-      <item index="1" class="java.lang.String" itemvalue="Python tests.Nosetests for allocation_test.TestAllocation.test_which_chambers_contain_assay_types" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.Nosetests for allocation_test.TestAllocation.test_can_allocate" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Nosetests for allocation_test.TestAllocation.test_number_of_chambers_that_contain_assay_type" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.Nosetests for allocation_test.TestAllocation.test_number_of_this_assay_type_allocated" />
+      <item index="0" class="java.lang.String" itemvalue="Python tests.Nosetests for assayallocator_test.TestAssayAllocator.test_doesnt_crash" />
+      <item index="1" class="java.lang.String" itemvalue="Python tests.Nosetests in allocation_test.py" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.Nosetests for allocation_test.TestAllocation.test_chambers_in_fewest_occupants_order" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Nosetests in assayallocator_test.py" />
+      <item index="4" class="java.lang.String" itemvalue="Python.assayallocator" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Nosetests for allocation_test.TestAllocation.test_number_of_this_assay_type_allocated" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.Nosetests in allocation_test.py" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Nosetests for allocation_test.TestAllocation.test_number_of_chambers_that_contain_assay_type" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.Nosetests for allocation_test.TestAllocation.test_can_allocate" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Nosetests for allocation_test.TestAllocation.test_which_chambers_contain_assay_types" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Nosetests for assayallocator_test.TestAssayAllocator.test_doesnt_crash" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Nosetests in assayallocator_test.py" />
+        <item index="2" class="java.lang.String" itemvalue="Python.assayallocator" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Nosetests in allocation_test.py" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Nosetests for allocation_test.TestAllocation.test_chambers_in_fewest_occupants_order" />
       </list>
     </recent_temporary>
   </component>
@@ -410,42 +462,42 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Nosetests_for_allocation_test_TestAllocation_test_can_allocate - 2017.10.13 at 12h 07m 57s.xml">
-      <configuration name="Nosetests for allocation_test.TestAllocation.test_can_allocate" configurationId="tests" />
+    <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator_test_doesnt_crash - 2017.10.13 at 15h 12m 46s.xml">
+      <configuration name="Nosetests for assayallocator_test.TestAssayAllocator.test_doesnt_crash" configurationId="tests" />
     </history-entry>
-    <history-entry file="Nosetests_for_allocation_test_TestAllocation_test_number_of_chambers_that_contain_assay_type - 2017.10.13 at 12h 09m 08s.xml">
-      <configuration name="Nosetests for allocation_test.TestAllocation.test_number_of_chambers_that_contain_assay_type" configurationId="tests" />
+    <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator_test_doesnt_crash - 2017.10.13 at 15h 17m 13s.xml">
+      <configuration name="Nosetests for assayallocator_test.TestAssayAllocator.test_doesnt_crash" configurationId="tests" />
     </history-entry>
-    <history-entry file="Nosetests_for_allocation_test_TestAllocation_test_number_of_chambers_that_contain_assay_type - 2017.10.13 at 12h 09m 53s.xml">
-      <configuration name="Nosetests for allocation_test.TestAllocation.test_number_of_chambers_that_contain_assay_type" configurationId="tests" />
+    <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator_test_doesnt_crash - 2017.10.13 at 15h 18m 29s.xml">
+      <configuration name="Nosetests for assayallocator_test.TestAssayAllocator.test_doesnt_crash" configurationId="tests" />
     </history-entry>
-    <history-entry file="Nosetests_for_allocation_test_TestAllocation_test_number_of_chambers_that_contain_assay_type - 2017.10.13 at 12h 12m 00s.xml">
-      <configuration name="Nosetests for allocation_test.TestAllocation.test_number_of_chambers_that_contain_assay_type" configurationId="tests" />
+    <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator_test_doesnt_crash - 2017.10.13 at 15h 19m 58s.xml">
+      <configuration name="Nosetests for assayallocator_test.TestAssayAllocator.test_doesnt_crash" configurationId="tests" />
     </history-entry>
-    <history-entry file="Nosetests_for_allocation_test_TestAllocation_test_number_of_this_assay_type_allocated - 2017.10.13 at 12h 16m 21s.xml">
-      <configuration name="Nosetests for allocation_test.TestAllocation.test_number_of_this_assay_type_allocated" configurationId="tests" />
+    <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator_test_doesnt_crash - 2017.10.13 at 15h 24m 48s.xml">
+      <configuration name="Nosetests for assayallocator_test.TestAssayAllocator.test_doesnt_crash" configurationId="tests" />
     </history-entry>
-    <history-entry file="Nosetests_for_allocation_test_TestAllocation_test_which_chambers_contain_assay_types - 2017.10.13 at 11h 59m 05s.xml">
-      <configuration name="Nosetests for allocation_test.TestAllocation.test_which_chambers_contain_assay_types" configurationId="tests" />
+    <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator_test_doesnt_crash - 2017.10.13 at 15h 25m 26s.xml">
+      <configuration name="Nosetests for assayallocator_test.TestAssayAllocator.test_doesnt_crash" configurationId="tests" />
     </history-entry>
-    <history-entry file="Nosetests_in_allocation_test_py - 2017.10.13 at 12h 07m 24s.xml">
-      <configuration name="Nosetests in allocation_test.py" configurationId="tests" />
+    <history-entry file="Nosetests_in_assayallocator_test_py - 2017.10.13 at 15h 14m 26s.xml">
+      <configuration name="Nosetests in assayallocator_test.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Nosetests_in_allocation_test_py - 2017.10.13 at 12h 10m 53s.xml">
-      <configuration name="Nosetests in allocation_test.py" configurationId="tests" />
+    <history-entry file="Nosetests_in_assayallocator_test_py - 2017.10.13 at 15h 14m 54s.xml">
+      <configuration name="Nosetests in assayallocator_test.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Nosetests_in_allocation_test_py - 2017.10.13 at 12h 14m 39s.xml">
-      <configuration name="Nosetests in allocation_test.py" configurationId="tests" />
+    <history-entry file="Nosetests_in_assayallocator_test_py - 2017.10.13 at 15h 16m 26s.xml">
+      <configuration name="Nosetests in assayallocator_test.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Nosetests_in_allocation_test_py - 2017.10.13 at 12h 14m 55s.xml">
-      <configuration name="Nosetests in allocation_test.py" configurationId="tests" />
+    <history-entry file="Nosetests_in_assayallocator_test_py - 2017.10.13 at 15h 17m 50s.xml">
+      <configuration name="Nosetests in assayallocator_test.py" configurationId="tests" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.6864407" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -454,7 +506,7 @@
       <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37632135" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.31355932" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39957717" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -472,11 +524,17 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/model/assayallocator.py</url>
-          <option name="timeStamp" value="1" />
+          <url>file://$PROJECT_DIR$/app/model/pool_test.py</url>
+          <line>31</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/model/allocation_test.py</url>
+          <line>98</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="3" />
+      <option name="time" value="7" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -660,26 +718,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/Lib/unittest/case.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="665" column="0" lean-forward="false" selection-start-line="665" selection-start-column="0" selection-end-line="665" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/experimentinputs/experimentdesign.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="21" column="45" lean-forward="true" selection-start-line="21" selection-start-column="45" selection-end-line="21" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/model/pool.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -689,36 +731,8 @@
         <state relative-caret-position="323">
           <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/model/pool_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="53" lean-forward="false" selection-start-line="16" selection-start-column="53" selection-end-line="16" selection-end-column="53" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/model/assayallocator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="63" column="31" lean-forward="false" selection-start-line="63" selection-start-column="8" selection-end-line="63" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/docs/log.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="9" lean-forward="false" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -738,21 +752,75 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/model/allocation_test.py">
+    <entry file="file://$PROJECT_DIR$/app/model/pool.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="383">
-          <caret line="67" column="57" lean-forward="false" selection-start-line="67" selection-start-column="57" selection-end-line="67" selection-end-column="57" />
+        <state relative-caret-position="408">
+          <caret line="24" column="25" lean-forward="false" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/model/pool_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="32" column="43" lean-forward="false" selection-start-line="32" selection-start-column="43" selection-end-line="32" selection-end-column="43" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/docs/log.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="39" lean-forward="false" selection-start-line="21" selection-start-column="39" selection-end-line="21" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/model/allocation_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="100" column="0" lean-forward="false" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda3/Lib/unittest/case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="600" column="0" lean-forward="false" selection-start-line="600" selection-start-column="0" selection-end-line="600" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/model/allocation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="41" column="43" lean-forward="false" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="43" />
+        <state relative-caret-position="323">
+          <caret line="61" column="30" lean-forward="false" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="30" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/model/assayallocator_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="24" lean-forward="false" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/model/assayallocator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="20" lean-forward="false" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

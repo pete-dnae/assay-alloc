@@ -1,43 +1,42 @@
+import copy
+
 from model.allocation import Allocation
-from model.allocquery import AllocQuery
 from model.pool import Pool
 
 class AssayAllocator:
 
     def __init__(self, experiment_design):
         self._design = experiment_design
-        self.allocation = Allocation()
-        self.qry = AllocQuery(self.allocation)
+        self.allocation = Allocation(experiment_design.num_chambers)
 
     def allocate(self):
         """
         Entry point to the allocation algorithm.
         """
         pool = Pool(self._design)
-        # We freeze an optimal sequence in which to try to allocated assays up
-        # front, so that we are free to deplete the pool inside the loop.
-        assay_sequence = self._optimal_sequence_from_pool()
-        self._allocate_from_pool_until_get_stuck(assay_sequence, pool)
+        # We make a copy of the set of assays in the pool to iterate over,
+        # so that we are free to deplete the pool itself inside the loop.
+        assays = pool.assays_present_in_deterministic_order()
+        self._allocate_from_pool_until_get_stuck(assays, pool)
         #self._attempt_to_finish_allocation_by_swapping_assays(pool)
         if len(pool.assays) == 0:
             return self.allocation
         # Failed to allocate everything.
         raise RuntimeError(
-                'Allocation failed because these were left over: %s' %
-                ', '.join(pool))
+                'Allocation failed because these were left over: %s' % str(pool))
 
 
     #------------------------------------------------------------------------
     # Private below.
     #------------------------------------------------------------------------
 
-    def _allocate_from_pool_until_get_stuck(self, assay_sequence, pool):
+    def _allocate_from_pool_until_get_stuck(self, assays, pool):
         """
         Iterates over the assays in the pool in the sequence stipulated
         allocating those that can be allocated, and removing from the pool
         those placed.
         """
-        for assay in assay_sequence:
+        for assay in assays:
             ok = self._allocate_this_assay_if_possible(assay)
             if ok:
                 pool.assays.remove(assay)
@@ -60,13 +59,12 @@ class AssayAllocator:
         return False
 
 
-
     def _can_this_assay_go_here(self, assay, chamber):
         """
         Is the given assay compatible with the given chamber?
         """
         # Not legal if this assay type already present.
-        incumbent_types = self.qry.assay_types_present_in(chamber)
+        incumbent_types = self.allocation.assay_types_present_in(chamber)
         if assay.type in incumbent_types:
             return False
         # Not legal if would create an illegal pairing.

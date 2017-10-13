@@ -8,6 +8,13 @@ class TestAllocation(unittest.TestCase):
     def setUp(self):
         pass
 
+    def test_construction(self):
+        alloc = Allocation(3)
+
+    def all_chambers(self):
+        alloc = Allocation(3)
+        self.assertEqual(alloc.all_chambers(), {1,2,3})
+
 
     def test_can_allocate(self):
         alloc = Allocation(3)
@@ -67,4 +74,30 @@ class TestAllocation(unittest.TestCase):
         alloc.allocate(a2, 5)
         count = alloc.number_of_this_assay_type_allocated('A')
         self.assertEqual(count, 2)
+
+    def test_chambers_in_fewest_occupants_order(self):
+        # Set up an allocation in which
+
+        # Chamber 5 is empty.
+        # Chamber 1 has one occupant.
+        # Chambers 2 and 3 have 2 occupants apiece.
+        # Chamber 4 has 3 occupants
+
+        # The fewest occupants ordered must return this sequence:
+        # (5,6,1,2,3,4)
+
+        alloc = Allocation(6)
+        alloc.allocate(Assay('A', 1), 1)
+        alloc.allocate(Assay('B', 1), 2)
+        alloc.allocate(Assay('C', 1), 2)
+        alloc.allocate(Assay('D', 1), 3)
+        alloc.allocate(Assay('E', 1), 3)
+        alloc.allocate(Assay('F', 1), 4)
+        alloc.allocate(Assay('G', 1), 4)
+        alloc.allocate(Assay('H', 1), 4)
+
+        ordered_chambers = alloc.chambers_in_fewest_occupants_order()
+
+        self.assertEqual(ordered_chambers, (5,6,1,2,3,4))
+
 

@@ -13,5 +13,18 @@ class Pool:
                 replica = i + 1
                 self.assays.add(Assay(assay_type, replica))
 
+    def __str__(self):
+        assay_strings = [str(assay) for assay in self.assays]
+        sorted_assay_strings = sorted(assay_strings)
+        fmt = ', '.join(sorted_assay_strings)
+        return fmt
+
+    def assays_present_in_deterministic_order(self):
+        """
+        Provides a sequence of the Assay(s) present, but in a deterministic order
+        (to aid testing).
+        """
+        return sorted(self.assays, key = lambda a: str(a))
+
 
 
