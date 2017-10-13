@@ -11,10 +11,10 @@ class ExperimentFromCmdLine:
 
         parser.add_argument("--assays", type=int, required=True,
                             help="how many assay types to deploy")
+        parser.add_argument("--replicas", type=int, required=True,
+                            help="how many replicas")
         parser.add_argument("--chambers", type=int, required=True,
                             help="how many chambers")
-        parser.add_argument("--stack", type=int, required=True,
-                            help="how many assay per chamber")
         parser.add_argument("--dontmix", type=int, required=True,
                             help="how many assay pairs don't mix")
         parser.add_argument("--targets", type=int, required=True,
@@ -22,20 +22,26 @@ class ExperimentFromCmdLine:
 
         args = parser.parse_args()
 
+        assays = args.assays
+        chambers = args.chambers
+        replicas = args.replicas
+        dontmix = args.dontmix
+        targets = args.targets
+
         exp = ExperimentDesign()
-        exp.assays = set([chr(ord('A') + i) for i in range(args.assays)])
-        exp.num_chambers = args.chambers
-        exp.stack_height = args.stack
+        exp.assay_types = set([chr(ord('A') + i) for i in range(assays)])
+        for assay_type in exp.assay_types:
+            exp.replicas[assay_type] = replicas
+        exp.num_chambers = chambers
 
-        sorted_assays = sorted(list(exp.assays))
-
-        for i in range(args.targets):
-            exp.targets_present.add(sorted_assays.pop())
+        sorted_assay_types = sorted(list(exp.assay_types))
+        for i in range(targets):
+            exp.targets_present.add(sorted_assay_types.pop())
 
         exp.dontmix = []
-        for i in range(args.dontmix):
-            a = sorted_assays.pop()
-            b = sorted_assays.pop()
+        for i in range(dontmix):
+            a = sorted_assay_types.pop()
+            b = sorted_assay_types.pop()
             exp.dontmix.append([a, b])
 
         return exp

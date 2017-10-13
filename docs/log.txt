@@ -7,24 +7,21 @@
 *  Quick freeze experiment
 *  Doc freeze deploy
 o  Improve randomness
-    o  Test new allocation algorithm up to getting stuck point.
-        *  Make an assay class
-        *  Define experiment design in terms of assay objects
-        *  Give experiment design a make reference example method
-        *  Make a pool class
-        *  Code allocator in terms of Pool and Assay
-        *  Test up Assay
-        *  Make simpler
-        *  Ditch bits of pool that no longer needed
-        *  Finish test up utils
-        *  Redo tests for Allocation
-        o  Test up assayallocator thus far
-            *  Runs to conclusion without crashing
-            *  Move exp design int model first
-            o  Test utils inside allocator
-                *  Move legal here from allocator to exp esign and test
-            o  Test exercise each branch of log
-            o  Get happy with outcome
+    *  Test new allocation algorithm up to getting stuck point.
+    o  Bring back up cmd line routine
+        o  Upgrade cmd line parsing to new requirements
+            *  Design how
+            *     Make it so
+            *  See if can get cmd line app running to completion
+            o  Debug output with reference experiment
+                o  Make report explicit strings not auto dump
+                o  Make reference experiment have similar number of chambers to assays and 3 reps
+                o  Make report be explicit about false and omitted calls
+            o  Revert to cmd line with:
+                o  python assay-alloc.py --assays 15 --replicas 4 --chambers 20 --dontmix 2 --targets 1
+        o  Strip down and make reporting apt
+
+o  Haven't explored limits and swapping
 o  Move experiment inputs into model
 o  Get to read from exp design file or Qt?
 o  Sort deployment
@@ -35,60 +32,18 @@ o  Write usage intructions
 Randomness
 ----------------------------------------------------------------------------
 
-Specify assay deployment demands like this:
+self.assay_types = set() # Of assay names, e.g. 'B'.
+self.replicas = {} # Replica count, keyed on assay type.
+self.num_chambers =  None
+self.dontmix = [] # Of 2-tuples, e.g. ['chalk', 'cheese']
 
-A   4
-B   3
-C   4
-etc...
+# Simulated test to run.
+self.targets_present = set() # Of assay names.
 
-We initialise a "pool" to consume during placement like this:
-As the algorithm proceeds, we depete this pool.
-
-{ A1 A2 A3 A4 B1 B2 B3 C1 etc.. }
-
-We are obliged to:
-    o  Deploy not less than these counts.
-    o  Respect no-mix requirements.
-
-We aspire to:
-    o  Deploy exactly these counts.
-    o  Minimise the number of assays in chambers.
-
-def algorithm():
-    initialise_pool()
-    until_get_stuck():
-        assay_types_to_place = assay_types_in_preferential_order()
-        for assay_type in assay_types:
-            assay_to_place = one of this type's replicas from pool() # e.g C3
-            chambers_to_try = rank_chambers_in_preferential_order()
-            chamber_found = False
-            assay_placed =  False
-            for each of these chambers():
-                if this assay is not already present in this chamber AND it is 
-                        allowed with this chambers incumbent assays:
-                    place assay in this chamber
-                    remove this assay replica from pool
-                    assay_placed =  True
-                else
-                    iterate to try this assay in next chamber
-            # If the chambers loop placed an assay, we 
-
-
-
-
-def assay_types_in_preferential_order()
-    # Work out how many of each assay type is present in the pool.
-    # Sort them into preferential order, i.e put the ones we are most in need of
-    # placing at the front of the queue.
-    # Provide this queue.
-
-
-def rank_chambers_in_preferential_order():
-    # Put those with lowest occupancy at the front of the queue, because we
-    # would rather succeed in placing an assay in these than others, because
-    # that will minimise the number of assays in chambers.
-
+assays 23
+replicas 4
+chambers 30
+dontmix 2
 
 
 

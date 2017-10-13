@@ -35,6 +35,10 @@ class Allocation:
             res = res.union(self.which_chambers_contain_assay_type(assay_type))
         return res
 
+    def number_of_chambers_that_contain_assay_types(self, assay_types):
+        chambers = self.which_chambers_contain_assay_types(assay_types)
+        return len(chambers )
+
 
     def number_of_chambers_that_contain_assay_type(self, assay_type):
         return len(self.which_chambers_contain_assay_type(assay_type))
