@@ -1,10 +1,9 @@
 import unittest
 
-import copy
-
-from model.pool import Pool
 from model.assay import Assay
-from experimentinputs.experimentdesign import ExperimentDesign
+from model.experimentdesign import ExperimentDesign
+from model.pool import Pool
+
 
 class TestPool(unittest.TestCase):
 

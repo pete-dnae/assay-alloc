@@ -1,9 +1,8 @@
 import sys
 
+from cmdlineapp.experimentfromcmdline import ExperimentFromCmdLine
 from model.assayallocator import AssayAllocator
 from model.experimentreporter import ExperimentReporter
-from experimentinputs.experimentdesign_test import MakeReferenceExperiment
-from cmdlineapp.experimentfromcmdline import ExperimentFromCmdLine
 
 if __name__ == '__main__':
 

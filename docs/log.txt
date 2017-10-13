@@ -19,8 +19,12 @@ o  Improve randomness
         *  Finish test up utils
         *  Redo tests for Allocation
         o  Test up assayallocator thus far
-            o  Allocation constructor should init keys in dicts so clients can
-               navigate all chambers from the get go.
+            *  Runs to conclusion without crashing
+            *  Move exp design int model first
+            o  Test utils inside allocator
+                *  Move legal here from allocator to exp esign and test
+            o  Test exercise each branch of log
+            o  Get happy with outcome
 o  Move experiment inputs into model
 o  Get to read from exp design file or Qt?
 o  Sort deployment

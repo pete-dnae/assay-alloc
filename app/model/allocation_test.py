@@ -55,6 +55,17 @@ class TestAllocation(unittest.TestCase):
         count = alloc.number_of_chambers_that_contain_assay_type('A')
         self.assertEqual(count, 2)
 
+    def test_assays_present_in(self):
+        alloc = Allocation(6)
+        # Place two assays of differing types in a single chamber.
+        a1 = Assay('A', 1)
+        b1 = Assay('B', 1)
+        alloc.allocate(a1, 4)
+        alloc.allocate(b1, 4)
+        assays = alloc.assays_present_in(4)
+        self.assertEqual(assays, {Assay('A', 1), Assay('B', 1)})
+
+
     def test_assay_types_present_in(self):
         alloc = Allocation(6)
         # Place two assays of differing types in a single chamber.
@@ -64,6 +75,7 @@ class TestAllocation(unittest.TestCase):
         alloc.allocate(b1, 4)
         assay_types = alloc.assay_types_present_in(4)
         self.assertEqual(assay_types, {'A', 'B'})
+
 
     def test_number_of_this_assay_type_allocated(self):
         alloc = Allocation(6)

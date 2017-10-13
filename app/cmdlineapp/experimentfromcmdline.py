@@ -1,7 +1,6 @@
-import sys
 from argparse import ArgumentParser
 
-from experimentinputs.experimentdesign import ExperimentDesign
+from model.experimentdesign import ExperimentDesign
 
 
 class ExperimentFromCmdLine:

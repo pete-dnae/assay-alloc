@@ -24,6 +24,7 @@ class Pool:
         Provides a sequence of the Assay(s) present, but in a deterministic order
         (to aid testing).
         """
+        # We just use alphabetical order.
         return sorted(self.assays, key = lambda a: str(a))
 
 

@@ -62,8 +62,26 @@ class Allocation:
     def assay_types_present_in(self, chamber):
         return set([assay.type for assay in self._chamber_to_assays[chamber]])
 
+    def assays_present_in(self, chamber):
+        return self._chamber_to_assays[chamber]
+
     def number_of_this_assay_type_allocated(self, assay_type):
         return len(self._assay_type_to_chambers[assay_type])
+
+    # Reports
+
+    def format_chambers(self):
+        lines = []
+        for chamber in self.all_chambers():
+            lines.append(self.format_chamber(chamber))
+        return '\n'.join(lines)
+
+    def format_chamber(self, chamber):
+        assays = self.assays_present_in(chamber)
+        assays = sorted([str(a) for a in assays])
+        assays = ','.join(assays)
+        return '%03d %s' % (chamber, assays)
+
 
 
 
