@@ -13,12 +13,16 @@ o  Improve randomness
             *  Design how
             *     Make it so
             *  See if can get cmd line app running to completion
-            o  Debug output with reference experiment
-                o  Make report explicit strings not auto dump
-                o  Make reference experiment have similar number of chambers to assays and 3 reps
-                o  Make report be explicit about false and omitted calls
+            *  Debug output with reference experiment
+                *  Make report explicit strings not auto dump
+                *  Output from example below looks wrong
+                    *  Aloocation not affected by dont mix
             o  Revert to cmd line with:
-                o  python assay-alloc.py --assays 15 --replicas 4 --chambers 20 --dontmix 2 --targets 1
+                o  python assay-alloc.py --assays 15 --replicas 4 --chambers 20 --dontmix 3 --targets 1
+                o  does it give decent results with more realistic numbers?
+                o  Problem, with this config:
+                    o  python assay-alloc.py --assays 20 --replicas 3 --chambers 30 --dontmix 3 --targets 2
+                    o  The first 3 chambers all contain just a A and K replica - wasted discrim
         o  Strip down and make reporting apt
 
 o  Haven't explored limits and swapping
@@ -32,18 +36,6 @@ o  Write usage intructions
 Randomness
 ----------------------------------------------------------------------------
 
-self.assay_types = set() # Of assay names, e.g. 'B'.
-self.replicas = {} # Replica count, keyed on assay type.
-self.num_chambers =  None
-self.dontmix = [] # Of 2-tuples, e.g. ['chalk', 'cheese']
-
-# Simulated test to run.
-self.targets_present = set() # Of assay names.
-
-assays 23
-replicas 4
-chambers 30
-dontmix 2
 
 
 

@@ -5,7 +5,7 @@ class ExperimentDesign:
         self.assay_types = set() # Of assay names, e.g. 'B'.
         self.replicas = {} # Replica count, keyed on assay type.
         self.num_chambers =  None
-        self.dontmix = [] # Of 2-tuples, e.g. ['chalk', 'cheese']
+        self.dontmix = []  # Of 2-tuples, e.g. ['chalk', 'cheese']
 
         # Simulated test to run.
         self.targets_present = set() # Of assay names.

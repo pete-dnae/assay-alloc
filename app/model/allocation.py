@@ -78,7 +78,7 @@ class Allocation:
         lines = []
         for chamber in self.all_chambers():
             lines.append(self.format_chamber(chamber))
-        return '\n'.join(lines)
+        return (lines)
 
     def format_chamber(self, chamber):
         assays = self.assays_present_in(chamber)

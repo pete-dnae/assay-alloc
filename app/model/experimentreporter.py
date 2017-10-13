@@ -8,68 +8,68 @@ class ExperimentReporter:
         self.design = experiment_design
 
     def report(self):
-        d = [self._mk_header(),
-             self._mk_design(),
-             self._mk_allocation(),
-             self._mk_calling()]
-        return yaml.dump(d)
-
-
-    def _mk_header(self):
-        return {'Note': 'This is machine readable YAML format.'}
-
-    def _mk_design(self):
-        return {'Experiment Setup':[
-            {'Numbers of chambers': self.design.num_chambers},
-            {'Assay types deployed': ''.join(sorted(list(self.design.assay_types)))},
-            {'Do not mix': self.design.dontmix},
-            {'Targets present': ''.join(sorted(list(self.design.targets_present)))},
-            ]
-        }
-
-    def _mk_allocation(self):
-        return {'Allocation':[
-            {'Chamber map': self._mk_chamber_map()},
-            ]
-        }
-
-
-    def _mk_calling(self):
-        did_fire = self.alloc.number_of_chambers_that_contain_assay_types(
+        lines = []
+        lines.append('\n')
+        lines.extend(self._experiment_design())
+        lines.append('\n')
+        lines.append('Allocation...')
+        lines.extend(self.alloc.format_chambers())
+        lines.append('\n')
+        lines.append(self._firing_chambers())
+        lines.append('\n')
+        lines.append('Only the targets: %s should get 100%%' %
                      self.design.targets_present)
-        did_not_fire = self.design.num_chambers - did_fire
-        return {'Calling':[
-            {'Number of chambers that fired':did_fire},
-            {'Number of chambers that did not fire':did_not_fire},
-            {'Assays, in order of prevalence in firing chambers': self._mk_prevalence()},
-            ]
-        }
+        lines.append('\n')
+        lines.extend(self._calling())
+        lines.append('\n')
+        return lines
 
-    def _mk_chamber_map(self):
-        return self.alloc.format_chambers()
+    def _experiment_design(self):
+        lines = []
+        lines.append('Assay types: %s' %
+                     ''.join(sorted(list(self.design.assay_types))))
+        # Although the ExperimentDesign models a replica count for each
+        # assay, we are currently setting them all to be the same.
+        lines.append('Replicas: %d' % self.design.replicas['A'])
+        lines.append('Numer of chambers: %d' % self.design.num_chambers)
+        lines.append('Dont mix: %s' % self.design.dontmix)
+        lines.append('Targets: %s' % self.design.targets_present)
+        return lines
 
-    def _mk_prevalence(self):
-        assay_counts = defaultdict(int)  # keyed on assay
+    def _firing_chambers(self):
+        chambers = self.alloc.which_chambers_contain_assay_types(
+            self.design.targets_present)
+        chambers = ['%03d' % i for i in chambers]
+        chambers = ' '.join(chambers)
+        return('Firing chambers: %s' % chambers)
+
+    def _calling(self):
+        assay_counts = defaultdict(int)  # keyed on assay type
+        assay_percent = defaultdict(int)
         fired = self.alloc.which_chambers_contain_assay_types(
             self.design.targets_present)
         for chamber in fired:
-            assays = self.alloc.assay_types_present_in(chamber)
-            for assay in assays:
-                assay_counts[assay] = assay_counts[assay] + 1
-        # Convert assay counts to percentages of those deployed
-        for assay, count in assay_counts.items():
-            num_allocated = self.alloc.number_of_this_assay_type_allocated(assay)
+            assay_types = self.alloc.assay_types_present_in(chamber)
+            for assay_type in assay_types:
+                assay_counts[assay_type] += 1
+        # Capture assay counts as percentages of those deployed
+        for assay_type, count in assay_counts.items():
+            num_allocated = self.alloc.number_of_this_assay_type_allocated(
+                assay_type)
             percent = 100 * count / num_allocated
-            assay_counts[assay] = percent
-        assays_sorted_by_count = reversed(sorted(
-            assay_counts.keys(), key=lambda assay: assay_counts[assay]))
+            assay_percent[assay_type] = percent
+        assays_sorted_by_percent = reversed(sorted(
+            assay_percent.keys(), key=lambda assay: assay_percent[assay]))
+        # 3 out of 3 chambers that contain A fired (100%)
         res = []
-        for assay in assays_sorted_by_count:
-            count = assay_counts[assay]
-            line = [assay,
-                    '%d%% of those deployed' % count]
-            res.append(line)
+        for assay in assays_sorted_by_percent:
+            res.append('%d out of %d chambers that contain <%s> fired. (%d%%)' %
+                   (assay_counts[assay],
+                    self.alloc.number_of_this_assay_type_allocated(assay),
+                    assay,
+                    assay_percent[assay]))
         return res
+
 
 
 

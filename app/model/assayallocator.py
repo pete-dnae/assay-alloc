@@ -16,8 +16,8 @@ class AssayAllocator:
         pool = Pool(self._design)
         # We make a copy of the set of assays in the pool to iterate over,
         # so that we are free to deplete the pool itself inside the loop.
-        assays = pool.assays_present_in_deterministic_order()
-        self._allocate_from_pool_until_get_stuck(assays, pool)
+        ordered_assays = pool.assays_present_in_deterministic_order()
+        self._allocate_from_pool_until_get_stuck(ordered_assays, pool)
         #self._attempt_to_finish_allocation_by_swapping_assays(pool)
         if len(pool.assays) == 0:
             return self.alloc
@@ -30,13 +30,13 @@ class AssayAllocator:
     # Private below.
     #------------------------------------------------------------------------
 
-    def _allocate_from_pool_until_get_stuck(self, assays, pool):
+    def _allocate_from_pool_until_get_stuck(self, ordered_assays, pool):
         """
         Iterates over the assays in the pool in the sequence stipulated
         allocating those that can be allocated, and removing from the pool
         those placed.
         """
-        for assay in assays:
+        for assay in ordered_assays:
             ok = self._allocate_this_assay_if_possible(assay)
             if ok:
                 pool.assays.remove(assay)
