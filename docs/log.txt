@@ -14,8 +14,13 @@ o  Improve randomness
         *  Make a pool class
         *  Code allocator in terms of Pool and Assay
         *  Test up Assay
-        o  Test up Pool
-        o  Test Allocator so far
+        *  Make simpler
+        *  Ditch bits of pool that no longer needed
+        *  Finish test up utils
+        o  Redo tests for Allocation
+        o  Redo tests for AllocationQry
+        o  Test up assayallocator thus far
+o  Move experiment inputs into model
 o  Get to read from exp design file or Qt?
 o  Sort deployment
     o  Incl dependency on pyyaml
