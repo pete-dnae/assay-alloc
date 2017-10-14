@@ -1,4 +1,5 @@
 from collections import defaultdict
+from itertools import permutations
 
 class Allocation:
     """
@@ -44,22 +45,6 @@ class Allocation:
         return len(self.which_chambers_contain_assay_type(assay_type))
 
 
-    def chambers_in_fewest_occupants_order(self):
-        """
-        Provides a sequence of the chamber numbers with the chambers with
-        fewest occupants coming first. Within sets of chambers having the same
-        occupant count, the chamber are ordered in increasing chamber number.
-        """
-        occupant_count = {}
-        for chamber, assays in  self._chamber_to_assays.items():
-            occupant_count[chamber] = len(assays)
-        all_chambers = self.all_chambers()
-        sorted_chambers = sorted(
-            all_chambers,
-            key = lambda chamber: (occupant_count[chamber], chamber))
-        return tuple(sorted_chambers)
-
-
     # Assay centric queries
 
 
@@ -71,6 +56,35 @@ class Allocation:
 
     def number_of_this_assay_type_allocated(self, assay_type):
         return len(self._assay_type_to_chambers[assay_type])
+
+    def assay_type_pairs_in_chamber(self, chamber):
+        """
+        Provides the set of assay type pairs present in the given chamber.
+        E.g. {{'A', 'B'}, {'B', 'C'},{'A', 'C'}}.
+        This is a set-of-sets.
+        Noting this from python reference:
+        "To represent sets of sets, the inner sets must be frozenset objects"
+        """
+        pairs = set() # of frozenset
+        types = self.assay_types_present_in(chamber)
+        perms = permutations(types, 2)
+        for a,b in perms:
+            pair = frozenset((a,b))
+            pairs.add(pair)
+        return pairs
+
+
+    def unique_assay_type_pairs(self):
+        """
+        Provides the set of assay type pairs present in all chambers.
+        E.g. {{'A', 'B'}, {'B', 'C'},{'A', 'C'}}
+        """
+        res = set()
+        for chamber in self.all_chambers():
+            pairs = self.assay_type_pairs_in_chamber(chamber)
+            for pair in pairs:
+                res.add(pair)
+        return res
 
     # Reports
 

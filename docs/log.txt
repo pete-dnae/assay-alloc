@@ -6,24 +6,25 @@
 *  Cmd line usage
 *  Quick freeze experiment
 *  Doc freeze deploy
-o  Improve randomness
-    *  Test new allocation algorithm up to getting stuck point.
-    o  Bring back up cmd line routine
-        o  Upgrade cmd line parsing to new requirements
-            *  Design how
-            *     Make it so
-            *  See if can get cmd line app running to completion
-            *  Debug output with reference experiment
-                *  Make report explicit strings not auto dump
-                *  Output from example below looks wrong
-                    *  Aloocation not affected by dont mix
-            o  Revert to cmd line with:
-                o  python assay-alloc.py --assays 15 --replicas 4 --chambers 20 --dontmix 3 --targets 1
-                o  does it give decent results with more realistic numbers?
-                o  Problem, with this config:
-                    o  python assay-alloc.py --assays 20 --replicas 3 --chambers 30 --dontmix 3 --targets 2
-                    o  The first 3 chambers all contain just a A and K replica - wasted discrim
-        o  Strip down and make reporting apt
+*  Improve randomness
+o  Problem, with this config:
+    o  python assay-alloc.py --assays 20 --replicas 3 --chambers 30 --dontmix 3 --targets 2
+        o  The first 3 chambers all contain just a A and K replica - wasted discrim
+            *  Replace Assay.chambers_in_fewest_occupants_order() with a heuristic
+               inside the allocator.
+            o  Fix up Assay unit tests if fewest_occupants_order() gone.
+            o  Quick play with cmd line above
+                o  Investigate B1 going to chamber 1 on top of A1 and not
+                   faviouring 4 which would be mt at that time.
+                    *  How debug with these params
+                    *  Break out set size differencing engine
+                    o  do filter pipe but start with makes fewest pair duplicates
+                        o  alloc qry pairs present and test
+                        o  pipeline with 3 bengign filters
+                        o  make fewest pairs created and observe
+                        o  add in occupancy
+                        o  add in chamber number
+            o  How to unit test?
 
 o  Haven't explored limits and swapping
 o  Move experiment inputs into model

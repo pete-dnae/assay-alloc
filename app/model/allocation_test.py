@@ -87,29 +87,37 @@ class TestAllocation(unittest.TestCase):
         count = alloc.number_of_this_assay_type_allocated('A')
         self.assertEqual(count, 2)
 
-    def test_chambers_in_fewest_occupants_order(self):
-        # Set up an allocation in which
-
-        # Chamber 5 is empty.
-        # Chamber 1 has one occupant.
-        # Chambers 2 and 3 have 2 occupants apiece.
-        # Chamber 4 has 3 occupants
-
-        # The fewest occupants ordered must return this sequence:
-        # (5,6,1,2,3,4)
-
+    def test_assay_type_pairs_in_chamber(self):
         alloc = Allocation(6)
         alloc.allocate(Assay('A', 1), 1)
-        alloc.allocate(Assay('B', 1), 2)
-        alloc.allocate(Assay('C', 1), 2)
-        alloc.allocate(Assay('D', 1), 3)
-        alloc.allocate(Assay('E', 1), 3)
-        alloc.allocate(Assay('F', 1), 4)
-        alloc.allocate(Assay('G', 1), 4)
-        alloc.allocate(Assay('H', 1), 4)
+        alloc.allocate(Assay('B', 1), 1)
+        alloc.allocate(Assay('C', 1), 1)
+        pairs = alloc.assay_type_pairs_in_chamber(1)
+        self.assertEqual(
+            pairs,
+            {frozenset({'A', 'B'}), frozenset({'A', 'C'}), frozenset({'B', 'C'})})
 
-        ordered_chambers = alloc.chambers_in_fewest_occupants_order()
+    def test_which_assay_type_pairs_present(self):
+        """
+        Put ABC into chamber 1, and ABD into chamber 2.
+        ensure the query declares the unique pairs present to be:
+        AB, AC, AD, BC, BD.
+        """
+        alloc = Allocation(6)
+        alloc.allocate(Assay('A', 1), 1)
+        alloc.allocate(Assay('B', 1), 1)
+        alloc.allocate(Assay('C', 1), 1)
 
-        self.assertEqual(ordered_chambers, (5,6,1,2,3,4))
+        alloc.allocate(Assay('A', 2), 2)
+        alloc.allocate(Assay('B', 2), 2)
+        alloc.allocate(Assay('D', 1), 2)
+
+        pairs = alloc.unique_assay_type_pairs()
+        self.assertEqual(len(pairs), 5)
+        self.assertTrue(frozenset({'A', 'B'}) in pairs)
+        self.assertTrue(frozenset({'A', 'C'}) in pairs)
+        self.assertTrue(frozenset({'A', 'D'}) in pairs)
+        self.assertTrue(frozenset({'B', 'C'}) in pairs)
+        self.assertTrue(frozenset({'B', 'D'}) in pairs)
 
 

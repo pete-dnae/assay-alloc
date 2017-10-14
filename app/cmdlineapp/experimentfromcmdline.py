@@ -28,6 +28,10 @@ class ExperimentFromCmdLine:
         dontmix = args.dontmix
         targets = args.targets
 
+        return cls.make_from_params(assays, chambers, replicas, dontmix, targets)
+
+    @classmethod
+    def make_from_params(cls, assays, chambers, replicas, dontmix, targets):
         exp = ExperimentDesign()
         exp.assay_types = set([chr(ord('A') + i) for i in range(assays)])
         for assay_type in exp.assay_types:
