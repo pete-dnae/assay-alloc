@@ -8,8 +8,14 @@ class ExperimentFromCmdLine:
     @classmethod
     def make(cls, argv):
         parser = ArgumentParser()
+        parser.usage = \
+            'Please provide command line arguments like this:\n' + \
+            '--assays 20 --replicas 3 ' + \
+            '--chambers 24 --dontmix 3 --targets 2'
 
         parser.add_argument("--assays", type=int, required=True,
+                            default=20,
+                            metavar=20,
                             help="how many assay types to deploy")
         parser.add_argument("--replicas", type=int, required=True,
                             help="how many replicas")

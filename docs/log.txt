@@ -7,7 +7,9 @@
 *  Quick freeze experiment
 *  Doc freeze deploy
 *  Improve randomness
-o  Make sure orig cmd line works
+*  Make sure orig cmd line works
+*  Make it respond to error with example cmd line
+o  pyinstaller work - for single file?
 o  Rebuild and provide to Brad
 o  Simple web form version of what have
     o  What look like
@@ -22,6 +24,6 @@ o  Write usage intructions
 Misc
 ----------------------------------------------------------------------------
 
-
+python assay-alloc.py --assays 20 --replicas 3 --chambers 24 --dontmix 3 --targets 2
 
 
