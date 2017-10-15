@@ -7,11 +7,20 @@ from model.setcomparisons import SetComparisons
 
 class AssayAllocator:
 
+    # These allow unit test clients to dependency-inject, which heuristics
+    # to enable in the allocate() method. Normal clients should use the
+    # default value.
+    H_CHAMBER = '_h_chamber'
+    H_POPULATION_COUNT = '_h_pop_count'
+    H_DUPE_PAIRS = '_h_dupe_pairs'
+
     def __init__(self, experiment_design):
         self._design = experiment_design
         self.alloc = Allocation(experiment_design.num_chambers)
 
-    def allocate(self):
+    def allocate(
+            self,
+            which_heuristics={H_CHAMBER, H_POPULATION_COUNT,H_DUPE_PAIRS}):
         """
         Entry point to the allocation algorithm.
         """
@@ -19,7 +28,8 @@ class AssayAllocator:
         # We make a copy of the set of assays in the pool to iterate over,
         # so that we are free to deplete the pool itself inside the loop.
         ordered_assays = pool.assays_present_in_deterministic_order()
-        self._allocate_from_pool_until_get_stuck(ordered_assays, pool)
+        self._allocate_from_pool_until_get_stuck(
+            ordered_assays, pool, which_heuristics)
         #self._attempt_to_finish_allocation_by_swapping_assays(pool)
         if len(pool.assays) == 0:
             return self.alloc
@@ -32,27 +42,30 @@ class AssayAllocator:
     # Private below.
     #------------------------------------------------------------------------
 
-    def _allocate_from_pool_until_get_stuck(self, ordered_assays, pool):
+    def _allocate_from_pool_until_get_stuck(
+            self, ordered_assays, pool, which_heuristics):
         """
         Iterates over the assays in the pool in the sequence stipulated
         allocating those that can be allocated, and removing from the pool
         those placed.
         """
         for assay in ordered_assays:
-            ok = self._allocate_this_assay_if_possible(assay)
+            ok = self._allocate_this_assay_if_possible(assay, which_heuristics)
             if ok:
                 pool.assays.remove(assay)
 
 
-    def _allocate_this_assay_if_possible(self, assay):
+    def _allocate_this_assay_if_possible(self, assay, which_heuristics):
         """
-        Place the given assay into a chamber - trying all chambers, but
-        using a chamber-desirability heuristic.
+        Place the given assay into a chamber in the context of the current
+        allocation state. Tries all chambers, but uses a chamber-desirability
+        heuristic.
         """
-        print('XXXX allocating: %s' % assay)
         # We re-evaluate the preferential chamber order, for each assay afresh,
         # because it changes after each successful allocation.
-        chamber_seq = self._chambers_in_desirability_order(assay)
+        chamber_seq = self._chambers_in_desirability_order(
+            assay, which_heuristics)
+
         for chamber in chamber_seq:
             legal = self._design.can_this_assay_go_into_this_mixture(
                 assay, self.alloc.assay_types_present_in(chamber))
@@ -62,83 +75,76 @@ class AssayAllocator:
         return False
 
 
-    def _chambers_in_desirability_order(self, assay):
+    def _chambers_in_desirability_order(self, assay, which_heuristics):
         """
         Sort the chambers available into an order that places the most
-        desirable ones for placing the assay first.
+        desirable ones for placing the assay first - taking into account
+        the properties of the current allocation state thus far.
         """
 
-        """
-        Our heuristic is formed by a ranking chambers using two measures,
-        in precedence order.
-        
-        The first is to favour a chamber, that when the assay is added to it
-        creates maximum variation of the mixes present. We measure this with
-        respect to one rival cell using a set-difference, but normalised by
-        dividing by the size of the set produced, so as to avoid favouring the
-        production of large mixtures. Then we aggregate this measure for all the
-        existing mixtures.
-        
-        The second precedence measure is to favour chambers with fewer 
-        existing assays in them.
-        
-        There is a third, but only to make this algorithm deterministic, which
-        is to favour lower numbered chambers.
-        """
-        # Sort according to our comparators, citing the highest precedence
-        # criteria last in the list.
-        chambers = self.alloc.all_chambers()
-        """
-        chambers = sorted(chambers,
-                key = lambda chamber, assay_type=assay.type : (
-                    self._chamber_number_order(chamber),
-                    self._few_incumbents(chamber),
-                    self._max_difference(chamber, assay_type)))
-        """
-        chambers = sorted(chambers,
-                key = lambda chamber, assay_type=assay.type : (
-                    self._max_difference(chamber, assay_type)))
-        return chambers
+        # Our primary criteria is to minimise the creation of duplicated
+        # co-located assay pairs. I.e. if one chamber already contains {A,B}
+        # then it is beneficial to avoid creating another such pair somewhere
+        # else, because this is wasting both calling and discrimination
+        # abilities.
+
+        # The second criteria is to prefer using chambers with fewer existing
+        # occupants - so as to fill the chambers evenly.
+
+        # The third is to prefer lower numbered chambers. This one is included
+        # only to make the algorithm more intuitive, and it makes it
+        # deterministic, which helps with testing.
+
+        # First cut out chambers that already contain the incoming assay type
+        # from the set to order.
+
+        candidate_chambers = \
+            [c for c in self.alloc.all_chambers()
+             if assay.type not in self.alloc.assay_types_present_in(c)]
+
+        # One of the filters needs to know what co-located assay pairs are
+        # already present in the allocation, so we capture that here to avoid
+        # doing it inside the (implied) loop.
+        pairs = self.alloc.unique_assay_type_pairs()
+
+        # Now sort the candidate chambers into desirability order.
+
+        # We use the lowest precedence heuristics first.
+
+        if self.H_CHAMBER in which_heuristics:
+            candidate_chambers.sort() # Default key is chamber number itself.
+
+        if self.H_POPULATION_COUNT in which_heuristics:
+            candidate_chambers.sort(
+                key=lambda chamber: self._existing_occupant_count(chamber))
+
+        if self.H_DUPE_PAIRS in which_heuristics:
+            candidate_chambers.sort(
+                key=lambda chamber, assay_type=assay.type, existing_pairs=pairs:
+                self._duplicate_pairs_made(chamber, assay_type, pairs))
+
+        return candidate_chambers
 
 
-    def _max_difference(self, chamber, assay_type):
+    def _duplicate_pairs_made(self, chamber, assay_type, existing_pairs):
         """
-        Score the given chamber, by measuring how different the mixture created
-        by adding the given assay type to this chamber would be, to all the
-        mixes that are already present. Give lower scores to the highest
-        differences.
-        """
-        if (assay_type == 'I'):
-            foo = 42
-        if (chamber == 25):
-            foo = 42
-        mix_created_here = self.alloc.assay_types_present_in(
-            chamber).union(assay_type)
-        other_chambers = self.alloc.all_chambers() - {chamber}
-        other_mixes = []
-        for other_chamber in other_chambers:
-            other_mixes.append(self.alloc.assay_types_present_in(other_chamber))
-        diff = SetComparisons.how_disimilar_from_most_similar_of_these(
-            mix_created_here, other_mixes)
-        if (assay_type == 'I'):
-            print('XXXX  diff of for chamber %d is: %f' % (chamber, diff))
-        return diff
+        Preamble: The addition of the given assay type to the given chamber,
+        will create new co-located assay pairs in the chamber, made up from
+        each of the incumbents, paired with the incomer.
 
-
-    def _few_incumbents(self, chamber):
-        """
-        Score the given chamber, such that a chamber with fewer existing assay
-        types in it gets a lower score.
+        This function returns a count of how many of these would be duplicates
+        of co-located assay pairs that already exist in other chambers.
         """
         return 1
-        return self.alloc.assay_types_present_in(chamber)
+        count = 0
+        for incumbent_type in self.alloc.assay_types_present_in(chamber):
+            pair_made = {assay_type, incumbent_type}
+            if pair_made in existing_pairs:
+                count += 1
+        return count
 
 
-    def _chamber_number_order(self, chamber):
-        """
-        Score the given chamber according to the chamber number, giving
-        lower chamber numbers a lower score.
-        """
+    def _existing_occupant_count(self, chamber):
         return 1
-        return chamber
+        # return self.alloc.assay_types_present_in(chamber)
 

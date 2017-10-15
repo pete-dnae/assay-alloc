@@ -1,5 +1,5 @@
 from collections import defaultdict
-from itertools import permutations
+from itertools import combinations
 
 class Allocation:
     """
@@ -20,8 +20,9 @@ class Allocation:
         self._chamber_to_assays[chamber].add(assay)
         self._assay_type_to_chambers[assay.type].add(chamber)
 
-
+    # ------------------------------------------------------------------------
     # Chamber-centric queries
+    # ------------------------------------------------------------------------
 
     def all_chambers(self):
         return set(self._chamber_to_assays.keys())
@@ -45,8 +46,9 @@ class Allocation:
         return len(self.which_chambers_contain_assay_type(assay_type))
 
 
-    # Assay centric queries
-
+    # ------------------------------------------------------------------------
+    # Assay-centric queries
+    # ------------------------------------------------------------------------
 
     def assay_types_present_in(self, chamber):
         return set([assay.type for assay in self._chamber_to_assays[chamber]])
@@ -67,8 +69,8 @@ class Allocation:
         """
         pairs = set() # of frozenset
         types = self.assay_types_present_in(chamber)
-        perms = permutations(types, 2)
-        for a,b in perms:
+        combis = combinations(types, 2)
+        for a,b in combis:
             pair = frozenset((a,b))
             pairs.add(pair)
         return pairs
@@ -77,7 +79,7 @@ class Allocation:
     def unique_assay_type_pairs(self):
         """
         Provides the set of assay type pairs present in all chambers.
-        E.g. {{'A', 'B'}, {'B', 'C'},{'A', 'C'}}
+        E.g. {frozenset{'A', 'B'}, frozenset{'B', 'C'}, frozenset{'A', 'C'}}
         """
         res = set()
         for chamber in self.all_chambers():
@@ -86,7 +88,9 @@ class Allocation:
                 res.add(pair)
         return res
 
+    # ------------------------------------------------------------------------
     # Reports
+    # ------------------------------------------------------------------------
 
     def format_chambers(self):
         lines = []

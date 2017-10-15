@@ -13,6 +13,10 @@ class ExperimentDesign:
 
     @classmethod
     def make_reference_example(cls):
+        """
+        This makes the canonical variant of an ExperimentDesign object for
+        unit tests.
+        """
         design = ExperimentDesign()
         LETTERS = 'ABCDEFGHIJKLMN'
         design.assay_types = set(LETTERS)
@@ -24,6 +28,18 @@ class ExperimentDesign:
         design.dontmix = [['A', 'B'], ['C', 'D']]
         design.targets_present = ['G', 'H']
         return design
+
+
+    @classmethod
+    def make_reference_example_without_dontmix(cls):
+        """
+        This makes the canonical variant of an ExperimentDesign object for
+        unit tests, but not specifying any don't mix pairs.
+        """
+        design = cls.make_reference_example()
+        design.dontmix = []
+        return design
+
 
     def can_this_assay_go_into_this_mixture(self, assay, mixture):
         """

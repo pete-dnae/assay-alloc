@@ -19,12 +19,19 @@ o  Problem, with this config:
                     *  How debug with these params
                     *  Break out set size differencing engine
                     o  do filter pipe but start with makes fewest pair duplicates
-                        o  alloc qry pairs present and test
-                        o  pipeline with 3 bengign filters
-                        o  make fewest pairs created and observe
-                        o  add in occupancy
-                        o  add in chamber number
+                        *  alloc qry pairs present and test
+                        *  use iter tools where needed
+                        *  pipeline with 3 bengign filters (positive)
+                        o  make sure chamber number alone works
+                            o  create ref experiment with no dontmix
+                            o  make way to inject filters from test
+                            o  use filter to invoke only chamber number
+                            o  why doesnt C1 go into 5
+                        o  make sure existing count alone works
+                        o  make sure chamber number with existing count combined works
+                        o  mix in dupe pairs
             o  How to unit test?
+            o  Are setcomparisons redundant
 
 o  Haven't explored limits and swapping
 o  Move experiment inputs into model
