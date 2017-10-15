@@ -7,32 +7,14 @@
 *  Quick freeze experiment
 *  Doc freeze deploy
 *  Improve randomness
-o  Problem, with this config:
-    o  python assay-alloc.py --assays 20 --replicas 3 --chambers 30 --dontmix 3 --targets 2
-        o  The first 3 chambers all contain just a A and K replica - wasted discrim
-            *  Replace Assay.chambers_in_fewest_occupants_order() with a heuristic
-               inside the allocator.
-            o  Fix up Assay unit tests if fewest_occupants_order() gone.
-            o  Quick play with cmd line above
-                o  Investigate B1 going to chamber 1 on top of A1 and not
-                   faviouring 4 which would be mt at that time.
-                    *  How debug with these params
-                    *  Break out set size differencing engine
-                    o  do filter pipe but start with makes fewest pair duplicates
-                        *  alloc qry pairs present and test
-                        *  use iter tools where needed
-                        *  pipeline with 3 bengign filters (positive)
-                        o  make sure chamber number alone works
-                            o  create ref experiment with no dontmix
-                            o  make way to inject filters from test
-                            o  use filter to invoke only chamber number
-                            o  why doesnt C1 go into 5
-                        o  make sure existing count alone works
-                        o  make sure chamber number with existing count combined works
-                        o  mix in dupe pairs
-            o  How to unit test?
-            o  Are setcomparisons redundant
+    o  Better alg
+        *  Basics + tests
+        o  Test incl dontmix
+    o  Play with command line
+    o  Are setcomparisons redundant
 
+o  Cmd line api to trace
+o  Report on resultant dupe pairs
 o  Haven't explored limits and swapping
 o  Move experiment inputs into model
 o  Get to read from exp design file or Qt?

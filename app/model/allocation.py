@@ -53,6 +53,9 @@ class Allocation:
     def assay_types_present_in(self, chamber):
         return set([assay.type for assay in self._chamber_to_assays[chamber]])
 
+    def how_many_assay_types_present_in(self, chamber):
+        return len(self.assay_types_present_in(chamber))
+
     def assays_present_in(self, chamber):
         return self._chamber_to_assays[chamber]
 
@@ -103,6 +106,8 @@ class Allocation:
         assays = sorted([str(a) for a in assays])
         assays = ','.join(assays)
         return '%03d %s' % (chamber, assays)
+
+
 
 
 

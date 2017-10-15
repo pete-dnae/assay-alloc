@@ -7,20 +7,25 @@ from model.setcomparisons import SetComparisons
 
 class AssayAllocator:
 
-    # These allow unit test clients to dependency-inject, which heuristics
-    # to enable in the allocate() method. Normal clients should use the
-    # default value.
-    H_CHAMBER = '_h_chamber'
-    H_POPULATION_COUNT = '_h_pop_count'
-    H_DUPE_PAIRS = '_h_dupe_pairs'
 
     def __init__(self, experiment_design):
         self._design = experiment_design
         self.alloc = Allocation(experiment_design.num_chambers)
 
-    def allocate(
-            self,
-            which_heuristics={H_CHAMBER, H_POPULATION_COUNT,H_DUPE_PAIRS}):
+        # These are for unit tests only - so that the affect of individual
+        # parts of the combined heuristics can be isolated and tested more
+        # easily.
+        self._defeat_chamber_number_hueristic = False
+        self._defeat_existing_occupant_count_heuristic = False
+        self._defeat_duplicate_pairs_heuristic = False
+
+        # Clients can set self._assay_to_trace to a particular Assay, e.g.
+        # Assay('B', 3), in order to stimulate trace / diagnostic output while
+        # that assay is being placed.
+        self._assay_to_trace = None # E.g. Assay('B', 3)
+        self._tracing = False
+
+    def allocate(self):
         """
         Entry point to the allocation algorithm.
         """
@@ -29,8 +34,7 @@ class AssayAllocator:
         # so that we are free to deplete the pool itself inside the loop.
         ordered_assays = pool.assays_present_in_deterministic_order()
         self._allocate_from_pool_until_get_stuck(
-            ordered_assays, pool, which_heuristics)
-        #self._attempt_to_finish_allocation_by_swapping_assays(pool)
+            ordered_assays, pool)
         if len(pool.assays) == 0:
             return self.alloc
         # Failed to allocate everything.
@@ -42,40 +46,45 @@ class AssayAllocator:
     # Private below.
     #------------------------------------------------------------------------
 
-    def _allocate_from_pool_until_get_stuck(
-            self, ordered_assays, pool, which_heuristics):
+    def _allocate_from_pool_until_get_stuck(self, ordered_assays, pool):
         """
         Iterates over the assays in the pool in the sequence stipulated
         allocating those that can be allocated, and removing from the pool
         those placed.
         """
         for assay in ordered_assays:
-            ok = self._allocate_this_assay_if_possible(assay, which_heuristics)
+            ok = self._allocate_this_assay_if_possible(assay)
             if ok:
                 pool.assays.remove(assay)
 
 
-    def _allocate_this_assay_if_possible(self, assay, which_heuristics):
+    def _allocate_this_assay_if_possible(self, assay):
         """
         Place the given assay into a chamber in the context of the current
         allocation state. Tries all chambers, but uses a chamber-desirability
         heuristic.
         """
+        self._tracing = (assay == self._assay_to_trace)
+
         # We re-evaluate the preferential chamber order, for each assay afresh,
         # because it changes after each successful allocation.
-        chamber_seq = self._chambers_in_desirability_order(
-            assay, which_heuristics)
+        self._t('Tracing: %s' % assay)
+        chamber_seq = self._chambers_in_desirability_order(assay)
 
         for chamber in chamber_seq:
+            self._t('Trying chamber: %d' % chamber)
             legal = self._design.can_this_assay_go_into_this_mixture(
                 assay, self.alloc.assay_types_present_in(chamber))
             if legal:
                 self.alloc.allocate(assay, chamber)
+                self._t('Finished (success) Tracing: %s' % assay)
                 return True
+        self._t('Finished (failure) Tracing: %s' % assay)
+        self._tracing = False
         return False
 
 
-    def _chambers_in_desirability_order(self, assay, which_heuristics):
+    def _chambers_in_desirability_order(self, assay):
         """
         Sort the chambers available into an order that places the most
         desirable ones for placing the assay first - taking into account
@@ -102,6 +111,8 @@ class AssayAllocator:
             [c for c in self.alloc.all_chambers()
              if assay.type not in self.alloc.assay_types_present_in(c)]
 
+        self._t('Default chamber preference order: %s' % candidate_chambers)
+
         # One of the filters needs to know what co-located assay pairs are
         # already present in the allocation, so we capture that here to avoid
         # doing it inside the (implied) loop.
@@ -109,19 +120,24 @@ class AssayAllocator:
 
         # Now sort the candidate chambers into desirability order.
 
-        # We use the lowest precedence heuristics first.
+        # We sort repeatedly, using the heuristics in lowest to highest
+        # precedence order.
 
-        if self.H_CHAMBER in which_heuristics:
+        if not self._defeat_chamber_number_hueristic:
             candidate_chambers.sort() # Default key is chamber number itself.
+        self._t('Chamber preference order using lowest chamber number: %s' % candidate_chambers)
 
-        if self.H_POPULATION_COUNT in which_heuristics:
+        if not self._defeat_existing_occupant_count_heuristic:
             candidate_chambers.sort(
                 key=lambda chamber: self._existing_occupant_count(chamber))
+        self._t('Chamber preference order using, also, fewer occupants: %s' %
+                candidate_chambers)
 
-        if self.H_DUPE_PAIRS in which_heuristics:
+        if not self._defeat_duplicate_pairs_heuristic:
             candidate_chambers.sort(
                 key=lambda chamber, assay_type=assay.type, existing_pairs=pairs:
                 self._duplicate_pairs_made(chamber, assay_type, pairs))
+        self._t('Chamber preference using, also, duplicate pair generation: %s' % candidate_chambers)
 
         return candidate_chambers
 
@@ -135,16 +151,32 @@ class AssayAllocator:
         This function returns a count of how many of these would be duplicates
         of co-located assay pairs that already exist in other chambers.
         """
-        return 1
         count = 0
+        pairs = []
         for incumbent_type in self.alloc.assay_types_present_in(chamber):
             pair_made = {assay_type, incumbent_type}
             if pair_made in existing_pairs:
                 count += 1
+                pairs.append(pair_made)
+        self._t('Using chamber: %d, would create %d new, duplicate pairs: %s' %
+                (chamber, count, pairs))
         return count
 
 
     def _existing_occupant_count(self, chamber):
-        return 1
-        # return self.alloc.assay_types_present_in(chamber)
+        count = self.alloc.how_many_assay_types_present_in(chamber)
+        return count
+
+
+    # ------------------------------------------------------------------------
+    # Diagnostics Support
+    # ------------------------------------------------------------------------
+
+    def _t(self, msg):
+        """
+        Trace
+        """
+        if self._tracing == False:
+            return
+        print('XXX TRACE %s' % msg)
 

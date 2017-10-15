@@ -51,31 +51,103 @@ class TestAssayAllocator(unittest.TestCase):
         self.assertEqual(count, 1)
 
 
-
     def test_without_dontmix_clamping_heuristics_to_chamber_only(self):
         """
         Test the results of the allocation, starting from the reference
         experiment design, with the dontmix turned off, and clamping down
         the chamber preference heuristics, to use only the chamber number
         criteria.
+
+        Expect to see the assays crammed into the low numbered chambers.
         """
         design = ExperimentDesign.make_reference_example_without_dontmix()
         allocator = AssayAllocator(design)
-        allocation = allocator.allocate(
-            which_heuristics={AssayAllocator.H_CHAMBER})
 
-        for row in allocation.format_chambers():
-            print('XXXX %s' % row)
+        # Turn off all but the chamber number heuristic.
+        allocator._defeat_existing_occupant_count_heuristic = True
+        allocator._defeat_duplicate_pairs_heuristic = True
+        allocation = allocator.allocate()
 
+        # Because the only measure of chamber desirability in this experiment,
+        # We should expect chambers 1 and 2 to be the same, containing the
+        # first and second copy of all our assay types. E.g. A1, B1, C1, ... N1
+        # respectively.
+        # Then chamber 3, will the third replica of all assay types for which
+        # the reference experiment design calls for 3 or more replicas.
+        # Then chamber 4, will the fourth replica of all assay types for which
+        # the reference experiment design calls for 4 or more replicas.
+
+        self.assertEqual(allocation.format_chamber(1),
+                         '001 A1,B1,C1,D1,E1,F1,G1,H1,I1,J1,K1,L1,M1,N1')
+        self.assertEqual(allocation.format_chamber(2),
+                         '002 A2,B2,C2,D2,E2,F2,G2,H2,I2,J2,K2,L2,M2,N2')
+        self.assertEqual(allocation.format_chamber(3),
+                         '003 B3,C3,E3,F3,H3,I3,K3,L3,N3')
+        self.assertEqual(allocation.format_chamber(4),
+                         '004 C4,F4,I4,L4')
+
+
+    def test_without_dontmix_clamping_heuristics_to_chamber_and_occupant_count_only(self):
         """
-        self.assertEqual(allocation.format_chamber(1), '001 A1,C4,F3,I2,L1,N3')
-        self.assertEqual(allocation.format_chamber(2), '002 A2,D1,F4,I3,L2')
-        self.assertEqual(allocation.format_chamber(3), '003 B1,D2,G1,I4,L3')
-        self.assertEqual(allocation.format_chamber(4), '004 B2,E1,G2,J1,L4')
-        self.assertEqual(allocation.format_chamber(5), '005 B3,E2,H1,J2,M1')
-        self.assertEqual(allocation.format_chamber(6), '006 C1,E3,H2,K1,M2')
-        self.assertEqual(allocation.format_chamber(7), '007 C2,F1,H3,K2,N1')
-        self.assertEqual(allocation.format_chamber(8), '008 C3,F2,I1,K3,N2')
+        Test the results of the allocation, starting from the reference
+        experiment design, with the dontmix turned off, and clamping down
+        the chamber preference heuristics, to use only the chamber number
+        and the chamber occupant count criteria.
+
+        Should see chambers filled to level up occupancy, despite creating
+        undesirably repeated pairs.
         """
+        design = ExperimentDesign.make_reference_example_without_dontmix()
+        allocator = AssayAllocator(design)
+        allocator._defeat_duplicate_pairs_heuristic = True
+        allocation = allocator.allocate()
+
+        self.assertEqual(allocation.format_chamber(1),
+                         '001 A1,C4,F3,I2,L1,N3')
+        self.assertEqual(allocation.format_chamber(2),
+                         '002 A2,D1,F4,I3,L2')
+        self.assertEqual(allocation.format_chamber(3),
+                         '003 B1,D2,G1,I4,L3')
+        self.assertEqual(allocation.format_chamber(4),
+                         '004 B2,E1,G2,J1,L4')
+        self.assertEqual(allocation.format_chamber(5),
+                         '005 B3,E2,H1,J2,M1')
+        self.assertEqual(allocation.format_chamber(6),
+                         '006 C1,E3,H2,K1,M2')
+        self.assertEqual(allocation.format_chamber(7),
+                         '007 C2,F1,H3,K2,N1')
+        self.assertEqual(allocation.format_chamber(8),
+                         '008 C3,F2,I1,K3,N2')
+
+
+    def test_all_heuristics_without_dontmix_(self):
+        """
+        Test the results of the allocation, starting from the reference
+        experiment design, with the full set of heuristics.
+
+        Should see what?
+        """
+        design = ExperimentDesign.make_reference_example_without_dontmix()
+        allocator = AssayAllocator(design)
+        #allocator._assay_to_trace = Assay('F', 3)
+        allocation = allocator.allocate()
+
+        self.assertEqual(allocation.format_chamber(1),
+                         '001 A1,C4,G1,H3,K2')
+        self.assertEqual(allocation.format_chamber(2),
+                         '002 A2,D1,E3,F3,L3,N2')
+        self.assertEqual(allocation.format_chamber(3),
+                         '003 B1,D2,G2,I3,L2')
+        self.assertEqual(allocation.format_chamber(4),
+                         '004 B2,E1,H1,J1,L4,N3')
+        self.assertEqual(allocation.format_chamber(5),
+                         '005 B3,F1,I1,K1,M1')
+        self.assertEqual(allocation.format_chamber(6),
+                         '006 C1,E2,I2,K3,N1')
+        self.assertEqual(allocation.format_chamber(7),
+                         '007 C2,F2,H2,L1,M2')
+        self.assertEqual(allocation.format_chamber(8),
+                         '008 C3,F4,I4,J2')
+
 
 
