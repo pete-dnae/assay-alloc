@@ -25,7 +25,7 @@ class ExperimentDesign:
             how_many = 2 + (i % 3)
             design.replicas[_type] = how_many
         design.num_chambers = 8
-        design.dontmix = [['A', 'B'], ['C', 'D']]
+        design.dontmix = [['A', 'H'], ['C', 'L']]
         design.targets_present = ['G', 'H']
         return design
 

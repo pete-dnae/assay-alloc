@@ -25,7 +25,7 @@ class TestPool(unittest.TestCase):
         """
         design = ExperimentDesign.make_reference_example()
         pool = Pool(design)
-        assays = pool.assays_present_in_deterministic_order()
+        assays = pool.assays_present_in_alphabetic_order()
         first = assays[0]
         last = assays.pop()
         self.assertEqual(first, Assay('A', 1))

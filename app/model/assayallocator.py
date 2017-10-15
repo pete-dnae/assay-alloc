@@ -32,7 +32,9 @@ class AssayAllocator:
         pool = Pool(self._design)
         # We make a copy of the set of assays in the pool to iterate over,
         # so that we are free to deplete the pool itself inside the loop.
-        ordered_assays = pool.assays_present_in_deterministic_order()
+        # We choose alphabetic order to make the order deterministic and also
+        # because it's easier to follow when debugging.
+        ordered_assays = pool.assays_present_in_alphabetic_order()
         self._allocate_from_pool_until_get_stuck(
             ordered_assays, pool)
         if len(pool.assays) == 0:
@@ -64,24 +66,25 @@ class AssayAllocator:
         allocation state. Tries all chambers, but uses a chamber-desirability
         heuristic.
         """
-        self._tracing = (assay == self._assay_to_trace)
 
         # We re-evaluate the preferential chamber order, for each assay afresh,
         # because it changes after each successful allocation.
+        self._tracing = (assay == self._assay_to_trace)
         self._t('Tracing: %s' % assay)
         chamber_seq = self._chambers_in_desirability_order(assay)
 
-        for chamber in chamber_seq:
-            self._t('Trying chamber: %d' % chamber)
-            legal = self._design.can_this_assay_go_into_this_mixture(
-                assay, self.alloc.assay_types_present_in(chamber))
-            if legal:
-                self.alloc.allocate(assay, chamber)
-                self._t('Finished (success) Tracing: %s' % assay)
-                return True
-        self._t('Finished (failure) Tracing: %s' % assay)
+        # No legal candidates?
+        if len(chamber_seq) == 0:
+            self._t('Finished (failure) Tracing: %s' % assay)
+            self._tracing = False
+            return False
+
+        # Allocation is possible. Use the first (most preferential) chamber.
+        chamber = chamber_seq[0]
+        self.alloc.allocate(assay, chamber)
+        self._t('Finished (success) Tracing: %s' % assay)
         self._tracing = False
-        return False
+        return True
 
 
     def _chambers_in_desirability_order(self, assay):
@@ -107,9 +110,12 @@ class AssayAllocator:
         # First cut out chambers that already contain the incoming assay type
         # from the set to order.
 
-        candidate_chambers = \
-            [c for c in self.alloc.all_chambers()
-             if assay.type not in self.alloc.assay_types_present_in(c)]
+        candidate_chambers = []
+        for chamber in self.alloc.all_chambers():
+            incumbent_mix = self.alloc.assay_types_present_in(chamber)
+            if self._design.can_this_assay_go_into_this_mixture(
+                    assay, incumbent_mix):
+                candidate_chambers.append(chamber)
 
         self._t('Default chamber preference order: %s' % candidate_chambers)
 
@@ -125,7 +131,8 @@ class AssayAllocator:
 
         if not self._defeat_chamber_number_hueristic:
             candidate_chambers.sort() # Default key is chamber number itself.
-        self._t('Chamber preference order using lowest chamber number: %s' % candidate_chambers)
+        self._t('Chamber preference order using lowest chamber number: %s' %
+                candidate_chambers)
 
         if not self._defeat_existing_occupant_count_heuristic:
             candidate_chambers.sort(

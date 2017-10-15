@@ -12,12 +12,6 @@ class TestAssayAllocator(unittest.TestCase):
     def setUp(self):
         pass
 
-
-    def test_full_allocate_run_doesnt_crash(self):
-        design = ExperimentDesign.make_reference_example()
-        allocator = AssayAllocator(design)
-        allocator.allocate()
-
     # ------------------------------------------------------------------------
     # Test utility methods - despite them being private.
     # ------------------------------------------------------------------------
@@ -50,6 +44,12 @@ class TestAssayAllocator(unittest.TestCase):
         count = allocator._duplicate_pairs_made(3, 'B', pairs)
         self.assertEqual(count, 1)
 
+    # The following tests do a full allocation, but starting off by
+    # not having any dontmix pairs specified and also by
+    # artificially reducing the heuristic factors in play, so that their
+    # individual impact can be seen.
+
+    # Later tests gradually mix back in all the features.
 
     def test_without_dontmix_clamping_heuristics_to_chamber_only(self):
         """
@@ -123,9 +123,12 @@ class TestAssayAllocator(unittest.TestCase):
     def test_all_heuristics_without_dontmix_(self):
         """
         Test the results of the allocation, starting from the reference
-        experiment design, with the full set of heuristics.
+        experiment design (excluding dontmix), with the full set of heuristics.
 
-        Should see what?
+        Should see similar results to
+        test_without_dontmix_clamping_heuristics_to_chamber_and_occupant_count_only,
+        but with changes creeping in to avoid making more duplicate pairs
+        than is necessary.
         """
         design = ExperimentDesign.make_reference_example_without_dontmix()
         allocator = AssayAllocator(design)
@@ -148,6 +151,39 @@ class TestAssayAllocator(unittest.TestCase):
                          '007 C2,F2,H2,L1,M2')
         self.assertEqual(allocation.format_chamber(8),
                          '008 C3,F4,I4,J2')
+
+
+    def test_fully_features(self):
+        """
+        Test the results of the allocation, starting from the reference
+        experiment design (including dontmix), with the full set of heuristics.
+
+        Should see variations from
+        test_all_heuristics_without_dontmix
+        because of the dontmix rules kicking in.
+        """
+        design = ExperimentDesign.make_reference_example()
+        allocator = AssayAllocator(design)
+        #allocator._assay_to_trace = Assay('F', 3)
+        allocation = allocator.allocate()
+
+        self.assertEqual(allocation.format_chamber(1),
+                         '001 A1,C4,G1,I3,M2')
+        self.assertEqual(allocation.format_chamber(2),
+                         '002 A2,D1,E3,F3,L1,N3')
+        self.assertEqual(allocation.format_chamber(3),
+                         '003 B1,D2,G2,H3,K3,L4')
+        self.assertEqual(allocation.format_chamber(4),
+                         '004 B2,E1,H1,J1,L2')
+        self.assertEqual(allocation.format_chamber(5),
+                         '005 B3,F1,I1,K1,L3')
+        self.assertEqual(allocation.format_chamber(6),
+                         '006 C1,E2,I2,K2,N1')
+        self.assertEqual(allocation.format_chamber(7),
+                         '007 C2,F2,H2,M1,N2')
+        self.assertEqual(allocation.format_chamber(8),
+                         '008 C3,F4,I4,J2')
+
 
 
 

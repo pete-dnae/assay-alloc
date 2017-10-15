@@ -19,7 +19,7 @@ class Pool:
         fmt = ', '.join(sorted_assay_strings)
         return fmt
 
-    def assays_present_in_deterministic_order(self):
+    def assays_present_in_alphabetic_order(self):
         """
         Provides a sequence of the Assay(s) present, but in a deterministic order
         (to aid testing).

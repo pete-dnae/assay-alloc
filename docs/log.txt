@@ -8,9 +8,9 @@
 *  Doc freeze deploy
 *  Improve randomness
     o  Better alg
-        *  Basics + tests
-        o  Test incl dontmix
-    o  Play with command line
+    o  Regression test full cmd line app
+    o  Add in duplicated pairs report
+    o  Play with command line variations
     o  Are setcomparisons redundant
 
 o  Cmd line api to trace
