@@ -2,8 +2,6 @@ import copy
 
 from model.allocation import Allocation
 from model.pool import Pool
-from model.assay import Assay
-from model.setcomparisons import SetComparisons
 
 class AssayAllocator:
 

@@ -28,8 +28,8 @@ class TestExperimentDesign(unittest.TestCase):
         self.assertEqual(ref.num_chambers, 8)
 
         self.assertEqual(len(ref.dontmix), 2)
-        self.assertEqual(str(ref.dontmix[0]), "['A', 'B']")
-        self.assertEqual(str(ref.dontmix[1]), "['C', 'D']")
+        self.assertEqual(str(ref.dontmix[0]), "['A', 'H']")
+        self.assertEqual(str(ref.dontmix[1]), "['C', 'L']")
 
         self.assertEqual(len(ref.targets_present), 2)
         self.assertEqual(ref.targets_present[0], 'G')
@@ -53,12 +53,12 @@ class TestExperimentDesign(unittest.TestCase):
         self.assertTrue(allowed)
 
         # Should say no when you ask to add an assay of type 'A' to a mixture
-        # that contains 'B' because this is outlawed by the experiment's
+        # that contains 'H' because this is outlawed by the experiment's
         # don't mix rules.
-        allowed = ref.can_this_assay_go_into_this_mixture(Assay('A', 1), {'B'})
+        allowed = ref.can_this_assay_go_into_this_mixture(Assay('A', 1), {'H'})
         self.assertFalse(allowed)
         # Check the same thing but with reversed roles.
-        allowed = ref.can_this_assay_go_into_this_mixture(Assay('B', 1), {'A'})
+        allowed = ref.can_this_assay_go_into_this_mixture(Assay('H', 1), {'A'})
         self.assertFalse(allowed)
         # Do a control check with an assay that the dontmix rules talk about,
         # but combined in a mixture that doesn't contain the counterpart.

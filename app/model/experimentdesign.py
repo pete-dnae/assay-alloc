@@ -57,3 +57,15 @@ class ExperimentDesign:
                 return False
         return True
 
+    def format_all_assays(self):
+        lines = []
+        for _type in sorted(self.assay_types):
+            assays = []
+            for i in range(self.replicas[_type]):
+                replica = i + 1
+                assay = '%s%d' % (_type, replica)
+                assays.append(assay)
+            line_formatted = ' '.join(assays)
+            lines.append(line_formatted)
+        return lines
+

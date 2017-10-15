@@ -18,54 +18,8 @@
       <file leaf-file-name="log.txt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/docs/log.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="12" column="40" lean-forward="false" selection-start-line="12" selection-start-column="40" selection-end-line="12" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="assayallocator.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/model/assayallocator.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="117" column="50" lean-forward="true" selection-start-line="117" selection-start-column="50" selection-end-line="117" selection-end-column="50" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="allocation.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/model/allocation.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
-              <caret line="109" column="0" lean-forward="true" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#35#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="assayallocator_test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/model/assayallocator_test.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="17" lean-forward="true" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="experimentdesign.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/model/experimentdesign.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="27" column="46" lean-forward="false" selection-start-line="27" selection-start-column="46" selection-end-line="27" selection-end-column="46" />
+            <state relative-caret-position="187">
+              <caret line="11" column="39" lean-forward="false" selection-start-line="11" selection-start-column="39" selection-end-line="11" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -132,19 +86,19 @@
         <option value="$PROJECT_DIR$/app/model/assay.py" />
         <option value="$PROJECT_DIR$/app/model/assay_test.py" />
         <option value="$PROJECT_DIR$/app/model/pool_test.py" />
-        <option value="$PROJECT_DIR$/app/model/experimentdesign_test.py" />
         <option value="$PROJECT_DIR$/app/model/pool.py" />
-        <option value="$PROJECT_DIR$/app/model/experimentreporter.py" />
         <option value="$PROJECT_DIR$/app/cmdlineapp/experimentfromcmdline.py" />
-        <option value="$PROJECT_DIR$/app/cmdlineapp/assay-alloc.py" />
         <option value="$PROJECT_DIR$/app/model/setdifferences.py" />
         <option value="$PROJECT_DIR$/app/model/setcomparisons.py" />
         <option value="$PROJECT_DIR$/app/model/setdifference_test.py" />
         <option value="$PROJECT_DIR$/app/model/allocation_test.py" />
-        <option value="$PROJECT_DIR$/app/model/allocation.py" />
-        <option value="$PROJECT_DIR$/app/model/assayallocator.py" />
-        <option value="$PROJECT_DIR$/app/model/experimentdesign.py" />
         <option value="$PROJECT_DIR$/app/model/assayallocator_test.py" />
+        <option value="$PROJECT_DIR$/app/model/allocation.py" />
+        <option value="$PROJECT_DIR$/app/model/experimentdesign.py" />
+        <option value="$PROJECT_DIR$/app/model/experimentdesign_test.py" />
+        <option value="$PROJECT_DIR$/app/cmdlineapp/assay-alloc.py" />
+        <option value="$PROJECT_DIR$/app/model/experimentreporter.py" />
+        <option value="$PROJECT_DIR$/app/model/assayallocator.py" />
         <option value="$PROJECT_DIR$/docs/log.txt" />
       </list>
     </option>
@@ -279,74 +233,26 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Nosetests for assayallocator_test.TestAssayAllocator">
-    <configuration default="false" name="Nosetests for assayallocator_test.TestAssayAllocator.test_without_dontmix_clamping_heuristics_to_chamber_and_occupant_count_only" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/model" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="assay-alloc" />
-      <option name="_new_regexPattern" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;assayallocator_test.TestAssayAllocator.test_without_dontmix_clamping_heuristics_to_chamber_and_occupant_count_only&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Nosetests for assayallocator_test.TestAssayAllocator" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/model" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="assay-alloc" />
-      <option name="_new_regexPattern" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;assayallocator_test.TestAssayAllocator&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Nosetests for assayallocator_test.TestAssayAllocator.test_all_heuristics_without_dontmix_" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/model" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="assay-alloc" />
-      <option name="_new_regexPattern" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;assayallocator_test.TestAssayAllocator.test_all_heuristics_without_dontmix_&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method />
-    </configuration>
-    <configuration default="false" name="assayallocator" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python tests.Nosetests in model">
+    <configuration default="false" name="assay-alloc" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/model" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/cmdlineapp" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="assay-alloc" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/model/assayallocator.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/cmdlineapp/assay-alloc.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="Nosetests for assayallocator_test.TestAssayAllocator.test_all_heuristics_with_dontmix_" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="Nosetests for experimentdesign_test.TestExperimentDesign" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -358,8 +264,56 @@
       <module name="assay-alloc" />
       <option name="_new_regexPattern" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;assayallocator_test.TestAssayAllocator.test_all_heuristics_with_dontmix_&quot;" />
+      <option name="_new_target" value="&quot;experimentdesign_test.TestExperimentDesign&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Nosetests for experimentdesign_test.TestExperimentDesign.test_can_this_assay_go_into_this_mixture" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/model" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="assay-alloc" />
+      <option name="_new_regexPattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;experimentdesign_test.TestExperimentDesign.test_can_this_assay_go_into_this_mixture&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Nosetests for experimentdesign_test.TestExperimentDesign.test_make_reference_example" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/model" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="assay-alloc" />
+      <option name="_new_regexPattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;experimentdesign_test.TestExperimentDesign.test_make_reference_example&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Nosetests in model" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/model" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="assay-alloc" />
+      <option name="_new_regexPattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/app/model&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -428,19 +382,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python tests.Nosetests for assayallocator_test.TestAssayAllocator.test_without_dontmix_clamping_heuristics_to_chamber_and_occupant_count_only" />
-      <item index="1" class="java.lang.String" itemvalue="Python tests.Nosetests for assayallocator_test.TestAssayAllocator" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.Nosetests for assayallocator_test.TestAssayAllocator.test_all_heuristics_without_dontmix_" />
-      <item index="3" class="java.lang.String" itemvalue="Python.assayallocator" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.Nosetests for assayallocator_test.TestAssayAllocator.test_all_heuristics_with_dontmix_" />
+      <item index="0" class="java.lang.String" itemvalue="Python.assay-alloc" />
+      <item index="1" class="java.lang.String" itemvalue="Python tests.Nosetests for experimentdesign_test.TestExperimentDesign" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.Nosetests for experimentdesign_test.TestExperimentDesign.test_can_this_assay_go_into_this_mixture" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Nosetests for experimentdesign_test.TestExperimentDesign.test_make_reference_example" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Nosetests in model" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Nosetests for assayallocator_test.TestAssayAllocator" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.Nosetests for assayallocator_test.TestAssayAllocator.test_all_heuristics_with_dontmix_" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Nosetests for assayallocator_test.TestAssayAllocator.test_all_heuristics_without_dontmix_" />
-        <item index="3" class="java.lang.String" itemvalue="Python.assayallocator" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Nosetests for assayallocator_test.TestAssayAllocator.test_without_dontmix_clamping_heuristics_to_chamber_and_occupant_count_only" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Nosetests in model" />
+        <item index="1" class="java.lang.String" itemvalue="Python.assay-alloc" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Nosetests for experimentdesign_test.TestExperimentDesign" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Nosetests for experimentdesign_test.TestExperimentDesign.test_make_reference_example" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Nosetests for experimentdesign_test.TestExperimentDesign.test_can_this_assay_go_into_this_mixture" />
       </list>
     </recent_temporary>
   </component>
@@ -461,35 +415,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator - 2017.10.15 at 21h 44m 09s.xml">
-      <configuration name="Nosetests for assayallocator_test.TestAssayAllocator" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator - 2017.10.15 at 21h 44m 17s.xml">
-      <configuration name="Nosetests for assayallocator_test.TestAssayAllocator" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator - 2017.10.15 at 21h 47m 29s.xml">
-      <configuration name="Nosetests for assayallocator_test.TestAssayAllocator" configurationId="tests" />
-    </history-entry>
     <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator - 2017.10.15 at 21h 52m 27s.xml">
       <configuration name="Nosetests for assayallocator_test.TestAssayAllocator" configurationId="tests" />
     </history-entry>
     <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator - 2017.10.15 at 21h 55m 57s.xml">
       <configuration name="Nosetests for assayallocator_test.TestAssayAllocator" configurationId="tests" />
     </history-entry>
-    <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator_test_all_heuristics_with_dontmix_ - 2017.10.15 at 21h 26m 58s.xml">
-      <configuration name="Nosetests for assayallocator_test.TestAssayAllocator.test_all_heuristics_with_dontmix_" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator_test_all_heuristics_with_dontmix_ - 2017.10.15 at 21h 45m 03s.xml">
-      <configuration name="Nosetests for assayallocator_test.TestAssayAllocator.test_all_heuristics_with_dontmix_" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator_test_all_heuristics_with_dontmix_ - 2017.10.15 at 21h 47m 40s.xml">
-      <configuration name="Nosetests for assayallocator_test.TestAssayAllocator.test_all_heuristics_with_dontmix_" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator_test_all_heuristics_with_dontmix_ - 2017.10.15 at 21h 48m 49s.xml">
-      <configuration name="Nosetests for assayallocator_test.TestAssayAllocator.test_all_heuristics_with_dontmix_" configurationId="tests" />
-    </history-entry>
     <history-entry file="Nosetests_for_assayallocator_test_TestAssayAllocator_test_all_heuristics_with_dontmix_ - 2017.10.15 at 21h 52m 11s.xml">
       <configuration name="Nosetests for assayallocator_test.TestAssayAllocator.test_all_heuristics_with_dontmix_" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_experimentdesign_test_TestExperimentDesign - 2017.10.15 at 22h 35m 23s.xml">
+      <configuration name="Nosetests for experimentdesign_test.TestExperimentDesign" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_experimentdesign_test_TestExperimentDesign - 2017.10.15 at 22h 37m 15s.xml">
+      <configuration name="Nosetests for experimentdesign_test.TestExperimentDesign" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_experimentdesign_test_TestExperimentDesign - 2017.10.15 at 22h 37m 57s.xml">
+      <configuration name="Nosetests for experimentdesign_test.TestExperimentDesign" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_experimentdesign_test_TestExperimentDesign_test_can_this_assay_go_into_this_mixture - 2017.10.15 at 22h 36m 51s.xml">
+      <configuration name="Nosetests for experimentdesign_test.TestExperimentDesign.test_can_this_assay_go_into_this_mixture" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_experimentdesign_test_TestExperimentDesign_test_can_this_assay_go_into_this_mixture - 2017.10.15 at 22h 37m 10s.xml">
+      <configuration name="Nosetests for experimentdesign_test.TestExperimentDesign.test_can_this_assay_go_into_this_mixture" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_experimentdesign_test_TestExperimentDesign_test_make_reference_example - 2017.10.15 at 22h 37m 52s.xml">
+      <configuration name="Nosetests for experimentdesign_test.TestExperimentDesign.test_make_reference_example" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_in_model - 2017.10.15 at 23h 21m 27s.xml">
+      <configuration name="Nosetests in model" configurationId="tests" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -509,7 +463,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39534885" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39534885" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -542,9 +496,9 @@
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/model/assayallocator.py</url>
-          <line>169</line>
-          <option name="timeStamp" value="49" />
+          <url>file://$PROJECT_DIR$/app/model/experimentreporter.py</url>
+          <line>82</line>
+          <option name="timeStamp" value="52" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -554,7 +508,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="50" />
+      <option name="time" value="53" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -767,26 +721,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/model/experimentdesign_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="502">
-          <caret line="65" column="31" lean-forward="false" selection-start-line="65" selection-start-column="31" selection-end-line="65" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/model/experimentreporter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="15" column="38" lean-forward="false" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#35#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/model/assay.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -795,31 +729,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/cmdlineapp/experimentfromcmdline.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="33" column="75" lean-forward="false" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="75" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/cmdlineapp/assay-alloc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="36" lean-forward="false" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#10#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/model/setdifference_test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="14" lean-forward="true" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#15#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -831,54 +745,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/model/setcomparisons.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/model/allocation_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-476">
-          <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/model/pool.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="21" column="8" lean-forward="false" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/model/allocation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="109" column="0" lean-forward="true" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/model/assayallocator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="117" column="50" lean-forward="true" selection-start-line="117" selection-start-column="50" selection-end-line="117" selection-end-column="50" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/model/experimentdesign.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="27" column="46" lean-forward="false" selection-start-line="27" selection-start-column="46" selection-end-line="27" selection-end-column="46" />
           <folding />
         </state>
       </provider>
@@ -893,10 +763,88 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/model/allocation_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-799">
+          <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/model/allocation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="107" column="44" lean-forward="false" selection-start-line="107" selection-start-column="44" selection-end-line="107" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/model/experimentdesign_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="19" lean-forward="true" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/cmdlineapp/experimentfromcmdline.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-153">
+          <caret line="14" column="12" lean-forward="false" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/model/experimentdesign.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="841">
+          <caret line="54" column="28" lean-forward="true" selection-start-line="54" selection-start-column="28" selection-end-line="54" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/cmdlineapp/assay-alloc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="14" column="64" lean-forward="false" selection-start-line="14" selection-start-column="64" selection-end-line="14" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/model/experimentreporter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="29" column="46" lean-forward="false" selection-start-line="29" selection-start-column="46" selection-end-line="29" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/model/setcomparisons.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/model/assayallocator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="27" lean-forward="false" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/docs/log.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="12" column="40" lean-forward="false" selection-start-line="12" selection-start-column="40" selection-end-line="12" selection-end-column="40" />
+        <state relative-caret-position="187">
+          <caret line="11" column="39" lean-forward="false" selection-start-line="11" selection-start-column="39" selection-end-line="11" selection-end-column="39" />
           <folding />
         </state>
       </provider>
