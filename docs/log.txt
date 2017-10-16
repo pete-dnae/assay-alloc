@@ -11,18 +11,16 @@
 *  Make it respond to error with example cmd line
 *  pyinstaller work - for single file?
 *  How hard do pyside? (too hard)
-o  Assess web delivery feasibility
-    o  Does docker hello world deploy to GCE?
-        *  Upgrade docs
-        o  Kill current cluster services
-        o  Create completely side project to see if tingali hello world works
-           when deployed to docker as per case study.
-        o  If so clean up cluster and temp resources.
-    o  Get /resurrect web app working locally - following own project build
-       instructions.
-    o  See what happens when k8s case study instructions with app as is
+*  Assess web delivery feasibility
+    *  Give up
+*  Rebuild cmdline app and provide to Brad
+    *  Make app with pyinstaller
+    *  Test it
+    *  Put readme and release notes usage adjacent or in docs
+    *  Include tips like arrows and redirect to file
+o  Deliver cmd line version to Brad
+o  Rever to docker
 
-o  Rebuild and provide to Brad
 o  Simple web form version of what have
     o  What look like
     o  Make sure can k8s it

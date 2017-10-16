@@ -1,6 +1,6 @@
 # An aide-memoir
 
-cd c:\docker-share\assay-alloc\app>
+cd c:\docker-share\assay-alloc\app\cmdlineapp>
 
 pyinstaller --onefile assay-alloc.py
 
