@@ -1,0 +1,34 @@
+Google App Engine Development Notes
+
+Using peterhoward42 Google account.
+Project called Assay-Allocation.
+
+Set up Google Cloud SDK in Linux environment.
+Using local Linux Python 2.7 environment.
+With virtualenv created in ~/virtualenvs/assay-alloc.2.7.12
+
+Have to do local pip install using -t lib to make the packages go up to GAE
+when deploy:
+
+pip install -t lib -r requirements.txt
+
+
+# To set up shell to work in
+
+One time:
+gcloud config set project YourProjectID
+
+source ~/virtualenvs/assay-alloc.2.7.12
+later...
+deactivate
+
+run dev server:
+dev_appserver.py app.yaml
+
+browse to:
+http://localhost:8080/form
+
+deploy with:
+gcloud app deploy
+
+

@@ -25,10 +25,21 @@
     *  Do the tutorial, using an entry point in the real project
         *  Repeat from scratch in linux
 o  AppEngine develop
-    o  Write crib sheet to set up env, run and deploy
-    o  Understand exactly how current form works
-    o  Hypothesise if will use two urls / tempaltes the same
-    o  Mix in basic bootstrap content, using CDN?
+    *  Write crib sheet to set up env, run and deploy
+    *  Understand exactly how current form works
+    *  Hypothesise if will use two urls / tempaltes the same - diff
+    *  Mix in basic bootstrap content, using previous project
+        *  Find relevant commit: 25db50c1d99b44812701b7c88e198446dddcd976
+        *  Checkout relavent content to /tmp/bootstrap_content
+        *  Copy all of static over existing static
+            *  They are already there in /app/static
+            *  Move static files from /app/static to /app/appengine/static
+            *  Move template files similarly
+    o  Edit in use of css to live template
+        o  Get flask running so can see diagnostics as make edits
+            o  Copy in js references at bottom of template 
+            o  Copy in css reference at top of template
+            o  Put in container structure
     o  Work up bits of form to look like what want
     o  Make handler kick the model
     o  Begin to include content derived from model back to rendered page
