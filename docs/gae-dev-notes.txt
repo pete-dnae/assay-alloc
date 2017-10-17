@@ -18,7 +18,7 @@ pip install -t lib -r requirements.txt
 One time:
 gcloud config set project YourProjectID
 
-source ~/virtualenvs/assay-alloc.2.7.12
+source ~/virtualenvs/assay-alloc-2.7.12/bin/activate
 later...
 deactivate
 

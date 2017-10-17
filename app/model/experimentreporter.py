@@ -2,6 +2,11 @@ from collections import defaultdict
 import yaml
 
 class ExperimentReporter:
+    """
+    Knows how to make a report on the outcome of an experiment by looking up
+    what went on in the Allocation object provided and the ExperimentDesign
+    provided.
+    """
 
     def __init__(self, allocation, experiment_design):
         self.alloc = allocation
@@ -70,12 +75,13 @@ class ExperimentReporter:
         # 3 out of 3 chambers that contain A fired (100%)
         res = []
         for assay in assays_sorted_by_percent:
-            res.append('%d out of %d chambers that contain <%s> fired. (%03d%%) %s' %
-                   (assay_counts[assay],
-                    self.alloc.number_of_this_assay_type_allocated(assay),
-                    assay,
-                    assay_percent[assay],
-                    assay_message[assay]))
+            res.append(
+                '%d out of %d chambers that contain <%s> fired. (%03d%%) %s' %
+               (assay_counts[assay],
+                self.alloc.number_of_this_assay_type_allocated(assay),
+                assay,
+                assay_percent[assay],
+                assay_message[assay]))
         return res
 
 

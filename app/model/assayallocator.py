@@ -4,6 +4,9 @@ from model.allocation import Allocation
 from model.pool import Pool
 
 class AssayAllocator:
+    """
+    Encapsulates the allocation algorithm.
+    """
 
 
     def __init__(self, experiment_design):
@@ -27,7 +30,9 @@ class AssayAllocator:
         """
         Entry point to the allocation algorithm.
         """
+        # Make a pool of all the assay replicas weare mandated to allocate.
         pool = Pool(self._design)
+
         # We make a copy of the set of assays in the pool to iterate over,
         # so that we are free to deplete the pool itself inside the loop.
         # We choose alphabetic order to make the order deterministic and also
@@ -105,8 +110,7 @@ class AssayAllocator:
         # only to make the algorithm more intuitive, and it makes it
         # deterministic, which helps with testing.
 
-        # First cut out chambers that already contain the incoming assay type
-        # from the set to order.
+        # First cut out chambers that would be illegal for this assay type.
 
         candidate_chambers = []
         for chamber in self.alloc.all_chambers():
@@ -142,7 +146,7 @@ class AssayAllocator:
             candidate_chambers.sort(
                 key=lambda chamber, assay_type=assay.type, existing_pairs=pairs:
                 self._duplicate_pairs_made(chamber, assay_type, pairs))
-        self._t('Chamber preference using, also, duplicate pair generation: %s' % candidate_chambers)
+        self._t('Final chamber preference order: %s' % candidate_chambers)
 
         return candidate_chambers
 

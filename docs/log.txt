@@ -36,10 +36,11 @@ o  AppEngine develop
             *  Move static files from /app/static to /app/appengine/static
             *  Move template files similarly
     o  Edit in use of css to live template
-        o  Get flask running so can see diagnostics as make edits
-            o  Copy in js references at bottom of template 
-            o  Copy in css reference at top of template
-            o  Put in container structure
+        o  Get dev server running flask so can see diagnostics as make edits
+            o  Painful - try reboot and fs full check
+        o  Copy in js references at bottom of template 
+        o  Copy in css reference at top of template
+        o  Put in container structure
     o  Work up bits of form to look like what want
     o  Make handler kick the model
     o  Begin to include content derived from model back to rendered page
@@ -49,6 +50,8 @@ o  Simple web form version of what have
     o  What look like
     o  Make sure can k8s it
     o  Work up
+
+o  Is all the docker legacy pointless?
 
 ----------------------------------------------------------------------------
 Misc

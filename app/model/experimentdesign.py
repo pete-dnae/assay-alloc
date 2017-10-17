@@ -1,4 +1,7 @@
 class ExperimentDesign:
+    """
+    Encapsulates the mandate for the allocation experiment.
+    """
 
     def __init__(self):
         # Apparatus and mandate.
