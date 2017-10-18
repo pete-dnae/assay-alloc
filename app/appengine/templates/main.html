@@ -26,12 +26,10 @@
           <input type="submit">
         </form>
       </div>
-      <div>{% block settings %}{% endblock %}</div>
-      <div>
-          <h1>second section</h1>
-      </div>
-      <div>
-          <h1>third section</h1>
+      <div id="title">
+        foo
+        {% include "title.html" %}
+        bar
       </div>
     </div>
 

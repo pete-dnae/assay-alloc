@@ -45,6 +45,7 @@ o  AppEngine develop
            each and 2,3,4 being the bits I want
         o  Get these sections to be served by subclasses or includes or
            imports or whatever
+        o  Make the form look the part
     o  Make handler kick the model
     o  Begin to include content derived from model back to rendered page
     o  And the rest is history
