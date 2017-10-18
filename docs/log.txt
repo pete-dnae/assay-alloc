@@ -40,13 +40,19 @@ o  AppEngine develop
         *  Copy in js references at bottom of template 
         *  Copy in css reference at top of template
         *  Put in container structure
-    o  Work up bits of form to look like what want
+    *  Work up bits of form to look like what want
         *  Anticipate four vertical sections with first being current content in 
            each and 2,3,4 being the bits I want
-        o  Get these sections to be served by subclasses or includes or
+        *  Get these sections to be served by subclasses or includes or
            imports or whatever
-        o  Make the form look the part
+        *  Make the form look the part
     o  Make handler kick the model
+        *  Show with debug that params are arriving
+        *  Can same handler do get of uninit form and proper one?
+        o  Send back form values in re-rendered page
+            o  Revise how to provide vars to form, start with just assays
+            o  Get this to work to persist users' edits
+            o  Upgrade to provide whole dict so can treat all fields the same.
     o  Begin to include content derived from model back to rendered page
     o  And the rest is history
 

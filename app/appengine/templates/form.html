@@ -1,0 +1,40 @@
+<form method="post" action="{{ url_for('form') }}">
+    <div class="form-group row">
+        <label for="assays" class="col-sm-2 col-form-label">Assays</label>
+        <div class="col-sm-1">
+            <input class="form-control" type="number" value={{ assays }} id="assays" name="assays">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="replicas" class="col-sm-2 col-form-label">Replicas</label>
+        <div class="col-sm-1">
+            <input class="form-control" type="number" value="3" id="replicas">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="dontmix" class="col-sm-2 col-form-label">Dont Mix</label>
+        <div class="col-sm-1">
+            <input class="form-control" type="number" value="2" id="dontmix">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="chambers" class="col-sm-2 col-form-label">Chambers</label>
+        <div class="col-sm-1">
+            <input class="form-control" type="number" value="24" id="chambers">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="targets" class="col-sm-2 col-form-label">Targets</label>
+        <div class="col-sm-1">
+            <input class="form-control" type="number" value="2" id="targets">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-2 col-sm-1">
+            <button type="submit" class="btn btn-primary">Allocate</button>
+        </div>
+    </div>
+</form>

@@ -1,36 +1,15 @@
 <html>
   <head>
-    <title>Submit a form</title>
+    <title>Assay Allocation Algorithm</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
    <!--link rel="stylesheet" type="text/css" href="/static/style.css"-->
     <!-- Bootstrap core CSS -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
-
-    <!--div id="container"-->
-    <div class="container">
-      <div class="pagetitle">
-        <h1>Submit a form</h1>
-      </div>
-      <div id="main">
-        <form method="post" action="{{ url_for('submitted_form') }}">
-          <label for="name">Name:</label>
-          <input type="text" name="name"><br />
-          <label for="email">Email address:</label>
-          <input type="email" name="email"><br />
-          <label for="site_url">Website URL:</label>
-          <input type="url" name="site_url"><br />
-          <label for="comments">Comments:</label>
-          <textarea name="comments"></textarea><br />
-          <input type="submit">
-        </form>
-      </div>
-      <div id="title">
-        foo
-        {% include "title.html" %}
-        bar
-      </div>
+   <div class="container">
+      <h1>Assay Allocation Algorithm</h1>
+      <div id="form">{% include "form.html" %}</div>
     </div>
 
 
