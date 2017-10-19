@@ -23,11 +23,25 @@ class ViewModel:
     #-------------------------------------------------------------------------
 
     def _init_to_defaults(self):
-        self.assays = 24
-        self.replicas = 3
-        self.dontmix = 2
-        self.chambers = 24
-        self.targets = 2
+
+        # Input parameters. e.g. number of chambers
+        self.input_params = {}
+        self.input_params["assays"] = 24
+        self.input_params["replicas"] = 3
+        self.input_params["dontmix"] = 2
+        self.input_params["chambers"] = 24
+        self.input_params["targets"] = 2
+
+        # Rendering the table that reprsents alloctions.
+        # E.g. the grid size, and the assays presentin a given chamber.
+        self.alloc_table = {}
+        rows = []
+        self.alloc_table['rows'] = rows
+        for row in range(6):
+            row_cells = []
+            rows.append(row_cells)
+            for col in range(4): 
+                row_cells.append('cell %d %d' % (row, col))
 
 
     def _override_from_form(self, key, form):
@@ -38,5 +52,6 @@ class ViewModel:
         For example, if the request form has an entry {assays: 24}, then set
         self.assays = 24.
         """
+
         for key in form:
-            setattr(self, key, form[key])
+            self.input_params[key] = form[key]

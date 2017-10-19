@@ -9,7 +9,6 @@ app.debug = True
 
 @app.route('/main', methods=['GET', 'POST'])
 def form():
-    na = request.form.get('assays', 24)
     view_model = ViewModel.make_from_request(request)
     return render_template('main.html', view_model=view_model)
 

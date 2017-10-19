@@ -1,3 +1,4 @@
+{# Expects its view model in the keyword argument: view_model #}
 <html>
   <head>
     <title>Assay Allocation Algorithm</title>
@@ -8,9 +9,17 @@
   </head>
   <body>
    <div class="container">
-      <h1>Assay Allocation Algorithm</h1>
-      <div id="form">{% include "form.html" %}</div>
-    </div>
+    <h1>Assay Allocation Algorithm</h1>
+
+    {% with input_params=view_model.input_params %}
+        <div id="form">{% include "form.html" %}</div>
+    {% endwith %}
+
+    {% with alloc_table=view_model.alloc_table %}
+        <div id="form">{% include "alloc_table.html" %}</div>
+    {% endwith %}
+
+  </div>
 
 
     <!-- Bootstrap core JavaScript

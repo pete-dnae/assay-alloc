@@ -1,9 +1,11 @@
+{# Expects its view model in the keyword argument: input_params #}
+
 <form method="post" action="{{ url_for('form') }}">
     <div class="form-group row">
         <label for="assays" class="col-sm-2 col-form-label">Assays</label>
         <div class="col-sm-1">
             <input class="form-control" type="number" 
-                value={{ view_model.assays }}
+                value={{ input_params.assays }}
                 id="assays" name="assays">
         </div>
     </div>
@@ -11,7 +13,7 @@
         <label for="replicas" class="col-sm-2 col-form-label">Replicas</label>
         <div class="col-sm-1">
             <input class="form-control" type="number" 
-            value={{ view_model.replicas }}
+            value={{ input_params.replicas }}
             id="replicas", name="replicas">
         </div>
     </div>
@@ -19,7 +21,7 @@
         <label for="dontmix" class="col-sm-2 col-form-label">Dont Mix</label>
         <div class="col-sm-1">
             <input class="form-control" type="number" 
-            value={{ view_model.dontmix }}
+            value={{ input_params.dontmix }}
             id="dontmix", name="dontmix">
         </div>
     </div>
@@ -27,7 +29,7 @@
         <label for="chambers" class="col-sm-2 col-form-label">Chambers</label>
         <div class="col-sm-1">
             <input class="form-control" type="number" 
-            value={{ view_model.chambers }}
+            value={{ input_params.chambers }}
             id="chambers", name="chambers">
         </div>
     </div>
@@ -35,7 +37,7 @@
         <label for="targets" class="col-sm-2 col-form-label">Targets</label>
         <div class="col-sm-1">
             <input class="form-control" type="number" 
-            value={{ view_model.targets }}
+            value={{ input_params.targets }}
             id="targets",
             name="targets">
         </div>
