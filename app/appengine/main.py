@@ -9,6 +9,10 @@ app.debug = True
 
 @app.route('/main', methods=['GET', 'POST'])
 def form():
+    # If we are receiving a form with fresh input parameters, then we need
+    # to harvest these and use them to build a new experiment and run it.
+    if request.method == 'POST':
+        foo
     view_model = ViewModel.make_from_request(request)
     return render_template('main.html', view_model=view_model)
 

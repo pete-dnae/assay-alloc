@@ -31,9 +31,35 @@ class TestExperimentDesign(unittest.TestCase):
         self.assertEqual(str(ref.dontmix[0]), "['A', 'H']")
         self.assertEqual(str(ref.dontmix[1]), "['C', 'L']")
 
-        self.assertEqual(len(ref.targets_present), 2)
-        self.assertEqual(ref.targets_present[0], 'G')
-        self.assertEqual(ref.targets_present[1], 'H')
+        self.assertEqual(ref.targets_present, {'H', 'G'})
+
+
+    def test_make_from_params(self):
+        assays = 14
+        chambers = 8
+        replicas = 3
+        dontmix = 2
+        targets = 2
+        ref = ExperimentDesign.make_from_params(assays, chambers, 
+                replicas, dontmix, targets)
+
+        self.assertEqual(len(ref.assay_types), 14)
+        self.assertTrue('A' in ref.assay_types)
+        self.assertTrue('N' in ref.assay_types)
+        self.assertFalse('O' in ref.assay_types)
+
+        self.assertEqual(len(ref.replicas), 14)
+        self.assertEqual(ref.replicas['A'], 3)
+        self.assertEqual(ref.replicas['B'], 3)
+
+        self.assertEqual(ref.num_chambers, 8)
+
+        self.assertEqual(len(ref.dontmix), 2)
+        self.assertEqual(str(ref.dontmix[0]), "['N', 'A']")
+        self.assertEqual(str(ref.dontmix[1]), "['M', 'B']")
+
+        print('XXXX targets present %s' % ref.targets_present)
+        self.assertEqual(ref.targets_present, {'A', 'B'})
 
     def test_can_this_assay_go_into_this_mixture(self):
 
@@ -64,4 +90,5 @@ class TestExperimentDesign(unittest.TestCase):
         # but combined in a mixture that doesn't contain the counterpart.
         allowed = ref.can_this_assay_go_into_this_mixture(Assay('A', 1), {'E'})
         self.assertTrue(allowed)
+
 

@@ -29,7 +29,7 @@ class ExperimentDesign:
             design.replicas[_type] = how_many
         design.num_chambers = 8
         design.dontmix = [['A', 'H'], ['C', 'L']]
-        design.targets_present = ['G', 'H']
+        design.targets_present = {'G', 'H'}
         return design
 
 
@@ -42,6 +42,29 @@ class ExperimentDesign:
         design = cls.make_reference_example()
         design.dontmix = []
         return design
+
+    @classmethod
+    def make_from_params(cls, assays, chambers, replicas, dontmix, targets):
+        exp = ExperimentDesign()
+        exp.assay_types = set([chr(ord('A') + i) for i in range(assays)])
+        for assay_type in exp.assay_types:
+            exp.replicas[assay_type] = replicas
+        exp.num_chambers = chambers
+
+        # Use the first <N> assays as the targets present.
+        sorted_assay_types = sorted(list(exp.assay_types))
+        for i in range(targets):
+            exp.targets_present.add(sorted_assay_types[i])
+
+        # Use <N> assay-pairs that draw members from either end of the list as
+        # the dontmix pairs.
+        exp.dontmix = []
+        for i in range(dontmix):
+            a = sorted_assay_types.pop()
+            b = sorted_assay_types.pop(0)
+            exp.dontmix.append([a, b])
+
+        return exp
 
 
     def can_this_assay_go_into_this_mixture(self, assay, mixture):

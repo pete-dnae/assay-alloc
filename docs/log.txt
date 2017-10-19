@@ -55,20 +55,18 @@ o  AppEngine develop
             *  Introduce view model to present contract to template
             *  Finish population of viewmodel and init values
     o  Begin to include content derived from model back to rendered page
-        o  Show allocation table
-            *  Delegate to a template somewhere relocatable on the page
-            *  Can we pass in a a model subsection?
-                *  Partition existing model to having input_params attrib in
-                   anticipation of an alloc_table_attrib
-            *  Hard code table model to represent grid of chambers
-            o  Render hello %d for each in a grid
-                *  First put in hard coded bootstrap table
-                *  Put into template language loop
-                o  Now consume table rows from model
-                    o  To start with number of rows from  length of
-                        self.alloc_table.rows = rows
-                o  And content from real alloc result model
-            o  The rest is mostly self evident
+        o  Show real chamber numbers and assays therein
+            o  Launch allocation process from form handler
+                o  Get to launch
+                    *  Move ExperimentFromCommandLine.make_from_params() into
+                       ExperimentDesign class.
+                        *  Regression test baseline
+                        *  Move it
+                        *  Regression test fix
+                o  Get to run without crashing
+            o  Make results available to view model maker
+            o  Show up in view
+    o  Wean off dependency on yaml so that nosetests across models all work
     o  And the rest is history
 
 o  Simple web form version of what have
