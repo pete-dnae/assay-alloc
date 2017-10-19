@@ -49,10 +49,11 @@ o  AppEngine develop
     o  Make handler kick the model
         *  Show with debug that params are arriving
         *  Can same handler do get of uninit form and proper one?
-        o  Send back form values in re-rendered page
-            o  Revise how to provide vars to form, start with just assays
-            o  Get this to work to persist users' edits
-            o  Upgrade to provide whole dict so can treat all fields the same.
+        *  Send back form values in re-rendered page
+            *  Revise how to provide vars to form, start with just assays
+            *  Get this to work to persist users' edits
+            *  Introduce view model to present contract to template
+            *  Finish population of viewmodel and init values
     o  Begin to include content derived from model back to rendered page
     o  And the rest is history
 

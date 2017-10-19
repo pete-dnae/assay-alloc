@@ -2,31 +2,42 @@
     <div class="form-group row">
         <label for="assays" class="col-sm-2 col-form-label">Assays</label>
         <div class="col-sm-1">
-            <input class="form-control" type="number" value={{ assays }} id="assays" name="assays">
+            <input class="form-control" type="number" 
+                value={{ view_model.assays }}
+                id="assays" name="assays">
         </div>
     </div>
     <div class="form-group row">
         <label for="replicas" class="col-sm-2 col-form-label">Replicas</label>
         <div class="col-sm-1">
-            <input class="form-control" type="number" value="3" id="replicas">
+            <input class="form-control" type="number" 
+            value={{ view_model.replicas }}
+            id="replicas", name="replicas">
         </div>
     </div>
     <div class="form-group row">
         <label for="dontmix" class="col-sm-2 col-form-label">Dont Mix</label>
         <div class="col-sm-1">
-            <input class="form-control" type="number" value="2" id="dontmix">
+            <input class="form-control" type="number" 
+            value={{ view_model.dontmix }}
+            id="dontmix", name="dontmix">
         </div>
     </div>
     <div class="form-group row">
         <label for="chambers" class="col-sm-2 col-form-label">Chambers</label>
         <div class="col-sm-1">
-            <input class="form-control" type="number" value="24" id="chambers">
+            <input class="form-control" type="number" 
+            value={{ view_model.chambers }}
+            id="chambers", name="chambers">
         </div>
     </div>
     <div class="form-group row">
         <label for="targets" class="col-sm-2 col-form-label">Targets</label>
         <div class="col-sm-1">
-            <input class="form-control" type="number" value="2" id="targets">
+            <input class="form-control" type="number" 
+            value={{ view_model.targets }}
+            id="targets",
+            name="targets">
         </div>
     </div>
 
