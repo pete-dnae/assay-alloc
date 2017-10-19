@@ -5,17 +5,33 @@ class ViewModel:
     from a form belonging to an incoming http request.
     """
 
+    _DISPLAY_COLUMNS = 4
+
     def __init__(self):
         # See _init_to_defaults for attribute default values.
         self._init_to_defaults()
 
 
     @classmethod
-    def make_from_request(cls, request):
+    def initialise_from_request_form(cls, request):
         mdl = ViewModel()
         mdl._init_to_defaults()
         mdl._override_from_form('assays', request.form)
         return mdl
+
+    def populate_with_experiment_results(self, experiment_reporter):
+        self.alloc_table = {}
+        self.alloc_table["rows"] = []
+        chambers = experiment_reporter.design.num_chambers
+
+        for i in range(chambers):
+            chamber_number = i + 1
+            row_index = i / self._DISPLAY_COLUMNS
+            col_index = i - (row_index * self._DISPLAY_COLUMNS)
+            if row_index == len(self.alloc_table["rows"]):
+                self.alloc_table["rows"].append([])
+            self.alloc_table["rows"][row_index].append(
+                'Chamber number: %d' % chamber_number)
 
 
     #-------------------------------------------------------------------------
@@ -32,16 +48,9 @@ class ViewModel:
         self.input_params["chambers"] = 24
         self.input_params["targets"] = 2
 
-        # Rendering the table that reprsents alloctions.
+        # Fro rendering the table that reprsents allocations.
         # E.g. the grid size, and the assays presentin a given chamber.
-        self.alloc_table = {}
-        rows = []
-        self.alloc_table['rows'] = rows
-        for row in range(6):
-            row_cells = []
-            rows.append(row_cells)
-            for col in range(4): 
-                row_cells.append('cell %d %d' % (row, col))
+        self.alloc_table = None
 
 
     def _override_from_form(self, key, form):

@@ -8,14 +8,14 @@
       <th>Username</th>
     </tr>
   </thead>
-  <tbody>
 
+  <tbody>
     {% for row in alloc_table.rows %}
         <tr>
           <th scope="row">1</th>
-          <td>{{user}}</td>
-          <td>Otto</td>
-          <td>@mdo</td>
+          {% for column_content in row %}
+            <td>{{column_content}}</td>
+          {% endfor %}
         </tr>
     {% endfor %}
 

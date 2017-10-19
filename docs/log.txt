@@ -57,13 +57,20 @@ o  AppEngine develop
     o  Begin to include content derived from model back to rendered page
         o  Show real chamber numbers and assays therein
             o  Launch allocation process from form handler
-                o  Get to launch
+                *  Get to launch
                     *  Move ExperimentFromCommandLine.make_from_params() into
                        ExperimentDesign class.
-                        *  Regression test baseline
-                        *  Move it
-                        *  Regression test fix
-                o  Get to run without crashing
+                *  Get to run alloc without crashing
+                    *  Get to run with hard coded params to solve imports
+                        *  Irreversiblly move the model down inside the
+                           appengine folder !
+                o  Augment the view model with form and from allocation
+                   results
+                    o  make_from_request should be init from request
+                    o  now can have augment from alloc results
+                    o  Will it work with class object composition not
+                       dicts?
+                o  Make the view model from the form params not hard coded
             o  Make results available to view model maker
             o  Show up in view
     o  Wean off dependency on yaml so that nosetests across models all work
