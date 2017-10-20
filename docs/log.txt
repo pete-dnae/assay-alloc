@@ -1,83 +1,13 @@
-*  Get decent ascii report coming out
-    *  Work out how to pretty print a data structure
-    *  Design what want to see
-    *  Make it so
-*  Report in order of % pop deployed
-*  Cmd line usage
-*  Quick freeze experiment
-*  Doc freeze deploy
-*  Improve randomness
-*  Make sure orig cmd line works
-*  Make it respond to error with example cmd line
-*  pyinstaller work - for single file?
-*  How hard do pyside? (too hard)
-*  Assess web delivery feasibility
-    *  Give up
-*  Rebuild cmdline app and provide to Brad
-    *  Make app with pyinstaller
-    *  Test it
-    *  Put readme and release notes usage adjacent or in docs
-    *  Include tips like arrows and redirect to file
-*  Deliver cmd line version to Brad
-    *  Copy bin to sharepoint
-    *  Send email with location and manual
-*  Try AppEngine
-    *  Do the tutorial, using an entry point in the real project
-        *  Repeat from scratch in linux
 o  AppEngine develop
-    *  Write crib sheet to set up env, run and deploy
-    *  Understand exactly how current form works
-    *  Hypothesise if will use two urls / tempaltes the same - diff
-    *  Mix in basic bootstrap content, using previous project
-        *  Find relevant commit: 25db50c1d99b44812701b7c88e198446dddcd976
-        *  Checkout relavent content to /tmp/bootstrap_content
-        *  Copy all of static over existing static
-            *  They are already there in /app/static
-            *  Move static files from /app/static to /app/appengine/static
-            *  Move template files similarly
-    *  Edit in use of css to live template
-        *  Get dev server running flask so can see diagnostics as make edits
-        *  Copy in js references at bottom of template 
-        *  Copy in css reference at top of template
-        *  Put in container structure
-    *  Work up bits of form to look like what want
-        *  Anticipate four vertical sections with first being current content in 
-           each and 2,3,4 being the bits I want
-        *  Get these sections to be served by subclasses or includes or
-           imports or whatever
-        *  Make the form look the part
-    o  Make handler kick the model
-        *  Show with debug that params are arriving
-        *  Can same handler do get of uninit form and proper one?
-        *  Send back form values in re-rendered page
-            *  Revise how to provide vars to form, start with just assays
-            *  Get this to work to persist users' edits
-            *  Introduce view model to present contract to template
-            *  Finish population of viewmodel and init values
-    o  Begin to include content derived from model back to rendered page
-        o  Show real chamber numbers and assays therein
-            o  Launch allocation process from form handler
-                *  Get to launch
-                    *  Move ExperimentFromCommandLine.make_from_params() into
-                       ExperimentDesign class.
-                *  Get to run alloc without crashing
-                    *  Get to run with hard coded params to solve imports
-                        *  Irreversiblly move the model down inside the
-                           appengine folder !
-                o  Augment the view model with form and from allocation
-                   results
-                    *  make_from_request should be init from request
-                    *  now can have augment from alloc results
-                    o  show which assays present as 03: ABC
-                        o  alloc provide list
-                        o  view model compose {chamber number as %02d and
-                           occupants as %s in dict)
-                        o  template render these with small and span
-                    o  try spacing and monospace
-                    o  try making chamber number small maybe without colon
-                o  Make the view model from the form params not hard coded
-            o  Make results available to view model maker
-            o  Show up in view
+    o  Basics
+    o  Augment input table with actual assays, targets and dontmix pairs
+        o  Hard coded to get formatting right
+        o  From model
+            o  actual assays
+            o  targets
+            o  dontmix
+    o  Make input fields more compact or inline?
+    o  Make the view model from the form params not hard coded
     o  Wean off dependency on yaml so that nosetests across models all work
     o  And the rest is history
 
