@@ -14,7 +14,10 @@
         <tr>
           <th scope="row">1</th>
           {% for cell in row %}
-            <td>{{cell}}</td>
+          <td>
+            <small>{{cell.chamber}}</small>
+            <code>{{cell.assay_types}}</code>
+          </td>
           {% endfor %}
         </tr>
     {% endfor %}

@@ -68,7 +68,13 @@ o  AppEngine develop
                    results
                     *  make_from_request should be init from request
                     *  now can have augment from alloc results
-                    o  show which assays present
+                    o  show which assays present as 03: ABC
+                        o  alloc provide list
+                        o  view model compose {chamber number as %02d and
+                           occupants as %s in dict)
+                        o  template render these with small and span
+                    o  try spacing and monospace
+                    o  try making chamber number small maybe without colon
                 o  Make the view model from the form params not hard coded
             o  Make results available to view model maker
             o  Show up in view

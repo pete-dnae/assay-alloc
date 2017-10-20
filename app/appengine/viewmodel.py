@@ -77,6 +77,10 @@ class ViewModel:
         return cells
 
     def _make_table_cell(self, chamber_number, experiment_reporter):
-        # For now just return a chamber number string.
-        return 'Chamber: %d' % chamber_number
+        alloc = experiment_reporter.alloc
+        assay_types = alloc.assay_types_present_in(chamber_number)
+        assay_types = list(assay_types)
+        assay_types.sort()
+        assay_types = ''.join(assay_types)
+        return {'chamber': '%02d' % chamber_number, 'assay_types': assay_types}
 
