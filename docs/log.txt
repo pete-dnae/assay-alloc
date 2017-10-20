@@ -66,10 +66,9 @@ o  AppEngine develop
                            appengine folder !
                 o  Augment the view model with form and from allocation
                    results
-                    o  make_from_request should be init from request
-                    o  now can have augment from alloc results
-                    o  Will it work with class object composition not
-                       dicts?
+                    *  make_from_request should be init from request
+                    *  now can have augment from alloc results
+                    o  show which assays present
                 o  Make the view model from the form params not hard coded
             o  Make results available to view model maker
             o  Show up in view

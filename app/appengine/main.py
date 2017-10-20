@@ -13,6 +13,8 @@ app.debug = True
 
 @app.route('/main', methods=['GET', 'POST'])
 def form():
+    # Initialise the view model for the general case of GET/POST, to reflect
+    # the form inputs back in the page that is returned.
     view_model = ViewModel.initialise_from_request_form(request)
 
     # If we are receiving a form with fresh input parameters, then we need
@@ -25,7 +27,6 @@ def form():
         allocation = allocator.allocate()
         reporter = ExperimentReporter(allocation, experiment_design)
         view_model.populate_with_experiment_results(reporter)
-
 
     return render_template('main.html', view_model=view_model)
 

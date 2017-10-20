@@ -13,8 +13,8 @@
     {% for row in alloc_table.rows %}
         <tr>
           <th scope="row">1</th>
-          {% for column_content in row %}
-            <td>{{column_content}}</td>
+          {% for cell in row %}
+            <td>{{cell}}</td>
           {% endfor %}
         </tr>
     {% endfor %}
