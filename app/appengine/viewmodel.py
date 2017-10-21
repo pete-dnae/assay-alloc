@@ -42,7 +42,11 @@ class ViewModel:
                 experiment_reporter, row_index)
             self.alloc_table['rows'].append(next_row)
 
-
+        # Make available the firing statistics table
+        self.firing_stats = {}
+        self.firing_stats["firing_assays"] = \
+            experiment_reporter.format_assays_in_chambers_that_fired()
+        self.firing_stats["rows"] = experiment_reporter.firing_row_stats_rows()
 
     #-------------------------------------------------------------------------
     # Private below
@@ -57,13 +61,19 @@ class ViewModel:
         self.input_params["dontmix"] = 2
         self.input_params["chambers"] = 24
         self.input_params["targets"] = 2
+
+        # Augmentation for the input parameters that become available, only
+        # once the form has been submitted.
         self.input_params['assays_enumerated'] = ''
         self.input_params['dontmix_enumerated'] = ''
-        self.input_params['targets_enumerated'] = ()
+        self.input_params['targets_enumerated'] = ''
 
-        # Fro rendering the table that reprsents allocations.
+        # For rendering the table that reprsents allocations.
         # E.g. the grid size, and the assays presentin a given chamber.
         self.alloc_table = None
+
+        # For rendering the table of firing statistics
+        self.firing_stats = None
 
 
     def _override_from_form(self, form):
@@ -112,5 +122,10 @@ class ViewModel:
             is_target = (letter in experiment_reporter.design.targets_present)
             element = {'letter': letter, 'is_target': is_target}
             elements.append(element)
-        return {'chamber': '%02d' % chamber_number, 'assay_types': elements}
+        fired = experiment_reporter.did_this_chamber_fire(chamber_number)
+        cell = {
+            'chamber': '%02d' % chamber_number,
+            'assay_types': elements,
+            'fired': fired}
+        return cell
 

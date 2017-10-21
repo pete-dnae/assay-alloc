@@ -4,12 +4,36 @@ o  AppEngine develop
     *  Make the view model from the form params not hard coded
     *  Ditch header rows on table
     *  Show which assays are the target
-    o  Show which chambers fired
-        o  What can Bootstrap do cell-wise?
+    *  Show which chambers fired
     o  Show calling stats
+        *  Think again how
+        *  Hard code first to get look and feel and show data needs
+        o  Make data available
+            o  Time out to clean up and unit test reporter incl comments vs
+               alloc
+               o  Currently got to test_format_assays_in_chambers_that_fired
+                  looking suspicious
+            o  Print out view model at point of build
+        o  Use data
+            o  Assay letter and message
+            o  Tidy up presso
+            o  Blue for fired rows
+        o  Is firing reporting actually right? - double check unit tests
+        o  Make it show nothing until form submitted
+    o  Page layout and headings
+    o  Say apply not allocate
+    o  Make targets in input settings be blue
+    o  Prune down reporter and clear up scope in comments cf alloc
+    o  Add unit test for
+        o  coverage of reporter methods
+o  Fix algorithm
 
+o  Let you specify which targets not how many
 o  Wean off dependency on yaml so that nosetests across models all work
 o  How protect ExperimentDesign.make_from_form_dict() from mal formed form?
+o  Algorithm doc page (incl cookie persist form on other)
+o  Diagnostics page (incl cookie persist form on other)
+o  Release notes page
 o  And the rest is history
 o  Is all the docker legacy pointless?
 
@@ -19,4 +43,24 @@ Misc
 
 python assay-alloc.py --assays 20 --replicas 3 --chambers 24 --dontmix 3 --targets 2
 
+----------------------------------------------------------------------------
+Calling table design
+----------------------------------------------------------------------------
 
+Assays present in chambers that fired: ABTP
+
+Assay   | Chambers Fired
+        |
+A       | 3 of 3 (100%)
+B       | 2 of 3 (66%)
+
+3 out of 3 chambers that contain <B> fired. (100%) POSITIVE CALL
+3 out of 3 chambers that contain <A> fired. (100%) POSITIVE CALL
+2 out of 3 chambers that contain <K> fired. (066%) 
+2 out of 3 chambers that contain <J> fired. (066%) 
+2 out of 3 chambers that contain <I> fired. (066%) 
+1 out of 3 chambers that contain <T> fired. (033%) 
+1 out of 3 chambers that contain <R> fired. (033%) 
+1 out of 3 chambers that contain <Q> fired. (033%) 
+1 out of 3 chambers that contain <P> fired. (033%) 
+1 out of 3 chambers that contain <O> fired. (033%)

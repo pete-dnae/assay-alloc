@@ -1,97 +1,88 @@
-from collections import defaultdict
-import yaml
-
 class ExperimentReporter:
     """
-    Knows how to make a report on the outcome of an experiment by looking up
-    what went on in the Allocation object provided and the ExperimentDesign
-    provided.
+    Offers a suite of queries about experiment results that provide conveniently
+    packaged data ready to be used in reports or views.
+
+    Specifically non-trivial queries that require cross referencing the
+    ExperimentDesign with a resultant Allocation object.
     """
 
     def __init__(self, allocation, experiment_design):
         self.alloc = allocation
         self.design = experiment_design
 
-    def report(self):
-        lines = []
-        lines.append('\n')
-        lines.extend(self._assays())
-        lines.extend(self._experiment_design())
-        lines.append('\n')
-        lines.append('Allocation...')
-        lines.append('\n')
-        lines.extend(self.alloc.format_chambers())
-        lines.append('\n')
-        lines.append(self._firing_chambers())
-        lines.append('\n')
-        lines.append('Only the targets: %s should get 100%%' %
-                     self.design.targets_present)
-        lines.append('\n')
-        lines.extend(self._calling())
-        lines.append('\n')
-        return lines
+    def did_this_chamber_fire(self, chamber):
+        assay_types_in_chamber = self.alloc.assay_types_present_in(chamber)
+        return len(assay_types_in_chamber.intersection(
+            self.design.targets_present)) != 0
 
-    def _assays(self):
-        res = ['Assay Replicas To Be Allocated:', '\n']
-        assay_lines = self.design.format_all_assays()
-        res.extend(assay_lines)
-        return res
+    def chambers_that_fired(self):
+        fired = set()
+        for chamber in self.alloc.all_chambers():
+            if self.did_this_chamber_fire(chamber):
+                fired.add(chamber)
+        return fired
 
-    def _experiment_design(self):
-        lines = ['\n']
-        lines.append('Dont mix: %s' % self.design.dontmix)
-        lines.append('\n')
-        lines.append('Simulated targets present: %s' % self.design.targets_present)
-        return lines
+    def which_firing_chambers_contain(self, assay_type):
+        chambers = set()
+        for chamber in self.chambers_that_fired():
+            if assay_type in self.alloc.assay_types_present_in(chamber):
+                chambers.add(chamber)
+        return chambers
 
-    def _firing_chambers(self):
+    def format_assays_in_chambers_that_fired(self):
+        """
+        Provides a string like this "ACFI" - comprised of the set of assay types
+        that are present in the chambers that fired. Sorted into alphabetical
+        order.
+        """
+        assay_types = self.assays_in_chambers_that_fired()
+        return ''.join(sorted(list(assay_types)))
+
+    def assays_in_chambers_that_fired(self):
+        """
+        Provides the set of assay types that exist across all the chambers
+        that fired.
+        """
         chambers = self.alloc.which_chambers_contain_assay_types(
             self.design.targets_present)
-        chambers = ['%03d' % i for i in chambers]
-        chambers = ' '.join(chambers)
-        return('Firing chambers: %s' % chambers)
+        assay_types = set()
+        for chamber in chambers:
+            assay_types = assay_types.union(
+                self.alloc.assay_types_present_in(chamber))
+        return assay_types
 
-    def _calling(self):
-        assay_counts = defaultdict(int)  # keyed on assay type
-        assay_percent = defaultdict(int)
-        assay_message = defaultdict(str)
+    def firing_row_stats_rows(self):
+        """
+        Provides a data structure containing rows that describes the firing
+        statistics of each assay type.
+        The returned object is a sequence of dictionaries like this:
+        {'assay_type': 'A', 'firing_message': '3 of 3 (100%)', 'percent': 100}
 
-        fired = self.alloc.which_chambers_contain_assay_types(
-            self.design.targets_present)
-        for chamber in fired:
-            assay_types = self.alloc.assay_types_present_in(chamber)
-            for assay_type in assay_types:
-                assay_counts[assay_type] += 1
-        # Capture assay counts as percentages of those deployed
-        for assay_type, count in assay_counts.items():
-            num_allocated = self.alloc.number_of_this_assay_type_allocated(
-                assay_type)
-            percent = 100 * count / num_allocated
-            assay_percent[assay_type] = percent
-            assay_message[assay_type] = \
-                self._assay_message(assay_type, count, num_allocated)
-        assays_sorted_by_percent = reversed(sorted(
-            assay_percent.keys(), key=lambda assay: assay_percent[assay]))
-        # 3 out of 3 chambers that contain A fired (100%)
-        res = []
-        for assay in assays_sorted_by_percent:
-            res.append(
-                '%d out of %d chambers that contain <%s> fired. (%03d%%) %s' %
-               (assay_counts[assay],
-                self.alloc.number_of_this_assay_type_allocated(assay),
-                assay,
-                assay_percent[assay],
-                assay_message[assay]))
-        return res
+        The sequence is sorted according to the percentage value in the firing
+        message - highest first.
+        """
+        assays = self.assays_in_chambers_that_fired()
+        rows = []
+        for assay in assays:
+            row = self.firing_stats_for_assay(assay)
+            rows.append(row)
+        assays.sort(key = lambda row: row['percent'])
+        return rows
 
+    def firing_stats_for_assay(self, assay_type):
+        """
+        Returns a dictionary like this:
+        {'assay_type': 'A', 'firing_message': '3 of 3 (100%)', 'percent': 100}
+        """
+        fired_count = len(self.which_firing_chambers_contain(assay_type))
+        placed_count = self.design.replicas[assay_type]
+        percent = int(100 * fired_count / float(placed_count))
+        message = '%d of %d (%3d%%)' % (fired_count, placed_count, percent)
+        return {'assay_type': assay_type,
+                'firing_message': message,
+                'percent': percent}
 
-    def _assay_message(self, assay_type, count, num_allocated):
-        if count != num_allocated:
-            return ''
-        if assay_type in self.design.targets_present:
-            return 'POSITIVE CALL'
-        else:
-            return 'POSITIVE CALL (FALSE)'
 
 
 
