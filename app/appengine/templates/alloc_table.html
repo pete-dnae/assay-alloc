@@ -1,26 +1,24 @@
 {# Expects its view model in the keyword argument: alloc_table #}
 <table class="table table-sm">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Username</th>
-    </tr>
-  </thead>
 
-  <tbody>
+    <tbody>
     {% for row in alloc_table.rows %}
         <tr>
-          <th scope="row">1</th>
-          {% for cell in row %}
-          <td>
-            <small>{{cell.chamber}}</small>
-            <code>{{cell.assay_types}}</code>
-          </td>
-          {% endfor %}
+            {% for cell in row %}
+            <td>
+                <span class = "small text-muted"> {{cell.chamber}} </span>
+                {% for element in cell.assay_types %}
+                    <span>
+                        {% if element.is_target %}
+                        <samp class="text-primary"><b>{{element.letter}}</b></samp>
+                        {% else %}
+                            <samp>{{element.letter}}</samp>
+                        {% endif %}
+                    </span>
+                {% endfor %}
+            </td>
+            {% endfor %}
         </tr>
     {% endfor %}
-
-  </tbody>
+    </tbody>
 </table>

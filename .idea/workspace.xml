@@ -18,8 +18,18 @@
       <file leaf-file-name="main.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/appengine/templates/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="4" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
+            <state relative-caret-position="289">
+              <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/appengine/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="478">
+              <caret line="29" column="75" lean-forward="false" selection-start-line="29" selection-start-column="45" selection-end-line="29" selection-end-column="75" />
               <folding />
             </state>
           </provider>
@@ -35,21 +45,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="viewmodel.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="viewmodel.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/appengine/viewmodel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="30" column="63" lean-forward="false" selection-start-line="30" selection-start-column="39" selection-end-line="30" selection-end-column="63" />
+            <state relative-caret-position="450">
+              <caret line="112" column="64" lean-forward="false" selection-start-line="112" selection-start-column="64" selection-end-line="112" selection-end-column="64" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="experimentdesign.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="alloc_table.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/appengine/templates/alloc_table.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="76" lean-forward="false" selection-start-line="12" selection-start-column="76" selection-end-line="12" selection-end-column="76" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="experimentdesign.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/appengine/model/experimentdesign.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="427">
-              <caret line="105" column="16" lean-forward="false" selection-start-line="105" selection-start-column="16" selection-end-line="105" selection-end-column="16" />
+            <state relative-caret-position="884">
+              <caret line="52" column="43" lean-forward="false" selection-start-line="52" selection-start-column="43" selection-end-line="52" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -86,9 +106,9 @@
       <find>self._t(</find>
       <find>base</find>
       <find>popul</find>
-      <find>form</find>
       <find>col-sm-1</find>
       <find>col_sm_2</find>
+      <find>form</find>
     </findStrings>
     <replaceStrings>
       <replace>2</replace>
@@ -148,12 +168,12 @@
         <option value="$PROJECT_DIR$/app/appengine/templates/child.html" />
         <option value="$PROJECT_DIR$/app/appengine/templates/title.html" />
         <option value="$PROJECT_DIR$/docs/log.txt" />
-        <option value="$PROJECT_DIR$/app/appengine/main.py" />
-        <option value="$PROJECT_DIR$/app/appengine/templates/alloc_table.html" />
         <option value="$PROJECT_DIR$/app/appengine/templates/main.html" />
         <option value="$PROJECT_DIR$/app/appengine/templates/form.html" />
-        <option value="$PROJECT_DIR$/app/appengine/viewmodel.py" />
+        <option value="$PROJECT_DIR$/app/appengine/main.py" />
         <option value="$PROJECT_DIR$/app/appengine/model/experimentdesign.py" />
+        <option value="$PROJECT_DIR$/app/appengine/templates/alloc_table.html" />
+        <option value="$PROJECT_DIR$/app/appengine/viewmodel.py" />
       </list>
     </option>
   </component>
@@ -242,6 +262,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assay-alloc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assay-alloc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="appengine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="model" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -255,14 +297,14 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\docker-share\assay-alloc\app\model" />
+      <recent name="C:\docker-share\assay-alloc\app\cmdlineapp" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\docker-share\assay-alloc\app\cmdlineapp" />
       <recent name="C:\docker-share\assay-alloc\app\model" />
       <recent name="C:\docker-share\assay-alloc\app" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\docker-share\assay-alloc\app\model" />
-      <recent name="C:\docker-share\assay-alloc\app\cmdlineapp" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -792,14 +834,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/appengine/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="28" column="8" lean-forward="false" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/appengine/model/experimentreporter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -820,22 +854,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/appengine/templates/alloc_table.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="24" lean-forward="true" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/appengine/templates/main.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="4" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/appengine/templates/form.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
@@ -844,18 +862,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/appengine/viewmodel.py">
+    <entry file="file://$PROJECT_DIR$/app/appengine/templates/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="30" column="63" lean-forward="false" selection-start-line="30" selection-start-column="39" selection-end-line="30" selection-end-column="63" />
+        <state relative-caret-position="289">
+          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/appengine/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="478">
+          <caret line="29" column="75" lean-forward="false" selection-start-line="29" selection-start-column="45" selection-end-line="29" selection-end-column="75" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/appengine/model/experimentdesign.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
-          <caret line="105" column="16" lean-forward="false" selection-start-line="105" selection-start-column="16" selection-end-line="105" selection-end-column="16" />
+        <state relative-caret-position="884">
+          <caret line="52" column="43" lean-forward="false" selection-start-line="52" selection-start-column="43" selection-end-line="52" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/appengine/templates/alloc_table.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="76" lean-forward="false" selection-start-line="12" selection-start-column="76" selection-end-line="12" selection-end-column="76" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/appengine/viewmodel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="112" column="64" lean-forward="false" selection-start-line="112" selection-start-column="64" selection-end-line="112" selection-end-column="64" />
           <folding />
         </state>
       </provider>

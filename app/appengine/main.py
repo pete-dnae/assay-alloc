@@ -1,9 +1,15 @@
 import logging
 
+"""
+This module defines a Flask App.
+"""
+
 from flask import Flask, render_template, request
 
+# Import web app classes.
 from viewmodel import ViewModel
 
+# Import allocation modelling classes.
 from model.assayallocator import AssayAllocator
 from model.experimentreporter import ExperimentReporter
 from model.experimentdesign import ExperimentDesign
@@ -21,8 +27,9 @@ def form():
     # to harvest these, use them to run an experiment, and finally update the
     # view model with the results.
     if request.method == 'POST':
-        experiment_design = ExperimentDesign.make_from_params(
-                assays=20, chambers=24, replicas=5, dontmix=3, targets=3)
+        experiment_design = ExperimentDesign.make_from_html_input_form_dict(
+            request.form)
+
         allocator = AssayAllocator(experiment_design)
         allocation = allocator.allocate()
         reporter = ExperimentReporter(allocation, experiment_design)

@@ -45,6 +45,18 @@ class ExperimentDesign:
         return design
 
     @classmethod
+    def make_from_html_input_form_dict(cls, form_dict):
+        assays = int(form_dict['assays'])
+        chambers = int(form_dict['chambers'])
+        replicas = int(form_dict['replicas'])
+        dontmix = int(form_dict['dontmix'])
+        targets = int(form_dict['targets'])
+
+        design = cls.make_from_params(
+            assays, chambers, replicas, dontmix, targets)
+        return design
+
+    @classmethod
     def make_from_params(cls, assays, chambers, replicas, dontmix, targets):
         exp = ExperimentDesign()
         exp.assay_types = set([chr(ord('A') + i) for i in range(assays)])

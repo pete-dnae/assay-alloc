@@ -2,9 +2,10 @@ import math
 
 class ViewModel:
     """
-    Provides a model (in the MVC sense) for html view templates to consume, 
-    including default values, and a factory method to initialise the model 
-    from a form belonging to an incoming http request.
+    Provides the top level model (in the MVC sense) for html view templates to
+    consume. Provides methods to create a baseline model from an incoming
+    html form request, plus methods to augment this model with data from a
+    completed allocation in the form of an ExperimentReporter object.
     """
 
     _DISPLAY_COLUMNS = 4
@@ -16,6 +17,11 @@ class ViewModel:
 
     @classmethod
     def initialise_from_request_form(cls, request):
+        """
+        A factory function that creates and initialises a ViewModel based only
+        on data available from an incoming URL request. I.e. reflects only the
+        input conditions.
+        """
         mdl = ViewModel()
         mdl._init_to_defaults()
         mdl._override_from_form(request.form)
@@ -23,18 +29,14 @@ class ViewModel:
 
     def populate_with_experiment_results(self, experiment_reporter):
         # Make available the enumerated assays and dontmix pairs chosen
-        self.input_params['assays_enumerated'] = \
-            experiment_reporter.design.all_assay_types_as_single_string()
-        self.input_params['dontmix_enumerated'] = \
-            experiment_reporter.design.dontmix_as_single_string()
-        self.input_params['targets_enumerated'] = \
-            experiment_reporter.design.targets_as_single_string()
+        self._add_notes_to_augment_input_fields(experiment_reporter)
+
 
         # Make available the main allocation table data.
         self.alloc_table = {}
         self.alloc_table["rows"] = []
         num_chambers = experiment_reporter.design.num_chambers
-        num_rows = int(math.ceil(num_chambers / self._DISPLAY_COLUMNS))
+        num_rows = int(math.ceil(num_chambers / float(self._DISPLAY_COLUMNS)))
         for row_index in range(num_rows):
             next_row = self._make_alloc_table_row(
                 experiment_reporter, row_index)
@@ -57,8 +59,7 @@ class ViewModel:
         self.input_params["targets"] = 2
         self.input_params['assays_enumerated'] = ''
         self.input_params['dontmix_enumerated'] = ''
-        self.input_params['targets_enumerated'] = ''
-
+        self.input_params['targets_enumerated'] = ()
 
         # Fro rendering the table that reprsents allocations.
         # E.g. the grid size, and the assays presentin a given chamber.
@@ -73,9 +74,20 @@ class ViewModel:
         For example, if the request form has an entry {assays: 24}, then set
         self.assays = 24.
         """
-
         for key in form:
             self.input_params[key] = form[key]
+
+    def _add_notes_to_augment_input_fields(self, experiment_reporter):
+        """
+        Creates strings to go next to the input table fields, for example
+        the assays chosen once how many is known ABCDEF...
+        """
+        self.input_params['assays_enumerated'] = \
+            experiment_reporter.design.all_assay_types_as_single_string()
+        self.input_params['dontmix_enumerated'] = \
+            experiment_reporter.design.dontmix_as_single_string()
+        self.input_params['targets_enumerated'] = \
+            experiment_reporter.design.targets_as_single_string()
 
     def _make_alloc_table_row(self, experiment_reporter, row_index):
         cells = []
@@ -94,6 +106,11 @@ class ViewModel:
         assay_types = alloc.assay_types_present_in(chamber_number)
         assay_types = list(assay_types)
         assay_types.sort()
-        assay_types = ''.join(assay_types)
-        return {'chamber': '%02d' % chamber_number, 'assay_types': assay_types}
+        elements = []
+        for assay_type in assay_types:
+            letter = assay_type
+            is_target = (letter in experiment_reporter.design.targets_present)
+            element = {'letter': letter, 'is_target': is_target}
+            elements.append(element)
+        return {'chamber': '%02d' % chamber_number, 'assay_types': elements}
 
