@@ -1,6 +1,7 @@
 class ExperimentDesign:
     """
     Encapsulates the mandate for the allocation experiment.
+    Includes a few factory functions, and some convenience queries.
     """
 
     def __init__(self):
@@ -83,15 +84,25 @@ class ExperimentDesign:
                 return False
         return True
 
-    def format_all_assays(self):
-        lines = []
-        for _type in sorted(self.assay_types):
-            assays = []
-            for i in range(self.replicas[_type]):
-                replica = i + 1
-                assay = '%s%d' % (_type, replica)
-                assays.append(assay)
-            line_formatted = ' '.join(assays)
-            lines.append(line_formatted)
-        return lines
+
+    def all_assay_types_as_single_string(self):
+        """
+        Provides a string like this: 'ABCDE,...'
+        """
+        return ''.join(sorted((self.assay_types)))
+
+    def dontmix_as_single_string(self):
+        """
+        Provides a string like this: 'AB ST'
+        """
+        pairs = []
+        for pair in self.dontmix:
+            chalk, cheese = sorted(pair, key=lambda pair: pair[0])
+            pair = '%s%s' % (chalk, cheese)
+            pairs.append(pair)
+        return ' '.join(pairs)
+
+    def targets_as_single_string(self):
+        return ''.join(sorted(list(self.targets_present)))
+
 

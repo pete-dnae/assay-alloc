@@ -1,21 +1,14 @@
 o  AppEngine develop
-    o  Basics
-    o  Augment input table with actual assays, targets and dontmix pairs
-        o  Hard coded to get formatting right
-        o  From model
-            o  actual assays
-            o  targets
-            o  dontmix
-    o  Make input fields more compact or inline?
+    *  Basics
+    *  Augment input table with actual assays, targets and dontmix pairs
     o  Make the view model from the form params not hard coded
-    o  Wean off dependency on yaml so that nosetests across models all work
-    o  And the rest is history
+    o  Ditch header rows on table
+    o  Show which chambers fired
+    o  Show which residents are targets
+    o  Show calling stats
 
-o  Simple web form version of what have
-    o  What look like
-    o  Make sure can k8s it
-    o  Work up
-
+o  Wean off dependency on yaml so that nosetests across models all work
+o  And the rest is history
 o  Is all the docker legacy pointless?
 
 ----------------------------------------------------------------------------

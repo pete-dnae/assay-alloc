@@ -18,10 +18,19 @@ class ViewModel:
     def initialise_from_request_form(cls, request):
         mdl = ViewModel()
         mdl._init_to_defaults()
-        mdl._override_from_form('assays', request.form)
+        mdl._override_from_form(request.form)
         return mdl
 
     def populate_with_experiment_results(self, experiment_reporter):
+        # Make available the enumerated assays and dontmix pairs chosen
+        self.input_params['assays_enumerated'] = \
+            experiment_reporter.design.all_assay_types_as_single_string()
+        self.input_params['dontmix_enumerated'] = \
+            experiment_reporter.design.dontmix_as_single_string()
+        self.input_params['targets_enumerated'] = \
+            experiment_reporter.design.targets_as_single_string()
+
+        # Make available the main allocation table data.
         self.alloc_table = {}
         self.alloc_table["rows"] = []
         num_chambers = experiment_reporter.design.num_chambers
@@ -46,13 +55,17 @@ class ViewModel:
         self.input_params["dontmix"] = 2
         self.input_params["chambers"] = 24
         self.input_params["targets"] = 2
+        self.input_params['assays_enumerated'] = ''
+        self.input_params['dontmix_enumerated'] = ''
+        self.input_params['targets_enumerated'] = ''
+
 
         # Fro rendering the table that reprsents allocations.
         # E.g. the grid size, and the assays presentin a given chamber.
         self.alloc_table = None
 
 
-    def _override_from_form(self, key, form):
+    def _override_from_form(self, form):
         """
         For all the keys present in the given form dictionary, override the
         same-named attribute in this view model's input_params dictionary.

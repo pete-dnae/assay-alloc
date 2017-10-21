@@ -1,3 +1,5 @@
+{# Expects its view model in the keyword argument: input_params #}
+
 <form id="form" method="post" action="{{ url_for('form') }}">
     <div class="form-group row">
         <label for="assays" class="col-sm-2 col-form-label">Assays</label>
@@ -6,8 +8,8 @@
                    value={{ input_params.assays }}
                    id="assays" name="assays">
         </div>
-        <label for="assays" class="col-sm-3 col-form-label text-muted">
-            Some description here
+        <label for="assays" class="col-sm-3 col-form-label text-muted small">
+            {{ input_params.assays_enumerated }}
         </label>
     </div>
     <div class="form-group row">
@@ -25,6 +27,9 @@
                    value={{ input_params.dontmix }}
                    id="dontmix" , name="dontmix">
         </div>
+        <label for="dontmix" class="col-sm-3 col-form-label text-muted small">
+            {{ input_params.dontmix_enumerated }}
+        </label>
     </div>
     <div class="form-group row">
         <label for="chambers" class="col-sm-2 col-form-label">Chambers</label>
@@ -42,6 +47,8 @@
                    id="targets" ,
                    name="targets">
         </div>
+        <label for="targets" class="col-sm-3 col-form-label text-muted small">
+            {{ input_params.targets_enumerated }} </label>
     </div>
 
     <div class="form-group row">
@@ -53,4 +60,3 @@
     </div>
 </form>
 
-{# Expects its view model in the keyword argument: input_params #}
