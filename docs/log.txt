@@ -1,8 +1,10 @@
 *  Make targets in input section be blue
 *  Make targets in firing stats be blue and false 100s red
 *  Have false positive column
-o  Page layout and headings
-o  Say apply not allocate
+*  Page layout and headings
+    *  Add H1 headings
+    *  Play with Page layout
+o  Make alloc table and target discrim say press apply when not present
 o  Check deploy and on phone
 o  Fix algorithm
 o  Regression tests
