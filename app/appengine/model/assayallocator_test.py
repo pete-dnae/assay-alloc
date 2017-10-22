@@ -153,7 +153,7 @@ class TestAssayAllocator(unittest.TestCase):
                          '008 C3,F4,I4,J2')
 
 
-    def test_fully_features(self):
+    def test_fully_featured(self):
         """
         Test the results of the allocation, starting from the reference
         experiment design (including dontmix), with the full set of heuristics.

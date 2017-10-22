@@ -1,11 +1,35 @@
+o  Timeout release and slides
+    o  Turn off new feature
+    o  Test
+    o  Deploy
+o  Formulate answers to Davids questions
+o  Update slides
+    o  David's answers
+    o  New screenshot with URL
+
+
+o  Resume below
+
+
 *  Check deploy and on phone
 o  Fix algorithm
     *  Capture flaw of current
     *  Write down current and flaw 
     *  Hypothesise solution
     o  Try it (for 3 targets)
-    o  Add in 2 and 1 to see if generalises
+        *  Refactor and simplify existing code in readiness
+        *  Code it up
+        *  Get it to run without crashing
+        *  Quick whirl in web app
+            *  Default case
+            *  Known problem case - not doing anything
+        o  Design bottom up unit tests
+            o  Target hypoth
+            o  New allocator methods
+        o  System tests
+        o  SLOW
 o  Regression tests
+o  Password protect
 o  Make alloc table and target discrim say press apply when not present
 o  Make root url take you form
 o  Let you specify which targets not how many
