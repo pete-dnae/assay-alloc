@@ -1,14 +1,13 @@
-*  Make targets in input section be blue
-*  Make targets in firing stats be blue and false 100s red
-*  Have false positive column
-*  Page layout and headings
-    *  Add H1 headings
-    *  Play with Page layout
-o  Make alloc table and target discrim say press apply when not present
-o  Check deploy and on phone
+*  Check deploy and on phone
 o  Fix algorithm
+    *  Capture flaw of current
+    *  Write down current and flaw 
+    *  Hypothesise solution
+    o  Try it (for 3 targets)
+    o  Add in 2 and 1 to see if generalises
 o  Regression tests
-
+o  Make alloc table and target discrim say press apply when not present
+o  Make root url take you form
 o  Let you specify which targets not how many
 o  How protect ExperimentDesign.make_from_form_dict() from mal formed form?
 o  Algorithm doc page (incl cookie persist form on other)
@@ -20,9 +19,44 @@ o  Is all the docker legacy pointless?
 Misc
 ----------------------------------------------------------------------------
 
-python assay-alloc.py --assays 20 --replicas 3 --chambers 24 --dontmix 3 --targets 2
+Problem config
+
+assay-alloc --assays 20 --replicas 3 --chambers 40 --dontmix 3 --targets 3
 
 ----------------------------------------------------------------------------
-Foo
+Current flaw
 ----------------------------------------------------------------------------
+    o  20 assays into 40 chambers, with 3 replicas and 3 targets
+    o  Our targets are ABC
+    o  O and P are false positives.
+    o  Because (take O)
+        o  O's colocations are: OA OB OC
+        o  Every O is colocated with either an A or a B or a C.
+    o  How could say the third O have been located to have avoided the
+       false positive?
+        o  It could have gone later in the grid to be colocated with say D,
+           with D not being a target.
+        o  But we are blind to which assays are targets during allocation. Had
+           the targets been AB-D the same problem would have arisen.
+
+    o  Can we say this in narrative?
+        o  This particular false positive
+            o  Even when a non-target assay has non overlapping co-located
+               mixes, it can still produce a false positive if each of its
+               mixes coincidentally includes one of the targets.
+        o  What creates false positives in general?
+            o  When every instance of a non-target assay happens to be in a
+               group that contains one of the targets.
+
+    o  Potential remedy
+        o  What if we hypothesise that their is a hidden set of (say) 3
+           targets.
+        o  We can therefore assess whether an allocation of O somewhere would
+           by chance mean that every location of O happens also to contain one
+           of the 3 targets, thus creating a false positive. This would be one 
+           negative reason (a score of one) against locating P there.
+        o  If we were to repeat this with every
+
+
+
 

@@ -30,7 +30,7 @@ class AssayAllocator:
         """
         Entry point to the allocation algorithm.
         """
-        # Make a pool of all the assay replicas weare mandated to allocate.
+        # Make a pool of all the assay replicas we are mandated to allocate.
         pool = Pool(self._design)
 
         # We make a copy of the set of assays in the pool to iterate over,
