@@ -22,7 +22,7 @@ class AssayAllocator:
         # easily.
         self._defeat_chamber_number_hueristic = False
         self._defeat_existing_occupant_count_heuristic = False
-        self._defeat_false_positive_probability_heuristic = False
+        self._defeat_false_positive_probability_heuristic = True
         self._defeat_duplicate_pairs_heuristic = False
 
         # Clients can set self._assay_to_trace to a particular Assay, e.g.

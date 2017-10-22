@@ -1,6 +1,7 @@
 o  Timeout release and slides
-    o  Turn off new feature
-    o  Test
+    *  Turn off new feature
+    *  Test
+    o  Commit
     o  Deploy
 o  Formulate answers to Davids questions
 o  Update slides
