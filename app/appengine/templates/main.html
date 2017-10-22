@@ -16,9 +16,12 @@
     {% include "alloc_table.html" %}
     {% endwith %}
 
-    {% with firing_stats=view_model.firing_stats %}
-    {% include "firingstats.html" %}
-    {% endwith %}
+    {% if view_model.firing_stats %}
+        {% with firing_stats=view_model.firing_stats %}
+            {% include "firingstats.html" %}
+        {% endwith %}
+    {% endif %}
+
 
 </div>
 

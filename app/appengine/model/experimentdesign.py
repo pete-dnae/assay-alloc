@@ -99,9 +99,14 @@ class ExperimentDesign:
 
     def all_assay_types_as_single_string(self):
         """
-        Provides a string like this: 'ABCDE,...'
+        Provides a string like this: 'ABCD...O'
         """
-        return ''.join(sorted((self.assay_types)))
+        letters = ''.join(sorted((self.assay_types)))
+        if len(letters) < 7:
+            return letters
+        start_fragment = letters[:3]
+        end_fragment = letters[-1:]
+        return start_fragment + ' ... ' + end_fragment
 
     def dontmix_as_single_string(self):
         """

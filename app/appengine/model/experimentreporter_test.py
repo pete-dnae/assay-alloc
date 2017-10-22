@@ -71,4 +71,22 @@ class TestExperimentReporter(unittest.TestCase):
             reporter.firing_stats_for_assay('A'),
             {'firing_message': '1 of 2 ( 50%)', 'percent': 50, 'assay_type': 'A'})
 
+    def test_firing_row_stats_rows(self):
+        design = ExperimentDesign.make_reference_example()
+        allocator = AssayAllocator(design)
+        allocation = allocator.allocate()
+        reporter = ExperimentReporter(allocation, design)
+
+        rows = reporter.firing_row_stats_rows()
+        self.assertEqual(
+            rows.pop(),
+            {'firing_message': '2 of 2 (100%)',
+             'percent': 100,
+             'assay_type': 'M'})
+        self.assertEqual(
+            rows.pop(0),
+            {'firing_message': '1 of 4 ( 25%)',
+             'percent': 25,
+             'assay_type': 'F'})
+
 

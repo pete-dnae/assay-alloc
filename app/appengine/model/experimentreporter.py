@@ -1,3 +1,5 @@
+from operator import itemgetter
+
 class ExperimentReporter:
     """
     Offers a suite of queries about experiment results that provide conveniently
@@ -67,21 +69,35 @@ class ExperimentReporter:
         for assay in assays:
             row = self.firing_stats_for_assay(assay)
             rows.append(row)
-        assays.sort(key = lambda row: row['percent'])
+        rows.sort(key = itemgetter('assay_type'))
+        rows.sort(key = itemgetter('percent'), reverse=True)
         return rows
 
     def firing_stats_for_assay(self, assay_type):
         """
         Returns a dictionary like this:
-        {'assay_type': 'A', 'firing_message': '3 of 3 (100%)', 'percent': 100}
+        {
+            'assay_type': 'A',
+            'firing_message':
+            '3 of 3 (100%)',
+            'percent': 100,
+            'status': 'good' # or 'bad' or None
+        }
         """
         fired_count = len(self.which_firing_chambers_contain(assay_type))
         placed_count = self.design.replicas[assay_type]
         percent = int(100 * fired_count / float(placed_count))
+        status = None
+        if (percent == 100):
+            if assay_type in self.design.targets_present:
+                status = "good"
+            else:
+                status = "bad"
         message = '%d of %d (%3d%%)' % (fired_count, placed_count, percent)
         return {'assay_type': assay_type,
                 'firing_message': message,
-                'percent': percent}
+                'percent': percent,
+                'status': status}
 
 
 

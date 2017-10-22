@@ -1,7 +1,5 @@
 {# Expects its view model in the keyword argument: firing_stats #}
 
-<p>Assay Present in chambers that fired: {{firing_stats.firing_assays}}</p>
-
 <table class="table table-sm table-bordered">
 
     <tbody>
@@ -9,17 +7,32 @@
     <tr>
         <th>Assay</th>
         <th>Firing Chambers</th>
+        <th>Warning</th>
     </tr>
     </thead>
-    <tr>
-        {% for assay in ("A", "B", "C") %}
-        <td>
-            <small>{{assay}}</small>
-        </td>
-        <td>
-            <small>3 of 3 (100%)</small>
-        </td>
-    </tr>
+        {% for row in firing_stats.rows %}
+
+            {% set judgement = "" %}
+            {% if row.status == "good" %}
+                {% set row_color_class = "text-primary" %}
+            {% elif row.status == "bad"  %}
+                {% set row_color_class = "text-danger" %}
+                {% set judgement = "False Positive" %}
+            {% else %}
+                {% set row_color_class = "" %}
+            {% endif %}
+
+            <tr class="{{row_color_class}}">
+                <td>
+                    <small>{{row.assay_type}}</small>
+                </td>
+                <td>
+                    <small>{{row.firing_message}}</small>
+                </td>
+                <td>
+                    <small>{{judgement}}</small>
+                </td>
+            </tr>
     {% endfor %}
     </tbody>
 </table>
