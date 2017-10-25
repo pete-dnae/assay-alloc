@@ -2,11 +2,9 @@ from itertools import combinations
 
 class TargetSetHypothesese:
     """
-    During the assay to chamber allocation process, we do not know which targets
-    will be present during the experiment execution.
-    It is most likely that one target will be present, but we capture here
-    the sets possible of size 2 to use in allocation heuristics.
-    """
+    During the assay to chamber allocation process, we do not know which
+    targets will be present during the experiment execution.  We capture here
+    the sets possible of size 2 to use in allocation heuristics.  """
 
     def __init__(self):
         self.sets = set() # Of frozen set, of assay type.

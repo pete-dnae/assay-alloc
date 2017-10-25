@@ -1,34 +1,12 @@
-o  Timeout release and slides
-    *  Turn off new feature
-    *  Test
-    o  Commit
-    o  Deploy
-o  Formulate answers to Davids questions
-o  Update slides
-    o  David's answers
-    o  New screenshot with URL
+*  Make sure new functions have sensible tests
+*  Specify false positive avoidance new approach
+*  If it works plan experimental dev
+    *  Need not branch - use different allocator in same setup
+o  Commit all with baseline comment
+o  Code top down the algorithm
 
 
-o  Resume below
 
-
-*  Check deploy and on phone
-o  Fix algorithm
-    *  Capture flaw of current
-    *  Write down current and flaw 
-    *  Hypothesise solution
-    o  Try it (for 3 targets)
-        *  Refactor and simplify existing code in readiness
-        *  Code it up
-        *  Get it to run without crashing
-        *  Quick whirl in web app
-            *  Default case
-            *  Known problem case - not doing anything
-        o  Design bottom up unit tests
-            o  Target hypoth
-            o  New allocator methods
-        o  System tests
-        o  SLOW
 o  Regression tests
 o  Password protect
 o  Make alloc table and target discrim say press apply when not present
