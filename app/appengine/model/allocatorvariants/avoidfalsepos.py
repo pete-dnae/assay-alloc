@@ -1,6 +1,8 @@
+from itertools import combinations
 
 from model.allocation import Allocation
 from model.possibletargets import PossibleTargets
+from model.assay import Assay
 
 class AvoidsFP:
     """
@@ -61,9 +63,11 @@ class AvoidsFP:
         # stimulate a false positive, regardless of which set of targets is
         # present.
 
-        for chamber_set in possible_chamber_sets():
+        for chamber_set in possible_chamber_sets:
             ok = self._chamber_set_works_for_assay(chamber_set, assay_type)
             if ok:
+                print('XXX for assay %s, we are using chamber set %s' %
+                (assay_type, chamber_set))
                 self._register_allocation(chamber_set, assay_type)
                 return
         raise RuntimeError('Cannot allocate: %s' % assay_type)
@@ -76,11 +80,12 @@ class AvoidsFP:
         regardless of which targets are present?
         """
 
+
         # We can conclude that this chamber set works, provided that, for
         # all possible target set possibilities, at least one of the chambers
         # in the set does not contain any of the targets in that target set.
 
-        for target_set in self._possible_target_sets:
+        for target_set in self._possible_target_sets.sets:
             # As soon as we encounter a target set for which this chamber
             # set does not work, we can conclude immediately that the chamber
             # set does not work.
@@ -115,9 +120,20 @@ class AvoidsFP:
         chambers_to_remove = set()
         for chamber in chambers:
             occupants = self.alloc.assay_types_present_in(chamber)
-            willmix = self._design.can_this_assay_go_into_this_mixture(
+            willmix = self._design.can_this_assay_type_go_into_this_mixture(
                 assay_type, occupants)
             if not willmix:
                 chambers_to_remove.add(chamber)
         chambers = chambers - chambers_to_remove
 
+    def _draw_possible_chamber_sets_of_size(self, chambers, size):
+        sets = set()
+        [sets.add(frozenset(c)) for c in combinations(chambers, size)]
+        return sets
+
+
+    def _register_allocation(self, chamber_set, assay_type):
+        for i, chamber in enumerate(chamber_set):
+            replica = i + 1
+            assay = Assay(assay_type, replica)
+            self.alloc.allocate(assay, chamber)

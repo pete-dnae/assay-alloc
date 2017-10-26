@@ -2,12 +2,14 @@
 *  Specify false positive avoidance new approach
 *  If it works plan experimental dev
     *  Need not branch - use different allocator in same setup
-o  Commit all with baseline comment
+*  Commit all with baseline comment
 o  Code top down the algorithm
-
-
-
+    *  Get to work at face value
+o  Make things determinate order
+o  Play around in web api
+o  Design and make unit tests
 o  Regression tests
+
 o  Password protect
 o  Make alloc table and target discrim say press apply when not present
 o  Make root url take you form

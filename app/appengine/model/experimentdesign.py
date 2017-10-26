@@ -85,14 +85,19 @@ class ExperimentDesign:
         Is it legal to add the given assay to a chamber that already
         contains the given mixture. (set() of assay types).
         """
+        return self.can_this_assay_type_go_into_this_mixture(
+                assay.type, mixture)
+
+
+    def can_this_assay_type_go_into_this_mixture(self, assay_type, mixture):
         # Not legal if this assay type already present.
-        if assay.type in mixture:
+        if assay_type in mixture:
             return False
         # Not legal if would create an illegal pairing.
         for chalk, cheese in self.dontmix:
-            if (chalk in mixture) and (assay.type == cheese):
+            if (chalk in mixture) and (assay_type == cheese):
                 return False
-            if (cheese in mixture) and (assay.type == chalk ):
+            if (cheese in mixture) and (assay_type == chalk ):
                 return False
         return True
 

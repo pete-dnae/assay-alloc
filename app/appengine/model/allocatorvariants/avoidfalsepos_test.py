@@ -21,6 +21,13 @@ class TestAvoidsFP(unittest.TestCase):
     # ------------------------------------------------------------------------
 
     def test_runs_without_crashing(self):
-        design = ExperimentDesign.make_reference_example()
+        assays = 20
+        chambers = 24
+        replicas = 4
+        dontmix = 10
+        targets = 0
+
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                replicas, dontmix, targets)
         allocator = AvoidsFP(design)
         allocation = allocator.allocate()

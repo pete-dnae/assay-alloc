@@ -11,7 +11,7 @@ class TestAllocation(unittest.TestCase):
     def test_construction(self):
         alloc = Allocation(3)
 
-    def all_chambers(self):
+    def test_all_chambers(self):
         alloc = Allocation(3)
         self.assertEqual(alloc.all_chambers(), {1,2,3})
 
