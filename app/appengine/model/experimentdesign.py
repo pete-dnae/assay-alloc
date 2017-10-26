@@ -108,6 +108,15 @@ class ExperimentDesign:
         end_fragment = letters[-1:]
         return start_fragment + ' ... ' + end_fragment
 
+
+    def assay_types_in_priority_order(self):
+        """
+        Provides a sequence of assay types in the order in which they
+        should be allocated.
+        """
+        # Use alphabetical order for now.
+        return sorted(self.assay_types)
+
     def dontmix_as_single_string(self):
         """
         Provides a string like this: 'AB ST'
