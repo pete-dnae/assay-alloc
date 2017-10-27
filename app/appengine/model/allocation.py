@@ -3,8 +3,8 @@ from itertools import combinations
 
 class Allocation:
     """
-    Encapsulates a model of which Assay(s) are allocated to which chambers.
-    And offers a set of convenience queries.
+    Encapsulates a state model of which Assay(s) are allocated to which 
+    chambers. And offers a set of convenience queries.
     """
 
     def __init__(self, num_chambers):

@@ -4,10 +4,24 @@ from model.allocation import Allocation
 from model.possibletargets import PossibleTargets
 from model.assay import Assay
 
-class AvoidsFP:
+class AvoidsFP:     # FP = False-Positive
     """
-    Provides an allocation algorithm based on avoiding all possible false positives, 
-    no matter which targets are present.
+    Provides an allocation algorithm based on avoiding all possible false 
+    positives, no matter which targets are present.
+    """
+
+    """
+    A NOTE ON NOMENCLATURE
+
+    This code, in places, adopts a naming convention that is intended to convey
+    both the generic nature of the variable, as well as a concrete example.
+
+    Like this:
+
+        chamber_set_147     # A chamber set that could be {1,4,7}
+        target_set_ADFN     # A set of targets that could be {A,D,F,N}
+        assay_P             # An assay type that could be P
+
     """
 
 
@@ -19,10 +33,12 @@ class AvoidsFP:
         # Prepare an Allocation object with which to register allocation
         # decisions as they progress.
         self.alloc = Allocation(experiment_design.num_chambers)
-        # Prepare the set of all possible target sets to consider during the
-        # allocation process..
+        # Prepare the set of all possible (hypothetical) target sets to 
+        # consider during the allocation process.
+        # NB, there are circa tens-of-thousands of these if we draw from a 
+        # 20-member superset, and constrain the subsets to 5 or fewer members.
         self._possible_target_sets = PossibleTargets.create(
-            experiment_design, (2,3))
+            experiment_design, (1,2,3,4,5))
 
 
     def allocate(self):
@@ -31,9 +47,10 @@ class AvoidsFP:
         """
 
         # Work through the assay types in the priority order specified by
-        # the experiment design.
-        for assay_type in self._design.assay_types_in_priority_order():
-            self._allocate_all_replicas_of_this_assay_type(assay_type)
+        # the experiment design, and for each, allocate all the replicas
+        # in one go.
+        for assay_P in self._design.assay_types_in_priority_order():
+            self._allocate_all_replicas_of_this_assay_type(assay_P)
 
         return self.alloc
 
@@ -42,97 +59,103 @@ class AvoidsFP:
     # Private below.
     #------------------------------------------------------------------------
 
-    def _allocate_all_replicas_of_this_assay_type(self, assay_type):
+    def _allocate_all_replicas_of_this_assay_type(self, assay_P):
         """
-        Decide where to allocate all the replicas of the given assay type and
-        update our Allocation object with this new status.
+        Find homes for all the replicas of assay_P.
         """
-        # Prepare the legal, possible, candidate chamber sets of the right size
-        # for the number of replicas wanted for this assay. For example, if
-        # we want 3 replicas of assay A, this data structure will look like
-        # this:
-        # ( {1,2,7}, {1,2,8}, ... {3,5,9} ... )
+        # We will choose and use, a particular set of chambers to house this 
+        # assay type.
+
+        # So we first prepare the candidate chamber sets - a set of sets. 
+        # That might look something like this: 
+        # { {1,2,7}, {1,2,8}, ... {3,5,9} ... }
 
         chambers = self.alloc.all_chambers()
         self._remove_incompatible_chambers(chambers, assay_type)
-        replicas = self._design.replicas[assay_type]
+        num_replicas = self._design.replicas[assay_type]
         possible_chamber_sets = self._draw_possible_chamber_sets_of_size(
-            chambers, size=replicas)
+            chambers, size=num_replicas)
 
-        # Use the first chamber set we can find in this set, that cannot 
-        # stimulate a false positive, regardless of which set of targets is
-        # present.
+        # Work through the possible chamber sets, and use the first set we
+        # encounter that cannot stimulate a false positive for assay_P,
+        # regardless of which set of targets is present.
 
-        for chamber_set in possible_chamber_sets:
-            ok = self._chamber_set_works_for_assay(chamber_set, assay_type)
+        for chamber_set_147 in possible_chamber_sets:
+            ok = self._chamber_set_works_for_assay(chamber_set_147, assay_P)
             if ok:
-                print('XXX for assay %s, we are using chamber set %s' %
-                (assay_type, chamber_set))
-                self._register_allocation(chamber_set, assay_type)
+                self._register_allocation(chamber_set_147, assay_P)
                 return
-        raise RuntimeError('Cannot allocate: %s' % assay_type)
+        raise RuntimeError('Cannot allocate: %s' % assay_P)
 
 
-    def _chamber_set_works_for_assay(self, chamber_set, assay_type):
+    def _chamber_set_works_for_assay(self, chamber_set_147, assay_P):
         """
-        Can we gaurantee that using the given set of chambers to home all 
-        replicas of the given assay type, this cannot create false positives, 
-        regardless of which targets are present?
+        If we allocate all (3) replicas of assay_P, to chambers {1,4,7}, can we
+        be certain that there is no fluke set of possible targets present,
+        (for example {A,D,F,N}, that would cause all of {1,4,7} to fire.
+
+        This would make {1,4,7} an unacceptable choice of chambers to house
+        assay_P, because this fluke target presence would then emit a false 
+        positive call for assay_P.
         """
 
+        # Iterate over, and consider, each hypothetically-possible target-set
+        # in turn. As soon as we reach one that would cause all of {1,4,7} to
+        # fire, we can conclude immediately that chamber_set_147 is not
+        # suitable.
 
-        # We can conclude that this chamber set works, provided that, for
-        # all possible target set possibilities, at least one of the chambers
-        # in the set does not contain any of the targets in that target set.
-
-        for target_set in self._possible_target_sets.sets:
-            # As soon as we encounter a target set for which this chamber
-            # set does not work, we can conclude immediately that the chamber
-            # set does not work.
-            works =  self._chamber_set_works_for_target_set(
-                chamber_set, target_set)
-            if not works:
+        for target_set_ADFN in self._possible_target_sets.sets:
+            all_would_fire =  
+                self._all_would_fire(chamber_set_147, target_set_ADFN)
+            if all_would_fire
                 return False
 
         return True
 
 
-    def _chamber_set_works_for_target_set(self, chamber_set, target_set):
+    def _all_would_fire(self, chamber_set_147, target_set_ADFN):
         """
-        Does at least one of the chambers in the given chamber set, NOT
-        contain any of the targets in the given target set?
+        Would the presence of the targets {A,D,F,N} cause all of the chambers
+        {1,4,7} to fire?
         """
-        for chamber in chamber_set:
+        for chamber in chamber_set_147:
             occupants = self.alloc.assay_types_present_in(chamber)
-            assays_in_common = occupants.intersection(target_set)
-            number_of_assays_in_common = len(assays_in_common)
-            if number_of_assays_in_common == 0:
-                return True
-        return False
+            if len(occupants.intersection(target_set)) == 0:
+                return False
+        return True
 
 
-    def _remove_incompatible_chambers(self, chambers, assay_type):
+    def _remove_incompatible_chambers(self, chambers, assay_P):
         """
         Remove (in place), all the chambers from the given set of chambers
-        that contain assays that must not be mixed with the given assay 
-        type.
+        into which it would be illegal (because of mixing rules) 
+        to place assay_P.
         """
         chambers_to_remove = set()
         for chamber in chambers:
             occupants = self.alloc.assay_types_present_in(chamber)
-            willmix = self._design.can_this_assay_type_go_into_this_mixture(
+            legal = self._design.can_this_assay_type_go_into_this_mixture(
                 assay_type, occupants)
-            if not willmix:
+            if not legal:
                 chambers_to_remove.add(chamber)
         chambers = chambers - chambers_to_remove
 
+
     def _draw_possible_chamber_sets_of_size(self, chambers, size):
-        sets = set()
-        [sets.add(frozenset(c)) for c in combinations(chambers, size)]
-        return sets
+        """
+        Provide all the chamber subsets of size <size> that are available 
+        from the set given.
+        """
+        subsets = set()
+        [subsets.add(frozenset(c)) for c in combinations(chambers, size)]
+        return subsets
 
 
     def _register_allocation(self, chamber_set, assay_type):
+        """
+        Update the state we are tracking of which assays have been allocated
+        to which chambers - with the given mandate..
+        """
         for i, chamber in enumerate(chamber_set):
             replica = i + 1
             assay = Assay(assay_type, replica)

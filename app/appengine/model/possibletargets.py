@@ -13,8 +13,8 @@ class PossibleTargets:
     @classmethod
     def create(cls, experiment_design, set_sizes_wanted):
         """
-        Draws all the sets of size (p,q,r) that can be made from the set
-        of all targets.
+        Makes the set of sets. The caller must specify what sized-sets
+        are of interest. E.g. (2,3,4).
         """
         res = PossibleTargets()
         assay_types = experiment_design.assay_types
