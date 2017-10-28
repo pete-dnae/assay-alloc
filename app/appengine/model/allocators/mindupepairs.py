@@ -4,9 +4,10 @@ from model.allocation import Allocation
 from model.pool import Pool
 from model.targetsethypothesese import TargetSetHypothesese
 
-class AssayAllocator:
+class MinDupePairs:
     """
-    Encapsulates the allocation algorithm.
+    Encapsulates an allocation algorithm that is based on miminimizing the
+    number of duplicated co-located assay type pairs..
     """
 
 
