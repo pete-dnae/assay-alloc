@@ -6,8 +6,8 @@
 *  Code top down the algorithm
     *  Get to work at face value
 *  Review what done
+*  Make things deterministic order for tests
 
-o  Make things determinate order
 o  Any silly dupe in loops
 o  Convert set intersection tests to being implicit None
 o  Design and make unit tests

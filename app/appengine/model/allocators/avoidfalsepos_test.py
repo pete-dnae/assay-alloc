@@ -1,6 +1,6 @@
 import unittest
 
-from model.allocatorvariants.avoidfalsepos import AvoidsFP
+from model.allocators.avoidfalsepos import AvoidsFP
 from model.experimentdesign import ExperimentDesign
 from model.assay import Assay
 from model.allocation import Allocation

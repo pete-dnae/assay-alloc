@@ -71,8 +71,8 @@ class AvoidsFP:     # FP = False-Positive
         # { {1,2,7}, {1,2,8}, ... {3,5,9} ... }
 
         chambers = self.alloc.all_chambers()
-        self._remove_incompatible_chambers(chambers, assay_type)
-        num_replicas = self._design.replicas[assay_type]
+        self._remove_incompatible_chambers(chambers, assay_P)
+        num_replicas = self._design.replicas[assay_P]
         possible_chamber_sets = self._draw_possible_chamber_sets_of_size(
             chambers, size=num_replicas)
 
@@ -105,9 +105,9 @@ class AvoidsFP:     # FP = False-Positive
         # suitable.
 
         for target_set_ADFN in self._possible_target_sets.sets:
-            all_would_fire =  
-                self._all_would_fire(chamber_set_147, target_set_ADFN)
-            if all_would_fire
+            all_would_fire =  self._all_would_fire(
+                chamber_set_147, target_set_ADFN)
+            if all_would_fire:
                 return False
 
         return True
@@ -120,7 +120,9 @@ class AvoidsFP:     # FP = False-Positive
         """
         for chamber in chamber_set_147:
             occupants = self.alloc.assay_types_present_in(chamber)
-            if len(occupants.intersection(target_set)) == 0:
+            # Only needs one chamber to have no occupants in common
+            # with the target set to conclude False.
+            if len(occupants.intersection(target_set_ADFN)) == 0:
                 return False
         return True
 
@@ -135,7 +137,7 @@ class AvoidsFP:     # FP = False-Positive
         for chamber in chambers:
             occupants = self.alloc.assay_types_present_in(chamber)
             legal = self._design.can_this_assay_type_go_into_this_mixture(
-                assay_type, occupants)
+                assay_P, occupants)
             if not legal:
                 chambers_to_remove.add(chamber)
         chambers = chambers - chambers_to_remove
@@ -144,11 +146,13 @@ class AvoidsFP:     # FP = False-Positive
     def _draw_possible_chamber_sets_of_size(self, chambers, size):
         """
         Provide all the chamber subsets of size <size> that are available 
-        from the set given.
+        from the set given. Returns the collection of subsets as a sorted 
+        sequence, to gaurantee that iterating over them produces a 
+        deterministic order, which is necessary for automated testing.
         """
-        subsets = set()
-        [subsets.add(frozenset(c)) for c in combinations(chambers, size)]
-        return subsets
+        subsets = []
+        [subsets.append(frozenset(c)) for c in combinations(chambers, size)]
+        return sorted(subsets)
 
 
     def _register_allocation(self, chamber_set, assay_type):
