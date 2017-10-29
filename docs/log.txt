@@ -7,10 +7,20 @@
     *  Get to work at face value
 *  Review what done
 *  Make things deterministic order for tests
-
-o  Any silly dupe in loops
-o  Convert set intersection tests to being implicit None
+*  Any silly dupe in loops
+*  Convert set intersection tests to being implicit None
 o  Design and make unit tests
+    o  What behaviour and code want to check?
+        *  Possible sets is perfectly correct
+        *  _draw_possible_chamber_sets_of_size() is behaving
+        *  _remove_incompatible_chambers(self,
+        o  _all_would_fire(self,
+        o  _chamber_set_works_for_assay(self,
+        o  _allocate_all_replicas_of_this_assay_type(self,
+        o  allocate() produces an allocation
+        o  allocate knows how to fail
+        o  The algorithm will fail when pushed
+        o  The algorithm succeeds provably in a reference case
 o  Regression tests and clean out of redundant code.
 o  If works, decide how to update API and get to Brad
 

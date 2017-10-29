@@ -22,7 +22,7 @@ class PossibleTargets:
         are of interest. E.g. (2,3,4).
         """
         res = PossibleTargets()
-        assay_types = experiment_design.assay_types
+        assay_types = experiment_design.assay_types_in_priority_order()
 
         sets = []
         for i in set_sizes_wanted:

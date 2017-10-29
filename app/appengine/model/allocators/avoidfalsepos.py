@@ -71,7 +71,7 @@ class AvoidsFP:     # FP = False-Positive
         # { {1,2,7}, {1,2,8}, ... {3,5,9} ... }
 
         chambers = self.alloc.all_chambers()
-        self._remove_incompatible_chambers(chambers, assay_P)
+        chambers = self._remove_incompatible_chambers(chambers, assay_P)
         num_replicas = self._design.replicas[assay_P]
         possible_chamber_sets = self._draw_possible_chamber_sets_of_size(
             chambers, size=num_replicas)
@@ -129,9 +129,9 @@ class AvoidsFP:     # FP = False-Positive
 
     def _remove_incompatible_chambers(self, chambers, assay_P):
         """
-        Remove (in place), all the chambers from the given set of chambers
-        into which it would be illegal (because of mixing rules) 
-        to place assay_P.
+        Make (and return) a copy of the given set of chambers, from which
+        have been removed, any chambers with existing occupants incompatible
+        with adding in the given assay_P.
         """
         chambers_to_remove = set()
         for chamber in chambers:
@@ -140,7 +140,7 @@ class AvoidsFP:     # FP = False-Positive
                 assay_P, occupants)
             if not legal:
                 chambers_to_remove.add(chamber)
-        chambers = chambers - chambers_to_remove
+        return chambers - chambers_to_remove
 
 
     def _draw_possible_chamber_sets_of_size(self, chambers, size):
@@ -151,7 +151,7 @@ class AvoidsFP:     # FP = False-Positive
         deterministic order, which is necessary for automated testing.
         """
         subsets = []
-        [subsets.append(frozenset(c)) for c in combinations(chambers, size)]
+        [subsets.append(set(c)) for c in combinations(chambers, size)]
         return sorted(subsets)
 
 
