@@ -20,25 +20,17 @@ class TestAllocation(unittest.TestCase):
         alloc.allocate('A', frozenset({1,2,3}))
         alloc.allocate('B', frozenset({1,2,4}))
         sets = alloc.reserved_chamber_sets()
-        self.assertEqual(sets,  
-            set([('B', frozenset([1, 2, 4])), ('A', frozenset([1, 2, 3]))]))
+        self.assertEqual(sets, 
+                set([frozenset([1, 2, 3]), frozenset([1, 2, 4])]))
+            
 
-    def test_is_already_reserved_for_assay_other_than(self):
+    def test_is_chamber_set_already_reserved(self):
         alloc = Allocation()
         alloc.allocate('A', frozenset({1,2,3}))
-        alloc.allocate('B', frozenset({1,2,4}))
-        # Is reserved for 'A', not 'B'
-        self.assertTrue(
-                alloc.is_already_reserved_for_assay_other_than(
-                {1,2,3}, 'B'))
-        # Is reserved for 'A', which is our 'other than' citation.
-        self.assertFalse(
-                alloc.is_already_reserved_for_assay_other_than(
-                {1,2,3}, 'A'))
-        # Is not reserved for anything
-        self.assertFalse(
-                alloc.is_already_reserved_for_assay_other_than(
-                {99}, 'B'))
+        self.assertTrue(alloc.is_chamber_set_already_reserved(
+                frozenset({1,2,3})))
+        self.assertFalse(alloc.is_chamber_set_already_reserved(
+                frozenset({1,2,4})))
 
 
     def test_unreserve_alloc_for(self):
@@ -76,11 +68,6 @@ class TestAllocation(unittest.TestCase):
         alloc.allocate('A', frozenset({1,2,3}))
         self.assertEqual(alloc.chambers_for('A'), {1,2,3})
 
-    def test_chamber_set_is_reserved_by_assay(self):
-        alloc = Allocation()
-        alloc.allocate('A', frozenset({1,2,3}))
-        self.assertTrue(alloc.chamber_set_is_reserved_by_assay({1,2,3}, 'A'))
-        
     #-----------------------------------------------------------------------
     # Assay centric
     #-----------------------------------------------------------------------
@@ -104,8 +91,6 @@ class TestAllocation(unittest.TestCase):
         alloc.allocate('B', frozenset({1,2,4}))
         self.assertEqual(alloc.which_assay_reserved_this_chamber_set(
                 frozenset({1,2,4})), 'B')
-        self.assertIsNone(alloc.which_assay_reserved_this_chamber_set(
-                frozenset({1,2,99})))
 
 
     def test_assay_types_present_in(self):

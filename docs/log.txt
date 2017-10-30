@@ -1,4 +1,21 @@
+o  Timeout to deal with distorted spread
+    o  Using {1,2} then one different for third for each incoming assay.
+       Loading 1 and 2 excessively.
+       o  When iterating through the potential chamber sets, do so in
+          smallest stack created.
+         *  Find place to code it - inside draw_possible_chamber..
+         o  Add a test for that
+            o  In middle of it
+         o  Does it spread main allocator test?
+
 o  Should we only bother with chamber sets to which we just added P?
+    o  Yes
+        *  Measure if we're cutting some out = we are not
+        o  Why not?
+            o  Note which chamber sets we are reserving
+            o  Note which chamber sets we are hypothetically adding P to
+            o  Can we see a pattern whereby the previous reserverations would
+               have  no overlap with where we are adding P to?
 o  Is there a shortcut to firing and not spurious or inverse?
 o  Not seen retraction
 
@@ -24,15 +41,7 @@ o  Is all the docker legacy pointless?
 Misc
 ----------------------------------------------------------------------------
 ----------------------------------------------------------------------------
-Vulnerable
+Statement
 ----------------------------------------------------------------------------
-
-The allocation in the round is vulnerable if any of the chamber sets
-ring fenced to call some assay when they all fire, have any cause to fire
-other than the presence of the target they are trying to call.
-
-So having just done a trial addition of P into chamber set 147 we can look
-at all the reserved assay sets, and ask if they have any reason to fire other
-than their reserving assay being present.
-
-
+o  When  assessing vulnerability, can we only bother with chamber sets to 
+   which we just added P?

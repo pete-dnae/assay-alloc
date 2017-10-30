@@ -18,23 +18,56 @@ class TestAvoidsFP(unittest.TestCase):
     # ------------------------------------------------------------------------
 
 
-    def xtest_draw_possible_chamber_sets_of_size(self):
+    def test_draw_possible_chamber_sets_of_size(self):
         """
         Ensures that this method produces exactly the right sequence of
         chamber sets, and in the design-in order.
         """
-        design = ExperimentDesign.make_from_params(0, 0, 0, 0, 0)
+
+        # We have to allocate some assays, so that the sorting order can
+        # be influenced by it.
+
+        assays = 0
+        chambers = 5
+        replicas = 0
+        dontmix = 0
+        targets = 0
+
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                replicas, dontmix, targets)
         allocator = AvoidsFP(design)
-        chambers = {3,1,2}
-        size = 2
 
-        subsets = allocator._draw_possible_chamber_sets_of_size(chambers, size)
+        # We make 1 and 2 the most populous chambers, then 3, then
+        # 4 and beyond are empty.
+        allocator.alloc.allocate('A', frozenset({1,2,3}))
+        allocator.alloc.allocate('B', frozenset({1,2}))
 
-        self.assertEqual(len(subsets), 3)
+        # The empty ones from 4 onwards should come first.
+        # And 1 and 2 should come last.
 
-        self.assertEqual(subsets[0], set([1, 2]))
-        self.assertEqual(subsets[1], set([1, 3]))
-        self.assertEqual(subsets[2], set([2, 3]))
+        choose_from = {1,2,3,4}
+        subsets = allocator._draw_possible_chamber_sets_of_size(
+                choose_from, 2)
+
+        self.assertEqual(len(subsets), 6)
+
+        # 1,2
+        # 1,3
+        # 1,4
+        # 2,3
+        # 2,4
+        # 3,4
+
+        self.assertEqual(subsets[0], frozenset([3, 4]))
+        self.assertEqual(subsets[1], 42)
+        self.assertEqual(subsets[2], 42)
+        self.assertEqual(subsets[3], 42)
+        self.assertEqual(subsets[4], 42)
+        self.assertEqual(subsets[5], 42)
+        self.assertEqual(subsets[6], 42)
+        self.assertEqual(subsets[7], 42)
+        self.assertEqual(subsets[8], 42)
+        self.assertEqual(subsets[9], 42)
 
     def xtest_remove_incompatible_chambers(self):
         """
@@ -162,7 +195,7 @@ class TestAvoidsFP(unittest.TestCase):
         #self.assertEquals(allocation.chambers_for('A'), set([1, 2, 3]))
         #self.assertEquals(allocation.chambers_for('B'), set([1, 2, 4]))
 
-    def test_realistic_sized_example_without_dontmix(self):
+    def xtest_realistic_sized_example_without_dontmix(self):
         assays = 20
         chambers = 24
         replicas = 3

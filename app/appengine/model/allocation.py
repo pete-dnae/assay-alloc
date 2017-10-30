@@ -31,37 +31,17 @@ class Allocation:
 
         
     # ------------------------------------------------------------------------
-    # History-based queries
+    # Chamber-centric queries
     # ------------------------------------------------------------------------
 
     def reserved_chamber_sets(self):
         """
-        Provides information about which chamber sets got used up till now
-        for which assays.
-        Returns a set of 2-tuples: (assay, chamber_set)
+        Provides information about which chamber sets have been reserved
+        so far.
+        Returns a set of frozensets of int.
         """
-        res = set()
-        for assay, chamber_set in self._assay_to_chamber_set.items():
-            res.add((assay, frozenset(chamber_set)))
-        return res
+        return set(self._assay_to_chamber_set.values())
 
-    def is_already_reserved_for_assay_other_than(self, chamber_set, assay):
-        """
-        Is the given chamber set one of the sets that has been reserved by
-        an assay (other than the one cited)?
-        """
-        for reserving_assay, reserved_chamber_set in \
-                self._assay_to_chamber_set.items():
-
-            if reserved_chamber_set == chamber_set:
-                if reserving_assay != assay:
-                    return True
-        return False
-
-    
-    # ------------------------------------------------------------------------
-    # Chamber-centric queries
-    # ------------------------------------------------------------------------
 
     def all_chambers(self):
         return set(self._chamber_to_assays.keys())
@@ -71,8 +51,8 @@ class Allocation:
         return self._assay_to_chamber_set[assay]
 
 
-    def chamber_set_is_reserved_by_assay(self, chamber_set, assay):
-        return self._assay_to_chamber_set[assay] == chamber_set
+    def is_chamber_set_already_reserved(self, chamber_set):
+        return chamber_set in self._chamber_set_to_reserving_assay
 
 
     # ------------------------------------------------------------------------
