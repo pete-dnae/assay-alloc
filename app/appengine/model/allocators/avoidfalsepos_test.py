@@ -2,7 +2,6 @@ import unittest
 
 from model.allocators.avoidfalsepos import AvoidsFP
 from model.experimentdesign import ExperimentDesign
-from model.assay import Assay
 from model.allocation import Allocation
 
 
@@ -61,8 +60,8 @@ class TestAvoidsFP(unittest.TestCase):
         # We will put 'A' into chamber 1, and
         # We will put 'F' into chamber 2
 
-        allocator.alloc.allocate(Assay('A', 1), 1)
-        allocator.alloc.allocate(Assay('F', 1), 2)
+        allocator.alloc.allocate('A', {1})
+        allocator.alloc.allocate('F', {2})
 
         # Now in the context of looking for homes for 'A'...
         # From the set {1,2,3}...
@@ -78,7 +77,8 @@ class TestAvoidsFP(unittest.TestCase):
 
     def test_all_would_fire(self):
         """
-        blah
+        Make sure the utility method _all_would_fire() provides correct
+        false and positive conclusions.
         """
         assays = 6
         chambers = 6
@@ -92,9 +92,9 @@ class TestAvoidsFP(unittest.TestCase):
 
         # We will put 'A', 'B', 'C' into chambers 1,2,3 respectively.
 
-        allocator.alloc.allocate(Assay('A', 1), 1)
-        allocator.alloc.allocate(Assay('B', 1), 2)
-        allocator.alloc.allocate(Assay('C', 1), 3)
+        allocator.alloc.allocate('A', {1})
+        allocator.alloc.allocate('B', {2})
+        allocator.alloc.allocate('C', {3})
 
         chamber_set = {2,3}
 
@@ -111,9 +111,153 @@ class TestAvoidsFP(unittest.TestCase):
         self.assertFalse(allocator._all_would_fire(chamber_set, {'A', 'C'}))
 
 
+    def xtest_vulnerable_to_false_positives_with_single_target_type(self):
+        """
+        Make sure the utility method _vulnerable_to_false_positives() provides 
+        correct false and positive conclusions.
+        """
+
+        # The chamber set {1,4,7} would not work for assay 'P' if one of the
+        # possible target sets was {'A'}, and each of {1,4,7} already
+        # contains 'A'. Because the presence then of target 'A' would produce
+        # a false positive for 'P'.
+
+        # We set this scenario up artificially to ensure that the utility
+        # method correctly makes this call.
+
+        # But before that, we omit 'A' from chamber 7 to provide a control
+        # test.
+
+        assays = 26
+        chambers = 26
+        replicas = 0
+        dontmix = 0
+        targets = 0
+
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                replicas, dontmix, targets)
+        allocator = AvoidsFP(design)
+
+        # Override the allocators model for possible target sets, with just
+        # our single special case.
+        allocator._possible_target_sets.sets = ({'A'},)
+
+        allocator.alloc.allocate('A', {1})
+        allocator.alloc.allocate('A', {4})
+
+        # This should say it is not vulnerable, because we haven't put 'A' 
+        # into chamber 7 yet.
+        vulnerable = allocator._vulnerable_to_false_positives({1,4,7})
+        self.assertFalse(vulnerable)
+
+        # Now it say not ok, because we have.
+        allocator.alloc.allocate('A', {7})
+        vulnerable = allocator._vulnerable_to_false_positives({1,4,7})
+        self.assertTrue(vulnerable)
 
 
-    def test_runs_without_crashing(self):
+    def xtest_vulnerable_to_false_positives_with_multiple_targets_types(self):
+        """
+        See previous test. This differs only by exercising the logic
+        where a false positive can be generated only by a variety of targets
+        being present.
+        """
+
+        # The chamber set {1,4,7} would not work for assay 'P' if one of the
+        # possible target sets was {'A'}, and each of {1,4,7} already
+        # contains 'A'. Because the presence then of target 'A' would produce
+        # a false positive for 'P'.
+
+        # We set this scenario up artificially to ensure that the utility
+        # method correctly makes this call.
+
+        # But before that, we omit 'A' from chamber 7 to provide a control
+        # test.
+
+        assays = 26
+        chambers = 26
+        replicas = 0
+        dontmix = 0
+        targets = 0
+
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                replicas, dontmix, targets)
+        allocator = AvoidsFP(design)
+
+        # Override the allocators model for possible target sets, with just
+        # our multiple-target special case.
+        allocator._possible_target_sets.sets = ({'A', 'B', 'C'},)
+
+        allocator.alloc.allocate('A', {1})
+        allocator.alloc.allocate('B', {4})
+
+        # This should say it is not vulnerable, because we haven't put 
+        # anything into chamber 7 yet.
+        vulnerable = allocator._vulnerable_to_false_positives({1,4,7})
+        self.assertFalse(vulnerable)
+
+        # Now it say not ok, because we have.
+        allocator.alloc.allocate('C', {7})
+        vulnerable = allocator._vulnerable_to_false_positives({1,4,7})
+        self.assertTrue(vulnerable)
+
+    def xtest_tiny_real_example(self):
+        """
+        Cut down the real allocation behaviour by not having any
+        dontmix pairs and use only 2 assay types, each with 3 replicas,
+        into just 4 chambers.
+        """
+        assays = 2
+        chambers = 4
+        replicas = 3
+        dontmix = 0
+        targets = 0
+
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                replicas, dontmix, targets)
+        allocator = AvoidsFP(design)
+        allocation = allocator.allocate()
+
+        self.assertEquals(allocation.chambers_for('A'), set([1, 2, 3]))
+        self.assertEquals(allocation.chambers_for('B'), set([1, 2, 4]))
+
+    def xtest_realistic_sized_example_without_dontmix(self):
+        assays = 20
+        chambers = 24
+        replicas = 3
+        dontmix = 0
+        targets = 0
+
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                replicas, dontmix, targets)
+        allocator = AvoidsFP(design)
+        allocation = allocator.allocate()
+
+        # A sprinkling of representative direct tests...
+        self.assertEquals(allocation.chambers_for('A'), set([1, 2, 3]))
+        self.assertEquals(allocation.chambers_for('B'), set([1, 2, 4]))
+        self.assertEquals(allocation.chambers_for('F'), set([8, 1, 2]))
+
+        # Now we collect the chamber set for every one of our assays.
+        chamber_sets = set() # Set of frozenset of chamber numbers.
+        assays = design.assay_types_in_priority_order()
+        for assay in assays:
+            chamber_set = allocation.chambers_for(assay)
+            chamber_sets.add(frozenset(chamber_set))
+
+        # Like this one for example.
+        self.assertTrue(frozenset([1, 2, 10]) in chamber_sets)
+
+        # There should be exactly 20 chamber sets.
+        # Their being in a set, proves there are no two the same.
+        self.assertEqual(len(chamber_sets), 20)
+
+        # They should all be of length 3
+        for chamber_set in chamber_sets:
+            self.assertEqual(len(chamber_set), 3)
+
+
+    def xtest_runs_without_crashing(self):
         assays = 20
         chambers = 24
         replicas = 4

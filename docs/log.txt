@@ -9,18 +9,23 @@
 *  Make things deterministic order for tests
 *  Any silly dupe in loops
 *  Convert set intersection tests to being implicit None
-o  Design and make unit tests
-    o  What behaviour and code want to check?
-        *  Possible sets is perfectly correct
-        *  _draw_possible_chamber_sets_of_size() is behaving
-        *  _remove_incompatible_chambers(self,
-        o  _all_would_fire(self,
-        o  _chamber_set_works_for_assay(self,
-        o  _allocate_all_replicas_of_this_assay_type(self,
-        o  allocate() produces an allocation
-        o  allocate knows how to fail
-        o  The algorithm will fail when pushed
-        o  The algorithm succeeds provably in a reference case
+*  Design and make unit tests
+o  Does addition of 3 P's undermine calling set comitted to for an
+   earlier assay, because the presence of one or more P's will cause
+   false positives for a previously isolated assay?
+    o  Yes
+    o  Code remedy to see what happens
+        *  Get to run with test
+        *  Unit test new utils:
+            *  allocation: chamber_set_reserved_by_assay():
+            *  allocation: assay_is_present_in_all_of()
+        o  Unit test new vulnerability thing
+            o  Beware not seen retracted allocation
+        o  All tests in avoidFP test module
+        o  Unit test at system level
+o  Full result correctness test
+o  What realist targets present set sizes?
+
 o  Regression tests and clean out of redundant code.
 o  If works, decide how to update API and get to Brad
 
@@ -38,12 +43,23 @@ o  Is all the docker legacy pointless?
 ----------------------------------------------------------------------------
 Misc
 ----------------------------------------------------------------------------
-
-Problem config
-
-assay-alloc --assays 20 --replicas 3 --chambers 40 --dontmix 3 --targets 3
-
 ----------------------------------------------------------------------------
-Combinatorial
+Adding Ps undermines previous calling set?
 ----------------------------------------------------------------------------
 
+To make sure our newly added allocation does not undermine a previously
+committed one, we need to consider the full new picture at each point.
+
+Assuming that we keep track of the chamber set used for each assay as
+cs<P>
+
+Then...
+
+When considering {1,4,7} for Assay_P, we must ask:
+
+    If we pretend we have alread allocated the P replicas to {1,4,7}, then is
+    it still true that:
+
+        For all assays A thru P:
+
+            The chamber set for said assay remains not vulnerable to FP.

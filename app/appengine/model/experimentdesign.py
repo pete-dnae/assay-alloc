@@ -16,35 +16,6 @@ class ExperimentDesign:
 
 
     @classmethod
-    def make_reference_example(cls):
-        """
-        This makes the canonical variant of an ExperimentDesign object for
-        unit tests.
-        """
-        design = ExperimentDesign()
-        LETTERS = 'ABCDEFGHIJKLMN'
-        design.assay_types = set(LETTERS)
-        for i, _type in enumerate(LETTERS):
-            # We mix {2,3,4} as our replica numbers.
-            how_many = 2 + (i % 3)
-            design.replicas[_type] = how_many
-        design.num_chambers = 8
-        design.dontmix = [['A', 'H'], ['C', 'L']]
-        design.targets_present = {'G', 'H'}
-        return design
-
-
-    @classmethod
-    def make_reference_example_without_dontmix(cls):
-        """
-        This makes the canonical variant of an ExperimentDesign object for
-        unit tests, but not specifying any don't mix pairs.
-        """
-        design = cls.make_reference_example()
-        design.dontmix = []
-        return design
-
-    @classmethod
     def make_from_html_input_form_dict(cls, form_dict):
         assays = int(form_dict['assays'])
         chambers = int(form_dict['chambers'])
@@ -78,6 +49,10 @@ class ExperimentDesign:
             exp.dontmix.append([a, b])
 
         return exp
+
+
+    def set_of_all_chambers(self):
+        return set([i + 1 for i in range(self.num_chambers)])
 
 
     def can_this_assay_go_into_this_mixture(self, assay, mixture):

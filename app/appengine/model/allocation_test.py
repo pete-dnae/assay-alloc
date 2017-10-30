@@ -9,32 +9,59 @@ class TestAllocation(unittest.TestCase):
         pass
 
     def test_construction(self):
-        alloc = Allocation(3)
+        alloc = Allocation()
+
+    #-----------------------------------------------------------------------
+    # History Based 
+    #-----------------------------------------------------------------------
+
+    def test_reserved_chamber_sets(self):
+        alloc = Allocation()
+        alloc.allocate('A', {1,2,3})
+        alloc.allocate('B', {1,2,4})
+        sets = alloc.reserved_chamber_sets()
+        self.assertEqual(sets,  
+            set([('B', frozenset([1, 2, 4])), ('A', frozenset([1, 2, 3]))]))
+
+
+    #-----------------------------------------------------------------------
+    # Chamber centric
+    #-----------------------------------------------------------------------
 
     def test_all_chambers(self):
-        alloc = Allocation(3)
+        alloc = Allocation()
+        alloc.allocate('A', {1,2,3})
         self.assertEqual(alloc.all_chambers(), {1,2,3})
 
+    def test_chambers_for(self):
+        alloc = Allocation()
+        alloc.allocate('A', {1,2,3})
+        self.assertEqual(alloc.chambers_for('A'), {1,2,3})
 
-    def test_can_allocate(self):
-        alloc = Allocation(3)
-        assay = Assay('A', 1)
-        chamber = 1
-        alloc.allocate(assay, chamber)
+    def test_chamber_set_is_reserved_by_assay(self):
+        alloc = Allocation()
+        alloc.allocate('A', {1,2,3})
+        self.assertTrue(alloc.chamber_set_is_reserved_by_assay({1,2,3}, 'A'))
+        
+    #-----------------------------------------------------------------------
+    # Assay centric
+    #-----------------------------------------------------------------------
+
+    def test_assay_types_present_in(self):
+        alloc = Allocation()
+        alloc.allocate('A', {1,2,3})
+        alloc.allocate('B', {3,4,5})
+        self.assertEqual(alloc.assay_types_present_in(3), set(['A', 'B']))
+
+    def test_assay_is_present_in_all_of(self):
+        alloc = Allocation()
+        alloc.allocate('A', {1,2,3})
+        alloc.allocate('B', {1,2,4})
+        self.assertTrue(alloc.assay_is_present_in_all_of('A', {1,2,3}))
+        self.assertFalse(alloc.assay_is_present_in_all_of('B', {1,2,3}))
 
 
-    def test_which_chambers_contain_assay_type(self):
-        alloc = Allocation(6)
-        # Place a replicaca of 'A' in two different chambers.
-        a1 = Assay('A', 1)
-        a2 = Assay('A', 2)
-        alloc.allocate(a1, 4)
-        alloc.allocate(a2, 5)
-        chambers = alloc.which_chambers_contain_assay_type('A')
-        self.assertTrue(chambers == {4,5})
-
-
-    def test_which_chambers_contain_assay_types(self):
+    def xtest_which_chambers_contain_assay_types(self):
         alloc = Allocation(6)
         # Place one assays of differing types into two different chambers.
         a1 = Assay('A', 1)
@@ -45,7 +72,7 @@ class TestAllocation(unittest.TestCase):
         self.assertTrue(chambers == {4,5})
 
 
-    def test_number_of_chambers_that_contain_assay_type(self):
+    def xtest_number_of_chambers_that_contain_assay_type(self):
         alloc = Allocation(6)
         # Place a replicaca of 'A' in two different chambers.
         a1 = Assay('A', 1)
@@ -55,7 +82,7 @@ class TestAllocation(unittest.TestCase):
         count = alloc.number_of_chambers_that_contain_assay_type('A')
         self.assertEqual(count, 2)
 
-    def test_assays_present_in(self):
+    def xtest_assays_present_in(self):
         alloc = Allocation(6)
         # Place two assays of differing types in a single chamber.
         a1 = Assay('A', 1)
@@ -66,7 +93,7 @@ class TestAllocation(unittest.TestCase):
         self.assertEqual(assays, {Assay('A', 1), Assay('B', 1)})
 
 
-    def test_assay_types_present_in(self):
+    def xtest_assay_types_present_in(self):
         alloc = Allocation(6)
         # Place two assays of differing types in a single chamber.
         a1 = Assay('A', 1)
@@ -77,7 +104,7 @@ class TestAllocation(unittest.TestCase):
         self.assertEqual(assay_types, {'A', 'B'})
 
 
-    def test_number_of_this_assay_type_allocated(self):
+    def xtest_number_of_this_assay_type_allocated(self):
         alloc = Allocation(6)
         # Place a replicaca of 'A' in two different chambers.
         a1 = Assay('A', 1)
@@ -87,7 +114,7 @@ class TestAllocation(unittest.TestCase):
         count = alloc.number_of_this_assay_type_allocated('A')
         self.assertEqual(count, 2)
 
-    def test_assay_type_pairs_in_chamber(self):
+    def xtest_assay_type_pairs_in_chamber(self):
         alloc = Allocation(6)
         alloc.allocate(Assay('A', 1), 1)
         alloc.allocate(Assay('B', 1), 1)
@@ -97,7 +124,7 @@ class TestAllocation(unittest.TestCase):
             pairs,
             {frozenset({'A', 'B'}), frozenset({'A', 'C'}), frozenset({'B', 'C'})})
 
-    def test_which_assay_type_pairs_present(self):
+    def xtest_which_assay_type_pairs_present(self):
         """
         Put ABC into chamber 1, and ABD into chamber 2.
         ensure the query declares the unique pairs present to be:
