@@ -91,7 +91,7 @@ class Allocation:
         return True
 
     def which_assay_reserved_this_chamber_set(self, chamber_set):
-        return self._chamber_set_to_reserving_assay.get(chamber_set, None)
+        return self._chamber_set_to_reserving_assay[chamber_set]
             
 
     # ------------------------------------------------------------------------

@@ -1,47 +1,7 @@
-*  Make sure new functions have sensible tests
-*  Specify false positive avoidance new approach
-*  If it works plan experimental dev
-    *  Need not branch - use different allocator in same setup
-*  Commit all with baseline comment
-*  Code top down the algorithm
-    *  Get to work at face value
-*  Review what done
-*  Make things deterministic order for tests
-*  Any silly dupe in loops
-*  Convert set intersection tests to being implicit None
-*  Design and make unit tests
-o  Does addition of 3 P's undermine calling set comitted to for an
-   earlier assay, because the presence of one or more P's will cause
-   false positives for a previously isolated assay?
-    o  Yes
-    o  Code remedy to see what happens
-        *  Get to run with test
-        *  Unit test new utils:
-            *  allocation: chamber_set_reserved_by_assay():
-            *  allocation: assay_is_present_in_all_of()
-            *  unit test for unrserve assay
-        o  Check retracton of assay alloc as alloc unit test
-            o  something fishy
-                *  work back up with utils and small tests
-                o  trace thru tiny real example
-                    *  unit test for is_already_reserved_for_assay_other_than(
-                    *  unit test for which_assay_reserved_this_chamber_set(
-                    o  upgrade unit test for spurious fire
-                    *  never consider a target set that is one of the
-                       reserved ones
-                    o  fix up inner loop logic
-            o  prove out with test_realistic_sized_example_without_dontmix(self):
-        o  Unit test new vulnerability thing
-            o  How?
-                o  Spurious fire method test
-                o  Check retracton of assay alloc
-                o  Code the and logic to allow separate test
-                o  What logic left that can be tested?
-                o  Put in debug first to see if exercising like thought would
-                   we realistic size test.
-            o  Beware not seen retracted allocation
-        o  All tests in avoidFP test module
-        o  Unit test at system level
+o  Should we only bother with chamber sets to which we just added P?
+o  Is there a shortcut to firing and not spurious or inverse?
+o  Not seen retraction
+
 o  Full result correctness test
 o  Calling test / or report
 o  What realist targets present set sizes?
@@ -64,9 +24,15 @@ o  Is all the docker legacy pointless?
 Misc
 ----------------------------------------------------------------------------
 ----------------------------------------------------------------------------
-Simple test debugging
+Vulnerable
 ----------------------------------------------------------------------------
 
-When considering {1,2,3} for B, should object because this set will already
-fire all in the presence of A.
+The allocation in the round is vulnerable if any of the chamber sets
+ring fenced to call some assay when they all fire, have any cause to fire
+other than the presence of the target they are trying to call.
+
+So having just done a trial addition of P into chamber set 147 we can look
+at all the reserved assay sets, and ask if they have any reason to fire other
+than their reserving assay being present.
+
 

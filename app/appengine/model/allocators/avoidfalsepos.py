@@ -67,9 +67,10 @@ class AvoidsFP:     # FP = False-Positive
         # replicas for this assay type.
 
         # The allocation object keeps track of what chamber set we decided
-        # upon for each assay.
+        # upon (reserved) for each assay.
 
-        # So we first prepare the candidate chamber sets - a set of sets. 
+        # So we first prepare the candidate chamber sets - a set of sets of
+        # requisite size.
         # That might look something like this, if we require 3 replicas for
         # assay_P: 
         # { {1,2,7}, {1,2,8}, ... {3,5,9} ... }
@@ -81,8 +82,8 @@ class AvoidsFP:     # FP = False-Positive
             chambers, size=num_replicas)
 
         # Work through all the possible chamber sets, and use the first set 
-        # we encounter that we are happy about from a false positives
-        # point of view.
+        # we encounter that does not put the overall allocation into a state
+        # where it can produce false positives.
 
         for chamber_set_147 in possible_chamber_sets:
             # We cannot consider chamber sets which have already been
@@ -102,20 +103,19 @@ class AvoidsFP:     # FP = False-Positive
     def _is_allocation_with_assay_P_added_vulnerable(
             self, assay_P, chamber_set_for_P):
         """
-        If we allocate all of the replicas of assay_P to chamber_set_for_P
-        - does our allocation scheme up as far, and including
-        assay_P become vulnerable to false positives - regardless of which
-        targets are present?
+        Is the current allocation state, capable of producing false positives?
+        Regardless of which targets might be present?
         """
-        print('XXX for %s considering %s' % (assay_P, chamber_set_for_P))
+
+        # The rule here is that the allocation is vulnerable, if any of the
+        # chamber sets that have been reserved as the set with which to call
+        # an assay, have any reason to all-fire, other than because their
+        # reserving-assay is present among the targets present.
+
         # First we do a temporary allocation of assay_P's replicas to the
         # chamber set suggested. And do all our analysis is this
         # context.
         self.alloc.allocate(assay_P, chamber_set_for_P)
-
-        print('XXX with assay_P tmp allocated, the alloc looks like...')
-        print('XXX %s' % self.alloc.format_chambers())
-
 
         # We have an outer loop here that considers all the possible
         # targets-present sets that could exist.
@@ -127,23 +127,19 @@ class AvoidsFP:     # FP = False-Positive
         # has now been added.
 
         # Inside the inner loop, we look to see if that particular combination
-        # of targets-present, and that particular chamber set, would cause all
-        # of the chambers in that set to fire for spurious reasons. The only
-        # time it isn't spurious is when that particular chamber set has been
-        # previously nominated as the special reserved chamber set to call
-        # some assay, and the target set under consideration comprises that
-        # assay alone.
+        # of targets-present, and this particular reserved chamber set, would 
+        # cause all of the chambers in that reserved chamber set to fire, 
+        # despite the assay that reserved the chamber set, not being present
+        # among the targets.
 
         # As soon as the inner loop encounters such a condition - we have
-        # an overall allocation scheme that would be vulnerable to false 
-        # positives.
+        # an overall allocation scheme that is vulnerable.
+
+        reserved_chamber_sets = self.alloc.reserved_chamber_sets()
 
         # Outer loop for all possible targets-present sets...
         for target_set_ADFN in self._possible_target_sets.sets:
-            if 'A' in target_set_ADFN:
-                print('XXX consider target set %s' % target_set_ADFN)
             # Inner loop for all previously reserved chamber sets.
-            reserved_chamber_sets = self.alloc.reserved_chamber_sets()
             for reserving_assay, reserved_chamber_set in reserved_chamber_sets:
                 all_would_fire =  self._all_would_fire(
                     reserved_chamber_set, target_set_ADFN)
@@ -154,6 +150,7 @@ class AvoidsFP:     # FP = False-Positive
                         # chamber set we temporarily allocated it to.
                         self.alloc.unreserve_alloc_for(assay_P)
                         return True
+
         # Before we return we must de-allocate assay_P from the
         # chamber set we temporarily allocated it to.
         self.alloc.unreserve_alloc_for(assay_P)
@@ -175,20 +172,15 @@ class AvoidsFP:     # FP = False-Positive
 
     def _spurious_fire(self, chamber_set, target_set_ADFN):
         """
-        It is known that all the chambers in the given chamber set have
-        "fired". Is this a spurious fire?
-        The only time it is not spurious is when the chamber set is one that
-        was reserved earlier on behalf of a particular assay, and the target
-        set is comprised solely of the assay that reserved it.
+        If all the chambers in the given reserved chamber set fired, have
+        they done so, despite the reserving assay not being present among the 
+        targets?
         """
         reserving_assay = self.alloc.which_assay_reserved_this_chamber_set(
                 chamber_set)
-        if reserving_assay is None:
-            return True
-        fart check this comp uses the right types and does fire
-        if target_set_ADFN != {reserving_assay}:
-            return True
-        return False
+        if reserving_assay in target_set_ADFN: # Not spurious.
+            return False
+        return True # Is spurious.
 
 
     def _remove_incompatible_chambers(self, chambers, assay_P):
@@ -215,5 +207,5 @@ class AvoidsFP:     # FP = False-Positive
         deterministic order, which is necessary for automated testing.
         """
         subsets = []
-        [subsets.append(set(c)) for c in combinations(chambers, size)]
+        [subsets.append(frozenset(c)) for c in combinations(chambers, size)]
         return sorted(subsets)
