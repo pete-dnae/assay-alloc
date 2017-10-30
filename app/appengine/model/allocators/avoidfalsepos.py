@@ -85,6 +85,11 @@ class AvoidsFP:     # FP = False-Positive
         # point of view.
 
         for chamber_set_147 in possible_chamber_sets:
+            # We cannot consider chamber sets which have already been
+            # reserved for another assay.
+            if self.alloc.is_already_reserved_for_assay_other_than(
+                    chamber_set_147, assay_P):
+                continue
             vulnerable = self._is_allocation_with_assay_P_added_vulnerable(
                 assay_P, chamber_set_147)
             if not vulnerable:
@@ -102,24 +107,32 @@ class AvoidsFP:     # FP = False-Positive
         assay_P become vulnerable to false positives - regardless of which
         targets are present?
         """
+        print('XXX for %s considering %s' % (assay_P, chamber_set_for_P))
         # First we do a temporary allocation of assay_P's replicas to the
         # chamber set suggested. And do all our analysis is this
         # context.
         self.alloc.allocate(assay_P, chamber_set_for_P)
+
+        print('XXX with assay_P tmp allocated, the alloc looks like...')
+        print('XXX %s' % self.alloc.format_chambers())
+
 
         # We have an outer loop here that considers all the possible
         # targets-present sets that could exist.
 
         # Then an inner loop that considers the reserved chamber-sets we have 
         # previously comitted to for each of the assays up to, and including P.
+        # We want to make sure that none of these reserved chamber-sets, 
+        # will now be capable of generating false positives because assay_P
+        # has now been added.
 
         # Inside the inner loop, we look to see if that particular combination
         # of targets-present, and that particular chamber set, would cause all
         # of the chambers in that set to fire for spurious reasons. The only
         # time it isn't spurious is when that particular chamber set has been
         # previously nominated as the special reserved chamber set to call
-        # one of the assays we have covered and that assay is present in all
-        # of the chambers.
+        # some assay, and the target set under consideration comprises that
+        # assay alone.
 
         # As soon as the inner loop encounters such a condition - we have
         # an overall allocation scheme that would be vulnerable to false 
@@ -127,18 +140,23 @@ class AvoidsFP:     # FP = False-Positive
 
         # Outer loop for all possible targets-present sets...
         for target_set_ADFN in self._possible_target_sets.sets:
+            if 'A' in target_set_ADFN:
+                print('XXX consider target set %s' % target_set_ADFN)
             # Inner loop for all previously reserved chamber sets.
             reserved_chamber_sets = self.alloc.reserved_chamber_sets()
-            for prev_assay, reserved_chamber_set in reserved_chamber_sets:
+            for reserving_assay, reserved_chamber_set in reserved_chamber_sets:
                 all_would_fire =  self._all_would_fire(
                     reserved_chamber_set, target_set_ADFN)
-                if all_would_fire and \
-                        self._spurious_fire(reserved_chamber_set, prev_assay):
-                    # Before we return that the allocation scheme is
-                    # vulnerable, we must de-allocate assay_P from the
-                    # chamber set we temporarily allocated it to.
-                    foo
-                    return True
+                if all_would_fire:
+                    if self._spurious_fire(
+                            reserved_chamber_set, target_set_ADFN):
+                        # Before we return we must de-allocate assay_P from the
+                        # chamber set we temporarily allocated it to.
+                        self.alloc.unreserve_alloc_for(assay_P)
+                        return True
+        # Before we return we must de-allocate assay_P from the
+        # chamber set we temporarily allocated it to.
+        self.alloc.unreserve_alloc_for(assay_P)
         return False
 
 
@@ -155,17 +173,22 @@ class AvoidsFP:     # FP = False-Positive
                 return False
         return True
 
-    def _spurious_fire(self, chamber_set_147, assay_P):
+    def _spurious_fire(self, chamber_set, target_set_ADFN):
         """
-        Returns true unless the given chamber set has been reserved by the 
-        given assay, and that assay is present in all of the sets' chambers.
+        It is known that all the chambers in the given chamber set have
+        "fired". Is this a spurious fire?
+        The only time it is not spurious is when the chamber set is one that
+        was reserved earlier on behalf of a particular assay, and the target
+        set is comprised solely of the assay that reserved it.
         """
-        if self.alloc.chamber_set_reserved_by_assay(
-                chamber_set_147, assay_P) and \
-                self.alloc.assay_is_present_in_all_of(
-                    assay_P, chamber_set_147):
-            return False
-        return True
+        reserving_assay = self.alloc.which_assay_reserved_this_chamber_set(
+                chamber_set)
+        if reserving_assay is None:
+            return True
+        fart check this comp uses the right types and does fire
+        if target_set_ADFN != {reserving_assay}:
+            return True
+        return False
 
 
     def _remove_incompatible_chambers(self, chambers, assay_P):

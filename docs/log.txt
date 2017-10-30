@@ -19,11 +19,31 @@ o  Does addition of 3 P's undermine calling set comitted to for an
         *  Unit test new utils:
             *  allocation: chamber_set_reserved_by_assay():
             *  allocation: assay_is_present_in_all_of()
+            *  unit test for unrserve assay
+        o  Check retracton of assay alloc as alloc unit test
+            o  something fishy
+                *  work back up with utils and small tests
+                o  trace thru tiny real example
+                    *  unit test for is_already_reserved_for_assay_other_than(
+                    *  unit test for which_assay_reserved_this_chamber_set(
+                    o  upgrade unit test for spurious fire
+                    *  never consider a target set that is one of the
+                       reserved ones
+                    o  fix up inner loop logic
+            o  prove out with test_realistic_sized_example_without_dontmix(self):
         o  Unit test new vulnerability thing
+            o  How?
+                o  Spurious fire method test
+                o  Check retracton of assay alloc
+                o  Code the and logic to allow separate test
+                o  What logic left that can be tested?
+                o  Put in debug first to see if exercising like thought would
+                   we realistic size test.
             o  Beware not seen retracted allocation
         o  All tests in avoidFP test module
         o  Unit test at system level
 o  Full result correctness test
+o  Calling test / or report
 o  What realist targets present set sizes?
 
 o  Regression tests and clean out of redundant code.
@@ -44,22 +64,9 @@ o  Is all the docker legacy pointless?
 Misc
 ----------------------------------------------------------------------------
 ----------------------------------------------------------------------------
-Adding Ps undermines previous calling set?
+Simple test debugging
 ----------------------------------------------------------------------------
 
-To make sure our newly added allocation does not undermine a previously
-committed one, we need to consider the full new picture at each point.
+When considering {1,2,3} for B, should object because this set will already
+fire all in the presence of A.
 
-Assuming that we keep track of the chamber set used for each assay as
-cs<P>
-
-Then...
-
-When considering {1,4,7} for Assay_P, we must ask:
-
-    If we pretend we have alread allocated the P replicas to {1,4,7}, then is
-    it still true that:
-
-        For all assays A thru P:
-
-            The chamber set for said assay remains not vulnerable to FP.
