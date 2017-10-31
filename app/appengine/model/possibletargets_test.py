@@ -25,18 +25,14 @@ class TestPossibleTargets(unittest.TestCase):
         design = ExperimentDesign.make_from_params(
             assays, chambers, replicas, dontmix, targets)
 
-        set_sizes = (1,2)
-        pt = PossibleTargets.create(design, set_sizes)
+        how_many_targets = 2
+        pt = PossibleTargets.create(design, how_many_targets)
 
-        self.assertEqual(len(pt.sets), 10)
+        self.assertEqual(len(pt.sets), 6)
 
-        self.assertEqual(pt.sets[0], set('A'))
-        self.assertEqual(pt.sets[1], set(['B']))
-        self.assertEqual(pt.sets[2], set(['C']))
-        self.assertEqual(pt.sets[3], set(['D']))
-        self.assertEqual(pt.sets[4], set(['A', 'B']))
-        self.assertEqual(pt.sets[5], set(['A', 'C']))
-        self.assertEqual(pt.sets[6], set(['A', 'D']))
-        self.assertEqual(pt.sets[7], set(['B', 'C']))
-        self.assertEqual(pt.sets[8], set(['B', 'D']))
-        self.assertEqual(pt.sets[9], set(['C', 'D']))
+        self.assertEqual(pt.sets[0], set(['A', 'B']))
+        self.assertEqual(pt.sets[1], set(['A', 'C']))
+        self.assertEqual(pt.sets[2], set(['A', 'D']))
+        self.assertEqual(pt.sets[3], set(['B', 'C']))
+        self.assertEqual(pt.sets[4], set(['B', 'D']))
+        self.assertEqual(pt.sets[5], set(['C', 'D']))

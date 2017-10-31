@@ -8,11 +8,11 @@ allocate all of the replicas of that assay to a chamber set. For example if 3
 replicas are needed it could be {1,2,9}.  We refer to that chamber set as the
 chamber set that has been *reserved* by that assay.  It is reserved in the
 sense that we want to be able to rely on the fact that when all the chambers in
-that set fire, that is an uniequivocal indicator that the target that reserved
+that set fire, that is an unequivocal indicator that the target that reserved
 it is present.  It follows that we must make sure there can be no reason for
-all of those chambers to fire when its target is not present.  Regardless, that
-is, of what other targets might be present. This is to guarantee there can be 
-no false positives.
+all of those chambers to fire when its reserving target is not present.
+Regardless, that is, of what other targets might be present. This is to
+guarantee there can be no false positives.
 
 We describe the allocation as a whole as vulnerable (to false positive calls),
 when there is some particular combinations of targets that could be present,
@@ -79,9 +79,9 @@ class AvoidsFP:     # FP = False-Positive
         # consider during the allocation process.
         # NB, there are circa tens-of-thousands of these if we draw from a 
         # 20-member superset, and constrain the subsets to 5 or fewer members.
-        sizes_wanted = (1,2,3,4,5)
+        number_of_targets = 4
         self._possible_target_sets = PossibleTargets.create(
-            experiment_design, sizes_wanted)
+            experiment_design, number_of_targets)
 
 
     def allocate(self):
@@ -137,14 +137,17 @@ class AvoidsFP:     # FP = False-Positive
             # as a whole  vulnerable?
             vulnerable = self._is_allocation_with_assay_P_added_vulnerable(
                 assay_P, chamber_set_147)
-            # If it doesn't, we need look no further. We've found a suitable 
-            # set of chambers for assay_P, so we tell our allocation object
-            # to register and reserve them thus.
+
+            # If it is not vulnerable, we need look no further. We've found a
+            # suitable set of chambers for assay_P, so we tell our allocation
+            # object to register and reserve them thus.
+
             if not vulnerable:
                 print('XXX reserving %s for %s' % (chamber_set_147, assay_P))
                 self.alloc.allocate(assay_P, chamber_set_147)
                 return
-            # Never mind, let's move on to the net chamber set hypothesis.
+            # If we get to here, that chamber set is vulnerable. Never mind,
+            # let's move on to the net chamber set hypothesis.
 
         # If we get here, we couldn't find a suitable chamber set and have
         # to give up and abort.
@@ -166,18 +169,14 @@ class AvoidsFP:     # FP = False-Positive
         # Temporarily, add in assay_P as instructed.
         self.alloc.allocate(assay_P, chamber_set_for_P)
 
-        # Ostensibly we will consider all the previously reserved chamber
+        # Ostensibly, we will consider all the previously reserved chamber
         # sets, but we can skip those of them that we haven't touched when
         # adding assay_P's replicas. (Their vulnerability cannot have been
         # changed).
         reserved_chamber_sets = set()
         for chamber_set in self.alloc.reserved_chamber_sets():
             if chamber_set.intersection(chamber_set_for_P):
-                #print('XXX keeping %s' % chamber_set)
                 reserved_chamber_sets.add(chamber_set)
-            else:
-                #print('XXX NOT keeping %s' % chamber_set)
-                pass
 
         # The outer loop iterates over those of the already-reserved 
         # chamber sets that could have become vulnerable.

@@ -1,22 +1,15 @@
-o  Timeout to deal with distorted spread
-    o  Using {1,2} then one different for third for each incoming assay.
-       Loading 1 and 2 excessively.
-       o  When iterating through the potential chamber sets, do so in
-          smallest population order.
-         *  Find place to code it - inside draw_possible_chamber..
-         *  Add a test for that
-         o  Does it spread main allocator test?
+*  PossibleTargets - no point in including subsets of the greatest set size
+o  Why is it getting stuck on assay_I?
+    o  Replicas must be > target set size
+    o  Can we get 20 assays into 24 chambers with 5-targets to work? A-T
+o  Need we use all the target sets in assessing vulnerability, or can we
+   decimate these with some reasoning.
+o  Make report for Brad even if can't ship yet.
 
-o  Should we only bother with chamber sets to which we just added P?
-    o  Yes
-        *  Measure if we're cutting some out = we are not
-        o  Why not?
-            o  Note which chamber sets we are reserving
-            o  Note which chamber sets we are hypothetically adding P to
-            o  Can we see a pattern whereby the previous reserverations would
-               have  no overlap with where we are adding P to?
-o  Is there a shortcut to firing and not spurious or inverse?
-o  Not seen retraction
+o  Create unit test for optimisation in 
+   _is_allocation_with_assay_P_added_vulnerable( that skips reserved chamber
+   sets if we didn't put assay_P into it. (And vice versa). Nb. is known to
+   be firing by manual scrutiny.
 
 o  Full result correctness test
 o  Calling test / or report
@@ -37,10 +30,42 @@ o  Make root url take you form
 o  Is all the docker legacy pointless?
 
 ----------------------------------------------------------------------------
-Misc
+Stuck on assay I
 ----------------------------------------------------------------------------
-----------------------------------------------------------------------------
-Statement
-----------------------------------------------------------------------------
-o  When  assessing vulnerability, can we only bother with chamber sets to 
-   which we just added P?
+Assays prior to I are getting allocated to contiguous blocks like this:
+
+XXX reserving frozenset([1, 2, 3]) for A
+XXX reserving frozenset([4, 5, 6]) for B
+XXX reserving frozenset([8, 9, 7]) for C
+XXX reserving frozenset([10, 11, 12]) for D
+XXX reserving frozenset([13, 14, 15]) for E
+XXX reserving frozenset([16, 17, 18]) for F
+XXX reserving frozenset([19, 20, 21]) for G
+XXX reserving frozenset([24, 22, 23]) for H
+
+So I is the first assay encountered once all chambers have something in.
+
+We are looking for a new candidate for a reserved chamber set.
+
+We might consider {4,9,11}
+
+These are occupied thus:
+4 has B
+9 has C
+11 has D
+
+Which would be vulnerable to a false positive in the presence of {BCD}.
+
+This regime cannot work, because any choice of 3 chambers is bound to be
+uni-fired by the right 3-member target set.
+
+Does this mean we have to make sure our replica sets are substantially bigger
+than the target sets we hypothesise?
+
+Consider this case altered by continuing with target sets up to 5, but
+asking for 6 replicas. Do we get further than I?
+
+First try 8 replicas - much bigger than our target sets of 5
+    Covers all chambers by the time it gets to E, i.e. earlier than before.
+
+

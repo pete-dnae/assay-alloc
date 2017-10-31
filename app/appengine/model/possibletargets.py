@@ -16,19 +16,19 @@ class PossibleTargets:
         self.sets = () # Of set() of assay type.
 
     @classmethod
-    def create(cls, experiment_design, set_sizes_wanted):
+    def create(cls, experiment_design, how_many_targets):
         """
-        Makes the set of sets. The caller must specify what sized-sets
-        are of interest. E.g. (2,3,4).
+        Makes the set of sets. The caller must specify the size of set
+        they want. This should be largest you are interested in. For example,
+        if you want to model up to 5 simultaneously present targets, specify 5.
         """
         res = PossibleTargets()
         assay_types = experiment_design.assay_types_in_priority_order()
 
         sets = []
-        for i in set_sizes_wanted:
-            # Note that combinations() guarantees a deterministic ordering.
-            for combi in combinations(assay_types, i):
-                sets.append(set(combi))
+        # Note that combinations() guarantees a deterministic ordering.
+        for combi in combinations(assay_types, how_many_targets):
+            sets.append(set(combi))
 
         res = PossibleTargets()
         # Prefer a tuple to speed up 'contains' queries down the line.

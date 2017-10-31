@@ -18,7 +18,7 @@ class TestAvoidsFP(unittest.TestCase):
     # ------------------------------------------------------------------------
 
 
-    def test_draw_possible_chamber_sets_of_size(self):
+    def xtest_draw_possible_chamber_sets_of_size(self):
         """
         Ensures that this method produces exactly the right sequence of
         chamber sets, and in the design-in order.
@@ -181,10 +181,10 @@ class TestAvoidsFP(unittest.TestCase):
         #self.assertEquals(allocation.chambers_for('A'), set([1, 2, 3]))
         #self.assertEquals(allocation.chambers_for('B'), set([1, 2, 4]))
 
-    def xtest_realistic_sized_example_without_dontmix(self):
+    def test_realistic_sized_example_without_dontmix(self):
         assays = 20
         chambers = 24
-        replicas = 3
+        replicas = 5
         dontmix = 0
         targets = 0
 
