@@ -2,10 +2,9 @@ o  Timeout to deal with distorted spread
     o  Using {1,2} then one different for third for each incoming assay.
        Loading 1 and 2 excessively.
        o  When iterating through the potential chamber sets, do so in
-          smallest stack created.
+          smallest population order.
          *  Find place to code it - inside draw_possible_chamber..
-         o  Add a test for that
-            o  In middle of it
+         *  Add a test for that
          o  Does it spread main allocator test?
 
 o  Should we only bother with chamber sets to which we just added P?

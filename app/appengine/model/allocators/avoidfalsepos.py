@@ -254,16 +254,14 @@ class AvoidsFP:     # FP = False-Positive
         Provide all the chamber subsets of size <size> that are available 
         from the set given. Returns the collection of subsets as a sorted 
         sequence for two reasons. Firstly to place desirable choices nearer
-        the beginning, and secondly to make the algorithm deterministic.
+        the beginning, and secondly to make the algorithm deterministic to help
+        with automated testing.
         """
         subsets = []
         [subsets.append(frozenset(c)) for c in combinations(chambers, size)]
 
         def _how_crowded(chamber_set):
-            occupant_counts = []
-            for chamber in chamber_set:
-                occupants = self.alloc.assay_types_present_in(chamber)
-                occupant_counts.append(len(occupants))
-            return max(occupant_counts)
+            return sum([len(self.alloc.assay_types_present_in(c)) 
+                    for c in chamber_set])
 
         return sorted(subsets, key=_how_crowded)

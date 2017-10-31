@@ -24,9 +24,6 @@ class TestAvoidsFP(unittest.TestCase):
         chamber sets, and in the design-in order.
         """
 
-        # We have to allocate some assays, so that the sorting order can
-        # be influenced by it.
-
         assays = 0
         chambers = 5
         replicas = 0
@@ -37,13 +34,17 @@ class TestAvoidsFP(unittest.TestCase):
                 replicas, dontmix, targets)
         allocator = AvoidsFP(design)
 
-        # We make 1 and 2 the most populous chambers, then 3, then
-        # 4 and beyond are empty.
+        # We arrange for chamber 1 to have lots of occupants,
+        # chamber 2 to have fewer, and chamber 3 to have fewer again.
+        # Then then keep chamber 4 empty.
+
+        # When we ask for possible chamber sets of size 2, we expect the least
+        # populated first.
+        # So, we should be offered {4,3} first, and {1,2} last.
+
         allocator.alloc.allocate('A', frozenset({1,2,3}))
         allocator.alloc.allocate('B', frozenset({1,2}))
-
-        # The empty ones from 4 onwards should come first.
-        # And 1 and 2 should come last.
+        allocator.alloc.allocate('C', frozenset({1}))
 
         choose_from = {1,2,3,4}
         subsets = allocator._draw_possible_chamber_sets_of_size(
@@ -51,23 +52,8 @@ class TestAvoidsFP(unittest.TestCase):
 
         self.assertEqual(len(subsets), 6)
 
-        # 1,2
-        # 1,3
-        # 1,4
-        # 2,3
-        # 2,4
-        # 3,4
-
         self.assertEqual(subsets[0], frozenset([3, 4]))
-        self.assertEqual(subsets[1], 42)
-        self.assertEqual(subsets[2], 42)
-        self.assertEqual(subsets[3], 42)
-        self.assertEqual(subsets[4], 42)
-        self.assertEqual(subsets[5], 42)
-        self.assertEqual(subsets[6], 42)
-        self.assertEqual(subsets[7], 42)
-        self.assertEqual(subsets[8], 42)
-        self.assertEqual(subsets[9], 42)
+        self.assertEqual(subsets[5], frozenset([1, 2]))
 
     def xtest_remove_incompatible_chambers(self):
         """
