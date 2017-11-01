@@ -1,6 +1,13 @@
-o  Add in replicas must be > to narrative and make it shorter.
+o  First upgrade existing implementation to have a method that in one optimized
+   go, assesses - all chambers will fire but spuriously
+    *  What is this logic psuedo code?
+    *  Mention bin packing / dynamic programming in notes.
+    *  Code as such
+    o  Upgrade all tests to suit
 o  Need we use all the target sets in assessing vulnerability, or can we
    decimate these with some reasoning?
+    *  Improve docco clarity to help think about this.
+    o  Exploit that P just got added?
 o  Why is it getting stuck on assay_I?
     o  Replicas must be > target set size
     o  Can we get 20 assays into 24 chambers with 5-targets to work? A-T
@@ -31,6 +38,39 @@ o  Make root url take you form
 o  Is all the docker legacy pointless?
 
 ----------------------------------------------------------------------------
+o  Combined will all fire and spuriously
 ----------------------------------------------------------------------------
-o  Need we use all the target sets in assessing vulnerability, or can we
-   decimate these with some reasoning?
+
+chamber_sets = the reserved chamber sets the alloc has reserved, and to which
+            we just challenged the vulnerability of by adding P to somewhere.
+            (Dynamic programming)
+
+for each chamber set in chamber_sets:
+    Known facts
+        o  which assay reserved it F
+        o  F is in all chambers
+        o  it has P in somewhere
+        o  it wasn't vulnerable until we put P in somewhere
+    for all possible target sets:
+        # Quick non-chamber-wise wins early...
+
+        # If the target set has the reserving assay (F) in it, all the 
+        # chambers in the chamber set will fire. - Legitimately, not 
+        # spuriously.
+        if target set has F in it:
+            continue 
+        # if this target set doesn't have P in it, it cannot
+        # introduce any NEW reasons for all the chambers to fire that weren't
+        # covered by the assessment when the assay type that preceded P was
+        # being allocated. (Dynamic programming)
+        if target set does not have P in it:
+            continue
+
+        # Now the more costly chamber-wise tests
+        for each chamber 1,4,7:
+            get occupants
+            no fire = if none in common with {A,D,F,S}
+                early return
+        if reach here all chambers did fire despite absence of assay
+        that reserved the chamber set - boo hoo
+        return sad

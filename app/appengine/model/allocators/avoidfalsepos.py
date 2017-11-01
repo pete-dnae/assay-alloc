@@ -1,7 +1,40 @@
 """
 ALGORITHM EXPLANATION
 
+OVERVIEW
+
 We use the terms assays and targets almost interchangeably. 
+
+This algorithm tries to allocate multiple copies of a set of assays into
+chambers combinatorially in such a way that each assay type gets a *reserved*
+set of chambers, which, when they all *fire* guarantees the detection of that
+assay target, regardless of which other assay targets might also be present.
+In other words, it guarantees to prevent false positive calls.
+
+The algorithm is set-theoretic. Operating by modelling the interaction between 
+sets of chambers with sets of targets.
+
+It is inspired by two recognized algorithmic concepts:
+
+- Bin Packing
+
+    https://en.wikipedia.org/wiki/Bin_packing_problem
+
+- Dynamic Programming
+
+    https://en.wikipedia.org/wiki/Dynamic_programming
+
+It follows the bin-packing paradigm by making irreversible decisions about
+where to allocate the first assay, and then moving on to consider the next,
+using the previous decisions (cumulatively) as constraints.
+
+It exploits the dynamic programming principle by building up knowledge as it
+goes about where false-positive calls have been ruled-out, and only
+re-evaluating those that could be compromised as each new assay type is mixed
+in.
+
+
+METHOD
 
 We iterate over assay types in some priority order. E.g. (A,B,C...Q) etc.  In
 each iteration we allocate all of the replicas of that assay (P) to a chamber
@@ -23,7 +56,8 @@ Our approach as we incrementally consider each assay type (P) in turn, is to
 hypothesise chamber sets that we might use to house P's replicas. We consider
 all legal chamber set possibilities (of the right size) in fact. For example:
 {1,2,3}, {1,2,4}, {1,2,5}... {17,12,24} ... etc. Legal being defined as 
-allocations that do not break the don't-mix rules.
+allocations that do not break the don't-mix rules specified in an experiment
+mandate that is passed in to the algorithm from the outside world.
 
 To measure the *vulnerability* we must consider target sets that might be
 present. For example {A} on its own, or {A,B}, or {A,N,F} and so on. In fact we
@@ -32,7 +66,7 @@ below).
 
 If we can find, for any of our reserved chamber sets e.g. {1,2,9}, a potential
 targets-present set (e.g. {A,B,C,D} that would cause all of {1,2,9} to fire
-despite the assay that reserved it not being present, we can conclude that
+despite the assay that reserved {1,2,9} not being present, we can conclude that
 that particular allocation state, as a whole, is *vulnerable*.
 
 When this happens we reject that chamber-set hypothesis as a home for the assay
@@ -46,12 +80,12 @@ It is necessary to revisit the vulnerability of the entire allocation afresh
 as we consider each assay type, because the conclusions we reached last time
 round must be re-examined in the context of an additional assay having been
 allocated. I.e. now that we have allocated the replicas of 'P' - does that
-mean that the chambers in the reserved chamber set for 'O' could all fire
+mean that the chambers in the reserved chamber set for 'O' could now all fire
 because of the newly added P's, despite 'O' not being present? Etc.
 
 # Note (001) Optimizations, Limitations, and *IMPLICATIONS*.
 
-The number of possible targets-present sets, goes up exponentially with how 
+The number of possible targets-present sets, goes up factorially with how 
 many simultaneously-present targets we wish to protect ourselves from.
 
 If are working with 20 assay types:
@@ -64,24 +98,33 @@ If are working with 20 assay types:
 -  there are 125,970 possible target sets of size 8
 
 The algorithm has a setting in it that makes it ignore target sets with more
-than N members (n_targets). (To avoid very long allocation run-times). 
-Currently set to 5.
+than N members (n_targets). (A pragmatic compromise, to avoid very long 
+program run-times).  Currently set to 5.
 
 The algorithm does not bother with any target sets smaller than this upper 
-limit either, because these cannot cause false positives that the larger sets
-will not as well.
+limit either, because these are logically redundant. They cannot cause 
+false positives that the larger sets will not also cause.
 
-You cannot choose the number of replicas (n_replicas) independently of 
+WARNING: You cannot choose the number of replicas (n_replicas) independently of
 (n_targets). n_replicas must be > n_targets, or the allocation is vulnerable
 (by definition).
 
-To verify this assertion. Consider n_replicas = 3, and n_targets = 3. We
+To verify this assertion, consider n_replicas = 3, and n_targets = 3. Say we
 reserved {1,4,7} for assay 'P'. It is inevitable there exists a set of 3
 targets that when present would cause {1,4,7} to fire despite 'P' not being
 present? Any set that contains a representative assay drawn from the occupants
 of each of {1,4,7} would do. Conversely, if we raise n_replicas to 4 and use
 for example {1,4,7,14}, and leave n_targets at 3. We stand a chance of finding
 a set of 3 targets that will not cause all of {1,4,7,14} to fire.
+
+IMPLEMENTATION OPTIMISATIONS
+
+It is necessary to introduce some optimisations to prevent the code from taking
+an excessive amount of time to run.  The code ostensibly operates nested loops
+that consider all the relevant possible available within its constraints, at
+each stage. However we can deduce that large chunks of these can be skipped
+because they will not provide any new information. See the code comments to see
+where these are deployed.
 """
 
 from itertools import combinations
@@ -148,29 +191,17 @@ class AvoidsFP:     # FP = False-Positive
 
     def _allocate_all_replicas_of_this_assay_type(self, assay_P):
         """
-        Find homes for all the replicas of assay_P.
+        Find homes for all the replicas of assay_P. In the context of
+        having previously allocated the replicas that precede assay P in
+        allocation priority order.
         """
-        # We will choose and use, a particular set of chambers to house the 
-        # replicas for this assay type.
 
-        # The allocation object keeps track of what chamber set we decided
-        # upon (reserved) for each assay.
+        possible_chamber_sets = self._assemble_chamber_sets_to_consider_for(
+            assay_P)
 
-        # So we first prepare the candidate chamber sets - a set of sets of
-        # requisite size.
-        # That might look something like this, if we require 3 replicas for
-        # assay_P: 
-        # { {1,2,7}, {1,2,8}, ... {3,5,9} ... }
-
-        chambers = self._design.set_of_all_chambers()
-        chambers = self._remove_incompatible_chambers(chambers, assay_P)
-        num_replicas = self._design.replicas[assay_P]
-        possible_chamber_sets = self._draw_possible_chamber_sets_of_size(
-            chambers, size=num_replicas)
-
-        # Work through all the potential chamber sets, and use the first set 
-        # we encounter that does not put the overall allocation into a
-        # vulnerable state. (Where it can produce false positives.)
+        # Use the first chamber set we encounter that does not put the overall
+        # allocation into a vulnerable state. (Where it can produce false
+        # positives.)
 
         for chamber_set_147 in possible_chamber_sets:
             # We cannot consider chamber sets which have already been
@@ -198,6 +229,20 @@ class AvoidsFP:     # FP = False-Positive
         raise RuntimeError('Cannot allocate: %s' % assay_P)
 
 
+    def _assemble_chamber_sets_to_consider_for(self, assay_P):
+        """
+        Provide the chamber sets that might be a good place to allocate
+        the replicas of the given assay (P). A set of (frozen) sets.
+        For example: { {1,2,7}, {1,2,8}, ... {3,5,9} ... }
+        """
+        chambers = self._design.set_of_all_chambers()
+        chambers = self._remove_incompatible_chambers(chambers, assay_P)
+        num_replicas = self._design.replicas[assay_P]
+        chamber_sets = self._draw_possible_chamber_sets_of_size(
+                chambers, size=num_replicas)
+        return chamber_sets
+
+
     def _is_allocation_with_assay_P_added_vulnerable(
             self, assay_P, chamber_set_for_P):
         """
@@ -213,48 +258,105 @@ class AvoidsFP:     # FP = False-Positive
         # Temporarily, add in assay_P as instructed.
         self.alloc.allocate(assay_P, chamber_set_for_P)
 
-        # Ostensibly, we will consider all the previously reserved chamber
-        # sets, but we can skip those of them that we haven't touched when
-        # adding assay_P's replicas. (Their vulnerability cannot have been
-        # changed).
-        reserved_chamber_sets = set()
-        for chamber_set in self.alloc.reserved_chamber_sets():
-            if chamber_set.intersection(chamber_set_for_P):
-                reserved_chamber_sets.add(chamber_set)
+        # Consider all the reserved chamber sets, but only those that
+        # we just potentially compromised by adding P into them.
+        filtered_reserved_chamber_sets = \
+                self._filter_reserved_chamber_sets(chamber_set_for_P)
 
-        # The outer loop iterates over those of the already-reserved 
-        # chamber sets that could have become vulnerable.
-        for reserved_chamber_set in reserved_chamber_sets:
-            # This inner loop iterates over all the possible targets-present 
-            # sets that could exist.
+        for reserved_chamber_set in filtered_reserved_chamber_sets:
+            # Reminder about what we know about this chamber set:
+            # 1) Which assay (F) reserved it.
+            # 2) (F) exists in each of its chambers.
+            # 3) The assay we just added (P) exists in at least one of its 
+            #    chambers.
+            # 4) We know it wasn't vulnerable up till the point we added
+            #    (P) into it.
+
+            reserving_assay = self.alloc.which_assay_reserved_this_chamber_set(
+                    reserved_chamber_set):
+
+            # Consider all the possible targets-present sets that could exist.
             for target_set_ADFN in self._possible_target_sets.sets:
-                # Would all the chambers in the set fire in the presence of 
-                # this targets-present set?
-                all_would_fire =  self._all_would_fire(
-                    reserved_chamber_set, target_set_ADFN)
 
-                if all_would_fire:
-                    # If so, are they doing so spuriously?
-                    if self._spurious_fire(
-                            reserved_chamber_set, target_set_ADFN):
-                        # So we can return immediately, concluding that
-                        # the allocation as a whole is vulnerable, but first
-                        # we must back-out the temporary allocation.
-                        self.alloc.unreserve_alloc_for(assay_P)
-                        return True
+                # Do inexpensive tests first that avoid the more expensive
+                # all-firing test.
+                harmless = self._target_set_need_not_be_tested(
+                        target_set_ADFN, reserving_assay, assay_P)
+                if harmless:
+                    continue # Skip to next target set.
 
-        # To have got this far, we can conclude that the allocation as a whole
-        # is not vulnerable, but first we must back out the temporary
-        # allocation.
+                # Now we've reached the more expensive test.
+                all_fire = self._all_would_fire(reserved_chamber_set, 
+                        reserving_assay, target_set_ADFN)
+                if all_fire:
+                    # The allocation as a whole is vulnerable, but before
+                    # we return, let's leave things as we found them.
+                    self.alloc.unreserve_alloc_for(assay_P)
+                    return True # Is vulnerable.
+
+                # Good, this this target set w.r.t. this chamber set is
+                # does not make the allocation vulnerable.
+
+            # Good this, chamber set does not make the allocation vulnerable,
+            # across all target sets.
+
+        # Good, none of the reserved chambers sets makes the allocation
+        # vulnerable.
+
+        # Leave things as we found them.
         self.alloc.unreserve_alloc_for(assay_P)
+
+        # And report back that the allocation as a whole is not vulnerable.
         return False
 
 
-    def _all_would_fire(self, chamber_set_147, target_set_ADFN):
+    def _filter_reserved_chamber_sets(self, filtering_chamber_set)
         """
+        Provide those of the reserved chamber sets that the allocation has
+        comitted to, that have members in common with the cited filtering
+        chamber set.
+        """
+        chamber_sets = set()
+        for chamber_set in self.alloc.reserved_chamber_sets():
+            if chamber_set.intersection(filtering_chamber_set):
+                reserved_chamber_sets.add(chamber_set)
+        return chamber_sets
+
+
+    def _target_set_need_not_be_tested(
+            self, target_set, reserving_assay, incoming_assay):
+        """
+        Can we avoid having to assess if all the chambers in this chamber
+        set will fire in the presence of the given target set?
+        """
+
+        # If the target set has the reserving assay (F) in it all the chambers
+        # in the chamber set will fire. - Legitimately, not spuriously.
+        if reserving_assay in target_set:
+            return True
+
+        # If this target set doesn't have the incoming assay (P) in it, it
+        # cannot introduce any NEW reasons for all its chambers to fire that
+        # weren't covered by the assessment when the assay type that preceded P
+        # was being allocated.  (Dynamic programming)
+        contains_incoming = incoming_assay in target_set
+        if contains_incoming == False
+            return True
+        return False
+
+
+    def _all_would_fire(
+            self, chamber_set_147, reserving_assay, target_set_ADFN):
+        """
+        We are given a reserved chamber set, and the assay that reserved it.
+        The caller guarantees that the reserving assay is not already present
+        somewhere in this chamber set.
+        We are also given a potential targets-present set.
         Would the presence of the targets {A,D,F,N} cause all of the chambers
-        {1,4,7} to fire?
+        {1,4,7} to fire - thus proving that the chamber set is vulnerable to 
+        calling a false positive?
         """
+        # Trivial shortcut answer, when the 
         for chamber in chamber_set_147:
             occupants = self.alloc.assay_types_present_in(chamber)
             # Only needs one chamber to have no occupants in common
@@ -262,19 +364,6 @@ class AvoidsFP:     # FP = False-Positive
             if len(occupants.intersection(target_set_ADFN)) == 0:
                 return False
         return True
-
-    def _spurious_fire(self, chamber_set, target_set_ADFN):
-        """
-        If all the chambers in the given reserved chamber set fired, have
-        they done so, despite the reserving assay not being present among the 
-        targets?
-        """
-        reserving_assay = self.alloc.which_assay_reserved_this_chamber_set(
-                chamber_set)
-        if reserving_assay in target_set_ADFN: # Not spurious.
-            return False
-        return True # Is spurious.
-
 
     def _remove_incompatible_chambers(self, chambers, assay_P):
         """
