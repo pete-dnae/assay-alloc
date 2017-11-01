@@ -1,43 +1,87 @@
 """
-Definition of how this algorithm works.
+ALGORITHM EXPLANATION
 
-Nb. In what follows we use the terms assays and targets almost interchangeably. 
+We use the terms assays and targets almost interchangeably. 
 
-We iterate over assay types in some priority order.  And in each iteration we
-allocate all of the replicas of that assay to a chamber set. For example if 3
-replicas are needed it could be {1,2,9}.  We refer to that chamber set as the
-chamber set that has been *reserved* by that assay.  It is reserved in the
-sense that we want to be able to rely on the fact that when all the chambers in
-that set fire, that is an unequivocal indicator that the target that reserved
-it is present.  It follows that we must make sure there can be no reason for
-all of those chambers to fire when its reserving target is not present.
-Regardless, that is, of what other targets might be present. This is to
-guarantee there can be no false positives.
+We iterate over assay types in some priority order. E.g. (A,B,C...Q) etc.  In
+each iteration we allocate all of the replicas of that assay (P) to a chamber
+set. For example if 3 replicas are needed for (P), we might decide to use
+{1,2,9}.  We refer to that chamber set as the chamber set that has been
+*reserved* by assay (P).  It is reserved in the sense that we want to be able
+to rely on the fact that when all of {1,2,9} fire, that is an unequivocal
+indicator that (P) is present.  It follows that we must make sure there can be
+no reason for all of {1,2,9} to fire when (P) is not present.  Regardless, that
+is, of what other targets might be present. This is to guarantee there can be
+no false positives.
 
-We describe the allocation as a whole as vulnerable (to false positive calls),
-when there is some particular combinations of targets that could be present,
-which would cause all of the chambers in one of the reserved chamber sets to
-fire, when its intended target is not present.
+We describe the allocation as a whole as *vulnerable* (to false positive
+calls), when there is some particular combinations of targets that could be
+present, which would cause all of the chambers in one of the reserved chamber
+sets to fire, when its intended target is not present.
 
-Our approach as we incrementally consider each assay type in turn, is to
-hypothesise chamber sets that we might use to home its replicas. We consider
-all legal chamber set possibilities in fact. Legal being allocations that do
-not break the don't-mix rules.
+Our approach as we incrementally consider each assay type (P) in turn, is to
+hypothesise chamber sets that we might use to house P's replicas. We consider
+all legal chamber set possibilities (of the right size) in fact. For example:
+{1,2,3}, {1,2,4}, {1,2,5}... {17,12,24} ... etc. Legal being defined as 
+allocations that do not break the don't-mix rules.
 
-To measure the vulnerability we must consider target sets that might be
-present. In fact we look at all the possible (reasonable) target sets that
-could be present. Reasonable meaning we only consider up to maybe 5 targets
-present simultaneously. (Configurable).  If we can find for any of our reserved
-chamber sets, a potential targets-present set that would cause all its chambers
-to fire despite the assay that reserved it not being present, we can conclude
-that the allocation as a whole is vulnerable.
+To measure the *vulnerability* we must consider target sets that might be
+present. For example {A} on its own, or {A,B}, or {A,N,F} and so on. In fact we
+look at all the possible target sets that could be present. (See Note 001 
+below).
+
+If we can find, for any of our reserved chamber sets e.g. {1,2,9}, a potential
+targets-present set (e.g. {A,B,C,D} that would cause all of {1,2,9} to fire
+despite the assay that reserved it not being present, we can conclude that
+that particular allocation state, as a whole, is *vulnerable*.
 
 When this happens we reject that chamber-set hypothesis as a home for the assay
-type under consideration, and move on to consider the next hypothesis.
+type under consideration (P), and move on to consider the next hypothesis. If
+we exhaust the possible chamber sets to use for (P), we are stuck and have
+to abort. Conversely, if we make it to the end of the assays types which are
+mandated by the experiment, we know we have produced an invulnerable allocation
+scheme.
 
-It is necessary to revisit the vulnerability of the allocation as a whole at
-each stage, because the logical vulnerability conclusions must account for
-all the assays allocated so far.
+It is necessary to revisit the vulnerability of the entire allocation afresh 
+as we consider each assay type, because the conclusions we reached last time
+round must be re-examined in the context of an additional assay having been
+allocated. I.e. now that we have allocated the replicas of 'P' - does that
+mean that the chambers in the reserved chamber set for 'O' could all fire
+because of the newly added P's, despite 'O' not being present? Etc.
+
+# Note (001) Optimizations, Limitations, and *IMPLICATIONS*.
+
+The number of possible targets-present sets, goes up exponentially with how 
+many simultaneously-present targets we wish to protect ourselves from.
+
+If are working with 20 assay types:
+
+-  there are    1140 possible target sets of size 3
+-  there are    4845 possible target sets of size 4
+-  there are  15,504 possible target sets of size 5
+-  there are  38,760 possible target sets of size 6
+-  there are  77,520 possible target sets of size 7
+-  there are 125,970 possible target sets of size 8
+
+The algorithm has a setting in it that makes it ignore target sets with more
+than N members (n_targets). (To avoid very long allocation run-times). 
+Currently set to 5.
+
+The algorithm does not bother with any target sets smaller than this upper 
+limit either, because these cannot cause false positives that the larger sets
+will not as well.
+
+You cannot choose the number of replicas (n_replicas) independently of 
+(n_targets). n_replicas must be > n_targets, or the allocation is vulnerable
+(by definition).
+
+To verify this assertion. Consider n_replicas = 3, and n_targets = 3. We
+reserved {1,4,7} for assay 'P'. It is inevitable there exists a set of 3
+targets that when present would cause {1,4,7} to fire despite 'P' not being
+present? Any set that contains a representative assay drawn from the occupants
+of each of {1,4,7} would do. Conversely, if we raise n_replicas to 4 and use
+for example {1,4,7,14}, and leave n_targets at 3. We stand a chance of finding
+a set of 3 targets that will not cause all of {1,4,7,14} to fire.
 """
 
 from itertools import combinations
