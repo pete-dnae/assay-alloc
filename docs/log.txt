@@ -4,20 +4,20 @@ o  First upgrade existing implementation to have a method that in one optimized
     *  Mention bin packing / dynamic programming in notes.
     *  Code as such
     o  Upgrade all tests to suit
-o  Need we use all the target sets in assessing vulnerability, or can we
-   decimate these with some reasoning?
-    *  Improve docco clarity to help think about this.
-    o  Exploit that P just got added?
-o  Why is it getting stuck on assay_I?
-    o  Replicas must be > target set size
-    o  Can we get 20 assays into 24 chambers with 5-targets to work? A-T
+        *  List tests required
+        o  Add tests from utils upwards
+            *  _filter_reserved_chamber_sets(chamber_set_for_P)
+            *  _target_set_need_not_be_tested(
+            *  _assemble_chamber_sets_to_consider_for(
+            *  _all_would_fire(reserved_chamber_set, 
+            o  _is_allocation_with_assay_P_added_vulnerable(
+            o  end to end
+                o  Bring back in those relevant of old tests
+                o  What learned?
+                o  what else at system level?
+
 o  Test that proves mutex and cover of allocation?
 o  Make report for Brad even if can't ship yet.
-
-o  Create unit test for optimisation in 
-   _is_allocation_with_assay_P_added_vulnerable( that skips reserved chamber
-   sets if we didn't put assay_P into it. (And vice versa). Nb. is known to
-   be firing by manual scrutiny.
 
 o  Full result correctness test
 o  Calling test / or report

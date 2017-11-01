@@ -166,7 +166,7 @@ class AvoidsFP:     # FP = False-Positive
         # consider during the allocation process.
         # NB, there are circa tens-of-thousands of these if we draw from a 
         # 20-member superset, and constrain the subsets to 5 or fewer members.
-        number_of_targets = 4
+        number_of_targets = 5
         self._possible_target_sets = PossibleTargets.create(
             experiment_design, number_of_targets)
 
@@ -273,7 +273,7 @@ class AvoidsFP:     # FP = False-Positive
             #    (P) into it.
 
             reserving_assay = self.alloc.which_assay_reserved_this_chamber_set(
-                    reserved_chamber_set):
+                    reserved_chamber_set)
 
             # Consider all the possible targets-present sets that could exist.
             for target_set_ADFN in self._possible_target_sets.sets:
@@ -310,7 +310,7 @@ class AvoidsFP:     # FP = False-Positive
         return False
 
 
-    def _filter_reserved_chamber_sets(self, filtering_chamber_set)
+    def _filter_reserved_chamber_sets(self, filtering_chamber_set):
         """
         Provide those of the reserved chamber sets that the allocation has
         comitted to, that have members in common with the cited filtering
@@ -319,7 +319,7 @@ class AvoidsFP:     # FP = False-Positive
         chamber_sets = set()
         for chamber_set in self.alloc.reserved_chamber_sets():
             if chamber_set.intersection(filtering_chamber_set):
-                reserved_chamber_sets.add(chamber_set)
+                chamber_sets.add(chamber_set)
         return chamber_sets
 
 
@@ -340,7 +340,7 @@ class AvoidsFP:     # FP = False-Positive
         # weren't covered by the assessment when the assay type that preceded P
         # was being allocated.  (Dynamic programming)
         contains_incoming = incoming_assay in target_set
-        if contains_incoming == False
+        if contains_incoming == False:
             return True
         return False
 

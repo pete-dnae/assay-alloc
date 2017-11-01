@@ -94,6 +94,88 @@ class TestAvoidsFP(unittest.TestCase):
         self.assertEqual(candidate_chambers, set([3]))
 
 
+
+    def xtest_filter_reserved_chamber_sets(self):
+        # Do some allocation so that reserved chamber sets exist.
+        # Then make sure the method under test reports these back to us,
+        # omitting those specified in the filter.
+        assays = 3
+        chambers = 3
+        replicas = 0
+        dontmix = 0
+        targets = 0
+
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                replicas, dontmix, targets)
+        allocator = AvoidsFP(design)
+        allocator.alloc.allocate('A', frozenset({1,2,3,4}))
+        allocator.alloc.allocate('B', frozenset({1,2,3,5}))
+        filter = {5}
+        filtered = allocator._filter_reserved_chamber_sets(filter)
+        self.assertEqual(filtered, set([frozenset([1, 2, 3, 5])]))
+
+    def xtest_target_set_need_not_be_tested(self):
+        assays = 0
+        chambers = 0
+        replicas = 0
+        dontmix = 0
+        targets = 0
+
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                replicas, dontmix, targets)
+        allocator = AvoidsFP(design)
+
+        #  Should say True when the target set contains the reserving assay.
+        target_set = {'A', 'B', 'C'}
+        reserving_assay = 'B'
+        incoming_assay = None
+        self.assertTrue(
+            allocator._target_set_need_not_be_tested(
+                target_set, reserving_assay, incoming_assay))
+
+        #  Should say True when the target set doesn't have the incoming
+        #  assay in it.
+        target_set = {'A', 'B', 'C'}
+        reserving_assay = None
+        incoming_assay = 'D'
+        self.assertTrue(
+            allocator._target_set_need_not_be_tested(
+                target_set, reserving_assay, incoming_assay))
+
+        # Should say False otherwise.
+        target_set = {'A', 'B', 'C'}
+        reserving_assay = 'D'
+        incoming_assay = 'A'
+        self.assertFalse(
+            allocator._target_set_need_not_be_tested(
+                target_set, reserving_assay, incoming_assay))
+
+    def xtest_assemble_chamber_sets_to_consider_for(self):
+        # Make sure that sets that would breach the no mix rules
+        # get rejected. And the set size requirement is honoured.
+        assays = 4
+        chambers = 5
+        replicas = 2
+        dontmix = 1
+        targets = 0
+
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                replicas, dontmix, targets)
+        allocator = AvoidsFP(design)
+        allocator.alloc.allocate('A', frozenset({1,2,3}))
+        allocator.alloc.allocate('B', frozenset({2,3,4}))
+        allocator.alloc.allocate('C', frozenset({3,4,5}))
+        sets = allocator._assemble_chamber_sets_to_consider_for('D')
+
+        # Double check what the experiment design decided about dontmix
+        # pairs.
+        self.assertEqual(design.dontmix, [['D', 'A']])
+
+        # So the answer should rule out any set that contains 1 or 2 or 3,
+        # which only leaves {4,5}
+        self.assertEqual(sets, [frozenset([4, 5])])
+
+
     def xtest_all_would_fire(self):
         """
         Make sure the utility method _all_would_fire() provides correct
@@ -109,56 +191,22 @@ class TestAvoidsFP(unittest.TestCase):
                 replicas, dontmix, targets)
         allocator = AvoidsFP(design)
 
-        # We will put 'A', 'B', 'C' into chambers 1,2,3 respectively.
+        allocator.alloc.allocate('A', frozenset({1,2,3}))
+        allocator.alloc.allocate('B', frozenset({2,3,4}))
+        allocator.alloc.allocate('C', frozenset({3,4,5}))
+        allocator.alloc.allocate('M', frozenset({1}))
 
-        allocator.alloc.allocate('A', frozenset({1}))
-        allocator.alloc.allocate('B', frozenset({2}))
-        allocator.alloc.allocate('C', frozenset({3}))
+        # {1,2,3} will all fire in the presence of 'B', 'M' and 'C'
+        chamber_set = {1,2,3}
+        reserving_assay = 'A'
+        target_set = {'B', 'M', 'C'}
+        self.assertTrue(allocator._all_would_fire(
+            chamber_set, reserving_assay, target_set))
 
-        chamber_set = {2,3}
-
-        # All would fire should be true for chambers {2,3} if
-        #   1) both B and C are present
-        #   2) all of A,B,C are present
-
-        self.assertTrue(allocator._all_would_fire(chamber_set, {'B', 'C'}))
-        self.assertTrue(allocator._all_would_fire(chamber_set, {'A', 'B', 'C'}))
-
-        # All would fire should be false for chambers {2,3} if
-        #   Either of 'B', 'C' is absent.
-        self.assertFalse(allocator._all_would_fire(chamber_set, {'A', 'B'}))
-        self.assertFalse(allocator._all_would_fire(chamber_set, {'A', 'C'}))
-
-    def xtest_spurious_fire(self):
-        assays = 4
-        chambers = 10
-        replicas = 0
-        dontmix = 0
-        targets = 0
-
-        design = ExperimentDesign.make_from_params(assays, chambers, 
-                replicas, dontmix, targets)
-        allocator = AvoidsFP(design)
-
-        # We set up a spurious fire by allocating 'D' to {3,4,5},
-        # having previously allocated 'A' to 3, 'B' to 4, and 'C' to
-        # 5. The spurious fire will occur in the presence of {ABC}, because
-        # that will cause all of {3,4,5} to fire despite the assay that
-        # reserved {3,4,5}, ie 'D' not being present.
-
-        # Conversely, the firing of {3,4,5} in the presence of 'D' should be
-        # judged to be not spurious.
-
-        allocator.alloc.allocate('A', frozenset({3}))
-        allocator.alloc.allocate('B', frozenset({4}))
-        allocator.alloc.allocate('C', frozenset({5}))
-
-        allocator.alloc.allocate('D', frozenset({3,4,5}))
-
-        self.assertTrue(allocator._spurious_fire(
-                frozenset({3,4,5}), {'A', 'B', 'C'}))
-        self.assertFalse(allocator._spurious_fire(
-                frozenset({3,4,5}), {'D'}))
+        # But not if we leave out 'M'
+        target_set = {'B', 'C'}
+        self.assertFalse(allocator._all_would_fire(
+            chamber_set, reserving_assay, target_set))
 
 
     def xtest_tiny_real_example(self):
@@ -181,7 +229,7 @@ class TestAvoidsFP(unittest.TestCase):
         #self.assertEquals(allocation.chambers_for('A'), set([1, 2, 3]))
         #self.assertEquals(allocation.chambers_for('B'), set([1, 2, 4]))
 
-    def test_realistic_sized_example_without_dontmix(self):
+    def xtest_realistic_sized_example_without_dontmix(self):
         assays = 20
         chambers = 24
         replicas = 5
