@@ -29,7 +29,7 @@ class ExperimentDesign:
         return design
 
     @classmethod
-    def make_from_paramsx(cls, assays, sim_targets, chambers, dontmix, targets):
+    def make_from_paramsx(cls, assays, chambers, sim_targets, dontmix, targets):
         exp = ExperimentDesign()
         exp.assay_types = set([chr(ord('A') + i) for i in range(assays)])
         exp.sim_targets = sim_targets

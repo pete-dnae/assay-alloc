@@ -192,8 +192,6 @@ class AvoidsFP:     # FP = False-Positive
         # 20-member superset, and constrain the subsets to 5 or fewer members.
         self._possible_target_sets = PossibleTargets.create(
             experiment_design, experiment_design.sim_targets)
-        print('XXXX sim targets is %d' % experiment_design.sim_targets)
-        print('XXXX poss target sets: %s' % self._possible_target_sets.sets)
         # This algorithm requires that the number of replicas that get
         # placed for each assay, be at least one greater than the largest
         # number of simultaneous targets being considered.

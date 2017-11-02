@@ -5,7 +5,10 @@ o  that will be so big that we might as well make it the same for all assays
        controls to replicas
         *  code exp design
         o  use tests to work out where to set replicas
-            o  dev using test_tiny
+            *  dev using test_tiny
+            o  bring up the rest
+        o  put assertion into allocate for contravene number expected
+           in alloc sets
         o  get allocator tests to run thus
     o  can we make it work with headroom of 2 with realistic case?
 
