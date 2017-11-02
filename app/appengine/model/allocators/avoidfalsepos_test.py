@@ -1,4 +1,5 @@
 import unittest
+import sys
 
 from model.allocators.avoidfalsepos import AvoidsFP
 from model.experimentdesign import ExperimentDesign
@@ -12,7 +13,7 @@ class TestAvoidsFP(unittest.TestCase):
         pass
 
     # ------------------------------------------------------------------------
-    # These tests are ordered bottom up - verifying the private utility
+    # These tests are ordered bottom up - verifying the simplest utility
     # methods first, before moving on the more aggregate methods, and then
     # eventually the public API.
     # ------------------------------------------------------------------------
@@ -208,6 +209,61 @@ class TestAvoidsFP(unittest.TestCase):
         self.assertFalse(allocator._all_would_fire(
             chamber_set, reserving_assay, target_set))
 
+    def xtest_that_skips_already_reserved_chamber_sets(self):
+        """
+        Checks that this bit of conditional logic in the code gets
+        executed.
+        """
+        assays = 5; chambers = 6; replicas = 2; dontmix = 0; targets = 0
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                replicas, dontmix, targets)
+        allocator = AvoidsFP(design)
+        tracer = AssertThisTraceMessageGetsLogged(self,
+                'because already reserved')
+        allocator.tracer = tracer
+        # Note that allocate() will be terminated early by the tracer in
+        # this test.
+        allocation = allocator.allocate()
+        self.fail('Tracer did not receive: %s', tracer.message_fragment)
+
+    def xtest_that_target_set_is_judged_harmless(self):
+        """
+        Checks that this bit of conditional logic in the code gets
+        executed.
+        """
+        assays = 5; chambers = 6; replicas = 2; dontmix = 0; targets = 0
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                replicas, dontmix, targets)
+        allocator = AvoidsFP(design)
+        tracer = AssertThisTraceMessageGetsLogged(self,
+                'Target set need not be tested')
+        allocator.tracer = tracer
+        # Note that allocate() will be terminated early by the tracer in
+        # this test.
+        allocation = allocator.allocate()
+        self.fail('Tracer did not receive: %s', tracer.message_fragment)
+
+    def test__is_allocation_with_assay_P_added_vulnerable(self):
+        """
+        reserve 123 for A
+        reserve 456 for B
+
+        Adding C to 234 makes the allocation vulnerable because in the 
+        presence of AB, all of 234 fire despite C not being present.
+        """
+        assays = 3; chambers = 3; replicas = 3; dontmix = 0; targets = 0
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                replicas, dontmix, targets)
+        allocator = AvoidsFP(design)
+
+        allocator.alloc.allocate('A', frozenset({1,2,3}))
+        allocator.alloc.allocate('B', frozenset({4,5,6}))
+
+        vulnerable = allocator._is_allocation_with_assay_P_added_vulnerable(
+            'C', frozenset({2,3,4}))
+        self.assertTrue(vulnerable)
+
+
 
     def xtest_tiny_real_example(self):
         """
@@ -281,3 +337,17 @@ class TestAvoidsFP(unittest.TestCase):
         allocator = AvoidsFP(design)
         allocation = allocator.allocate()
 
+class AssertThisTraceMessageGetsLogged:
+    """
+    An object that exposes a trace(message) method to which clients to send
+    strings.  It can be constructed to react to one particular message fragment
+    by telling the current test case to immediately "pass".
+    """
+
+    def __init__(self, testcase, message_fragment):
+        self._testcase = testcase
+        self.message_fragment = message_fragment
+
+    def trace(self, incoming_message):
+        if self.message_fragment in incoming_message:
+            self._testcase.skipTest(None)

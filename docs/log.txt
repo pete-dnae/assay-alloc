@@ -11,10 +11,14 @@ o  First upgrade existing implementation to have a method that in one optimized
             *  _assemble_chamber_sets_to_consider_for(
             *  _all_would_fire(reserved_chamber_set, 
             o  _is_allocation_with_assay_P_added_vulnerable(
+                *  design test
+                o  test when should be vulnerable
+                o  show that is not when tweaked
             o  end to end
                 o  Bring back in those relevant of old tests
                 o  What learned?
                 o  what else at system level?
+    o  Make target set size a function of replicas?
 
 o  Test that proves mutex and cover of allocation?
 o  Make report for Brad even if can't ship yet.
@@ -38,39 +42,16 @@ o  Make root url take you form
 o  Is all the docker legacy pointless?
 
 ----------------------------------------------------------------------------
-o  Combined will all fire and spuriously
+def _is_allocation_with_assay_P_added_vulnerable(
 ----------------------------------------------------------------------------
 
-chamber_sets = the reserved chamber sets the alloc has reserved, and to which
-            we just challenged the vulnerability of by adding P to somewhere.
-            (Dynamic programming)
+reserve 123 for A
+reserve 456 for B
 
-for each chamber set in chamber_sets:
-    Known facts
-        o  which assay reserved it F
-        o  F is in all chambers
-        o  it has P in somewhere
-        o  it wasn't vulnerable until we put P in somewhere
-    for all possible target sets:
-        # Quick non-chamber-wise wins early...
+adding C to 367 makes the allocation vulnerable because in the presence
+of AB, all of 367 fire despite C not being present
 
-        # If the target set has the reserving assay (F) in it, all the 
-        # chambers in the chamber set will fire. - Legitimately, not 
-        # spuriously.
-        if target set has F in it:
-            continue 
-        # if this target set doesn't have P in it, it cannot
-        # introduce any NEW reasons for all the chambers to fire that weren't
-        # covered by the assessment when the assay type that preceded P was
-        # being allocated. (Dynamic programming)
-        if target set does not have P in it:
-            continue
+test should ensure that a target set that contains AB is the one that points
+this out
 
-        # Now the more costly chamber-wise tests
-        for each chamber 1,4,7:
-            get occupants
-            no fire = if none in common with {A,D,F,S}
-                early return
-        if reach here all chambers did fire despite absence of assay
-        that reserved the chamber set - boo hoo
-        return sad
+

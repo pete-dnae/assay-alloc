@@ -159,6 +159,10 @@ class AvoidsFP:     # FP = False-Positive
         Provide an ExperimentDesign object when initialising the allocator..
         """
         self._design = experiment_design
+        # This is a diagnostics channel to support unit testing.
+        # A few parts of the code send it messages to provide evidence that
+        # something happened (if it is none none).
+        self.tracer = None
         # Prepare an Allocation object with which to register allocation
         # decisions as they progress.
         self.alloc = Allocation()
@@ -166,7 +170,7 @@ class AvoidsFP:     # FP = False-Positive
         # consider during the allocation process.
         # NB, there are circa tens-of-thousands of these if we draw from a 
         # 20-member superset, and constrain the subsets to 5 or fewer members.
-        number_of_targets = 5
+        number_of_targets = 3
         self._possible_target_sets = PossibleTargets.create(
             experiment_design, number_of_targets)
 
@@ -207,6 +211,8 @@ class AvoidsFP:     # FP = False-Positive
             # We cannot consider chamber sets which have already been
             # reserved for another assay.
             if self.alloc.is_chamber_set_already_reserved(chamber_set_147):
+                self._trace('Skipping %s because already reserved' %
+                        chamber_set_147) 
                 continue
             # Would adding assay_P to this chamber set make the allocation
             # as a whole  vulnerable?
@@ -218,7 +224,6 @@ class AvoidsFP:     # FP = False-Positive
             # object to register and reserve them thus.
 
             if not vulnerable:
-                print('XXX reserving %s for %s' % (chamber_set_147, assay_P))
                 self.alloc.allocate(assay_P, chamber_set_147)
                 return
             # If we get to here, that chamber set is vulnerable. Never mind,
@@ -283,6 +288,7 @@ class AvoidsFP:     # FP = False-Positive
                 harmless = self._target_set_need_not_be_tested(
                         target_set_ADFN, reserving_assay, assay_P)
                 if harmless:
+                    self._trace('Target set need not be tested')
                     continue # Skip to next target set.
 
                 # Now we've reached the more expensive test.
@@ -397,3 +403,14 @@ class AvoidsFP:     # FP = False-Positive
                     for c in chamber_set])
 
         return sorted(subsets, key=_how_crowded)
+
+
+    def _trace(self, msg):
+        """
+        A convenience method that emits the given message to the listener
+        that has been registered at self.tracer, if one has been registered.
+        Intended for unit test clients.
+        """
+        if self.tracer is None:
+            return
+        self.tracer.trace(msg)
