@@ -27,6 +27,7 @@ class PossibleTargets:
 
         sets = []
         # Note that combinations() guarantees a deterministic ordering.
+        how_many_targets = 2
         for combi in combinations(assay_types, how_many_targets):
             sets.append(set(combi))
 

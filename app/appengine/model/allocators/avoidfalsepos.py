@@ -285,10 +285,9 @@ class AvoidsFP:     # FP = False-Positive
 
                 # Do inexpensive tests first that avoid the more expensive
                 # all-firing test.
-                harmless = self._target_set_need_not_be_tested(
-                        target_set_ADFN, reserving_assay, assay_P)
-                if harmless:
-                    self._trace('Target set need not be tested')
+                if reserving_assay in target_set_ADFN:
+                    self._trace('Can avoid all firing test for %s' % 
+                            target_set_ADFN) 
                     continue # Skip to next target set.
 
                 # Now we've reached the more expensive test.
@@ -327,28 +326,6 @@ class AvoidsFP:     # FP = False-Positive
             if chamber_set.intersection(filtering_chamber_set):
                 chamber_sets.add(chamber_set)
         return chamber_sets
-
-
-    def _target_set_need_not_be_tested(
-            self, target_set, reserving_assay, incoming_assay):
-        """
-        Can we avoid having to assess if all the chambers in this chamber
-        set will fire in the presence of the given target set?
-        """
-
-        # If the target set has the reserving assay (F) in it all the chambers
-        # in the chamber set will fire. - Legitimately, not spuriously.
-        if reserving_assay in target_set:
-            return True
-
-        # If this target set doesn't have the incoming assay (P) in it, it
-        # cannot introduce any NEW reasons for all its chambers to fire that
-        # weren't covered by the assessment when the assay type that preceded P
-        # was being allocated.  (Dynamic programming)
-        contains_incoming = incoming_assay in target_set
-        if contains_incoming == False:
-            return True
-        return False
 
 
     def _all_would_fire(

@@ -1,24 +1,8 @@
-o  First upgrade existing implementation to have a method that in one optimized
-   go, assesses - all chambers will fire but spuriously
-    *  What is this logic psuedo code?
-    *  Mention bin packing / dynamic programming in notes.
-    *  Code as such
-    o  Upgrade all tests to suit
-        *  List tests required
-        o  Add tests from utils upwards
-            *  _filter_reserved_chamber_sets(chamber_set_for_P)
-            *  _target_set_need_not_be_tested(
-            *  _assemble_chamber_sets_to_consider_for(
-            *  _all_would_fire(reserved_chamber_set, 
-            o  _is_allocation_with_assay_P_added_vulnerable(
-                *  design test
-                o  test when should be vulnerable
-                o  show that is not when tweaked
-            o  end to end
-                o  Bring back in those relevant of old tests
-                o  What learned?
-                o  what else at system level?
-    o  Make target set size a function of replicas?
+o  set max size by defn to one less than replicas
+    o  see if fixes this problem
+        o  are we locked onto everything having same n replicas?
+        o  if so enforce and include in narrative
+
 
 o  Test that proves mutex and cover of allocation?
 o  Make report for Brad even if can't ship yet.
