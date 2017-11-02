@@ -6,9 +6,9 @@ class ExperimentDesign:
 
     def __init__(self):
         # Apparatus and mandate.
-        self.assay_types = set() # Of assay names, e.g. 'B'.
-        self.replicas = {} # Replica count, keyed on assay type.
-        self.num_chambers =  None
+        self.assay_types = set() # Of assay names, e.g. 'B', or 'Staph-C'.
+        self.num_chambers =  None # E.g. 24
+        self.sim_targets = None # Simultaneously present targets limit. E.g. 5
         self.dontmix = []  # Of 2-tuples, e.g. ['chalk', 'cheese']
 
         # Simulated test to run.
@@ -18,21 +18,21 @@ class ExperimentDesign:
     @classmethod
     def make_from_html_input_form_dict(cls, form_dict):
         assays = int(form_dict['assays'])
+        sim_targets = 0
+        raise RuntimeError('need sim targets')
         chambers = int(form_dict['chambers'])
-        replicas = int(form_dict['replicas'])
         dontmix = int(form_dict['dontmix'])
         targets = int(form_dict['targets'])
 
-        design = cls.make_from_params(
-            assays, chambers, replicas, dontmix, targets)
+        design = cls.make_from_paramsx(
+                assays, sim_targets, chambers, dontmix, targets)
         return design
 
     @classmethod
-    def make_from_params(cls, assays, chambers, replicas, dontmix, targets):
+    def make_from_paramsx(cls, assays, sim_targets, chambers, dontmix, targets):
         exp = ExperimentDesign()
         exp.assay_types = set([chr(ord('A') + i) for i in range(assays)])
-        for assay_type in exp.assay_types:
-            exp.replicas[assay_type] = replicas
+        exp.sim_targets = sim_targets
         exp.num_chambers = chambers
 
         # Use the first <N> assays as the targets present.

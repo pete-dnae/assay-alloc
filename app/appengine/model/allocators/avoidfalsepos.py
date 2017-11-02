@@ -3,7 +3,6 @@ ALGORITHM EXPLANATION
 
 OVERVIEW
 
-We use the terms assays and targets almost interchangeably. 
 
 This algorithm tries to allocate multiple copies of a set of assays into
 chambers combinatorially in such a way that each assay type gets a *reserved*
@@ -11,10 +10,13 @@ set of chambers, which, when they all *fire* guarantees the detection of that
 assay target, regardless of which other assay targets might also be present.
 In other words, it guarantees to prevent false positive calls.
 
+Nb, In what follows, we use the terms assays and targets almost
+interchangeably. 
+
 The algorithm is set-theoretic. Operating by modelling the interaction between 
 sets of chambers with sets of targets.
 
-It is inspired by two recognized algorithmic concepts:
+It is based on two recognized algorithmic concepts:
 
 - Bin Packing
 
@@ -24,11 +26,11 @@ It is inspired by two recognized algorithmic concepts:
 
     https://en.wikipedia.org/wiki/Dynamic_programming
 
-It follows the bin-packing paradigm by making irreversible decisions about
+It adopts the bin-packing paradigm by making irreversible decisions about
 where to allocate the first assay, and then moving on to consider the next,
 using the previous decisions (cumulatively) as constraints.
 
-It exploits the dynamic programming principle by building up knowledge as it
+It adopts the dynamic programming principle by building up knowledge as it
 goes about where false-positive calls have been ruled-out, and only
 re-evaluating those that could be compromised as each new assay type is mixed
 in.
@@ -43,9 +45,9 @@ set. For example if 3 replicas are needed for (P), we might decide to use
 *reserved* by assay (P).  It is reserved in the sense that we want to be able
 to rely on the fact that when all of {1,2,9} fire, that is an unequivocal
 indicator that (P) is present.  It follows that we must make sure there can be
-no reason for all of {1,2,9} to fire when (P) is not present.  Regardless, that
-is, of what other targets might be present. This is to guarantee there can be
-no false positives.
+no other reason for all of {1,2,9} to fire when (P) is not present.
+Regardless, that is, of what other targets might be present. This is to
+guarantee there can be no false positives.
 
 We describe the allocation as a whole as *vulnerable* (to false positive
 calls), when there is some particular combinations of targets that could be
@@ -76,14 +78,14 @@ to abort. Conversely, if we make it to the end of the assays types which are
 mandated by the experiment, we know we have produced an invulnerable allocation
 scheme.
 
-It is necessary to revisit the vulnerability of the entire allocation afresh 
-as we consider each assay type, because the conclusions we reached last time
-round must be re-examined in the context of an additional assay having been
-allocated. I.e. now that we have allocated the replicas of 'P' - does that
-mean that the chambers in the reserved chamber set for 'O' could now all fire
-because of the newly added P's, despite 'O' not being present? Etc.
+It is necessary to revisit the vulnerability of the entire allocation afresh as
+we consider each assay type, because the conclusions we reached last time round
+must be re-examined in the context of an additional assay having been
+allocated. For example, now that we have allocated the replicas of 'P' - does
+that mean that the chambers in the reserved chamber set for 'O' could now all
+fire because of the newly added P's, despite 'O' not being present?
 
-# Note (001) Optimizations, Limitations, and *IMPLICATIONS*.
+# NOTE (001) OPTIMIZATIONS, LIMITATIONS, AND *IMPLICATIONS*.
 
 The number of possible targets-present sets, goes up factorially with how 
 many simultaneously-present targets we wish to protect ourselves from.
@@ -98,24 +100,42 @@ If are working with 20 assay types:
 -  there are 125,970 possible target sets of size 8
 
 The algorithm has a setting in it that makes it ignore target sets with more
-than N members (n_targets). (A pragmatic compromise, to avoid very long 
-program run-times).  Currently set to 5.
+than N members. We'll call this *sim_targets*. (A pragmatic compromise, to 
+avoid very long program run-times). 
 
-The algorithm does not bother with any target sets smaller than this upper 
-limit either, because these are logically redundant. They cannot cause 
-false positives that the larger sets will not also cause.
+The algorithm does not model any target sets smaller than this upper limit. For
+example for if we are working with sim_targets=5, a set could be {ADNPS}. We
+can safely ignore all the smaller subsets like {ADN}, or {DPS} because any
+false positives that would be caused by the presence of all the targets in one
+of these smaller sets would also be caused by the presence of the larger
+superset {ADNPS}.
 
-WARNING: You cannot choose the number of replicas (n_replicas) independently of
-(n_targets). n_replicas must be > n_targets, or the allocation is vulnerable
-(by definition).
+# LINKAGE TO NUMBER OF REPLICAS.
 
-To verify this assertion, consider n_replicas = 3, and n_targets = 3. Say we
-reserved {1,4,7} for assay 'P'. It is inevitable there exists a set of 3
-targets that when present would cause {1,4,7} to fire despite 'P' not being
-present? Any set that contains a representative assay drawn from the occupants
-of each of {1,4,7} would do. Conversely, if we raise n_replicas to 4 and use
-for example {1,4,7,14}, and leave n_targets at 3. We stand a chance of finding
-a set of 3 targets that will not cause all of {1,4,7,14} to fire.
+If we want to guarantee that false positives cannot be produced, and we
+decide that sim_targets=5, then every assay must have more than 5 replicas
+(n_replicas).  At least one more.
+
+This can be shown easily by considering the simpler case of sim_targets=3, and
+n_replicas=3 (insufficient). Say we reserved {1,4,7} for assay 'P'. It is
+inevitable there exists a set of 3 targets that when present would cause
+{1,4,7} to fire despite 'P' not being present? Any set that contains a
+representative assay drawn from the occupants of each of {1,4,7} would do.
+Conversely, if we raise n_replicas to 4 and use for example {1,4,7,14}, and
+leave n_targets at 3. We stand a chance of finding a set of 3 targets that will
+not cause all of {1,4,7,14} to fire.
+
+# RESILIENCE TO FAILING CHAMBERS
+
+We stated above, that n_replicas must be at least one greater than sim_targets.
+Consider that target 'P' is present, and we allocated the assays that target
+'P' to {1,3,5,12}. We know that many fluke targets-present combinations could
+cause three of these to fire, but that only the presence of 'P' will cause all
+four to fire. However it only takes one of these chambers to misbehave, and we
+lose our ability to detect P.
+
+If however we insist that n_replicas be at least 2 bigger than sim_targets, we
+can tolerate the failure of any one chamber.
 
 IMPLEMENTATION OPTIMISATIONS
 
@@ -170,9 +190,14 @@ class AvoidsFP:     # FP = False-Positive
         # consider during the allocation process.
         # NB, there are circa tens-of-thousands of these if we draw from a 
         # 20-member superset, and constrain the subsets to 5 or fewer members.
-        number_of_targets = 3
         self._possible_target_sets = PossibleTargets.create(
-            experiment_design, number_of_targets)
+            experiment_design, experiment_design.sim_targets)
+        print('XXXX sim targets is %d' % experiment_design.sim_targets)
+        print('XXXX poss target sets: %s' % self._possible_target_sets.sets)
+        # This algorithm requires that the number of replicas that get
+        # placed for each assay, be at least one greater than the largest
+        # number of simultaneous targets being considered.
+        self._replicas = experiment_design.sim_targets + 1
 
 
     def allocate(self):
@@ -242,9 +267,8 @@ class AvoidsFP:     # FP = False-Positive
         """
         chambers = self._design.set_of_all_chambers()
         chambers = self._remove_incompatible_chambers(chambers, assay_P)
-        num_replicas = self._design.replicas[assay_P]
         chamber_sets = self._draw_possible_chamber_sets_of_size(
-                chambers, size=num_replicas)
+                chambers, size=self._replicas)
         return chamber_sets
 
 

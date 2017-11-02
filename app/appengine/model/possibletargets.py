@@ -5,6 +5,8 @@ class PossibleTargets:
     Holds knowledge about what set of targets could be present (theoretically)
     during an experiment. In other words, roughly speaking, all possible sets
     of targets that can be made from the set of all targets.
+
+    Truncated to avoid very large sets, see within.
     """
 
     def __init__(self):
@@ -16,19 +18,19 @@ class PossibleTargets:
         self.sets = () # Of set() of assay type.
 
     @classmethod
-    def create(cls, experiment_design, how_many_targets):
+    def create(cls, experiment_design, sim_targets):
         """
-        Makes the set of sets. The caller must specify the size of set
-        they want. This should be largest you are interested in. For example,
-        if you want to model up to 5 simultaneously present targets, specify 5.
+        Makes the set of sets. 
+        The client must speicify how many simultaneous targets-present
+        should be modelled. This has a computational cost that goes up
+        factorily.
         """
         res = PossibleTargets()
         assay_types = experiment_design.assay_types_in_priority_order()
 
         sets = []
         # Note that combinations() guarantees a deterministic ordering.
-        how_many_targets = 2
-        for combi in combinations(assay_types, how_many_targets):
+        for combi in combinations(assay_types, sim_targets):
             sets.append(set(combi))
 
         res = PossibleTargets()

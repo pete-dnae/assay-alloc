@@ -1,8 +1,15 @@
-o  set max size by defn to one less than replicas
-    o  see if fixes this problem
-        o  are we locked onto everything having same n replicas?
-        o  if so enforce and include in narrative
+o  we require that the smallest number of replicas chosen be at least (1?)
+   larger than sim_targets.
+o  that will be so big that we might as well make it the same for all assays
+    o  change the experiment design to take a sim_targets param, and offer no
+       controls to replicas
+        *  code exp design
+        o  use tests to work out where to set replicas
+            o  dev using test_tiny
+        o  get allocator tests to run thus
+    o  can we make it work with headroom of 2 with realistic case?
 
+o  Leads to configurable headroom of more than 2 !!!!
 
 o  Test that proves mutex and cover of allocation?
 o  Make report for Brad even if can't ship yet.

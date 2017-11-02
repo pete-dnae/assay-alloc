@@ -19,20 +19,22 @@ class TestAvoidsFP(unittest.TestCase):
     # ------------------------------------------------------------------------
 
 
-    def test_draw_possible_chamber_sets_of_size(self):
+    def xtest_draw_possible_chamber_sets_of_size(self):
         """
         Ensures that this method produces exactly the right sequence of
         chamber sets, and in the design-in order.
         """
 
+        print('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
+
         assays = 0
         chambers = 5
-        replicas = 0
+        sim_targets = 3
         dontmix = 0
         targets = 0
 
-        design = ExperimentDesign.make_from_params(assays, chambers, 
-                replicas, dontmix, targets)
+        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
+                sim_targets, dontmix, targets)
         allocator = AvoidsFP(design)
 
         # We arrange for chamber 1 to have lots of occupants,
@@ -56,19 +58,19 @@ class TestAvoidsFP(unittest.TestCase):
         self.assertEqual(subsets[0], frozenset([3, 4]))
         self.assertEqual(subsets[5], frozenset([1, 2]))
 
-    def test_remove_incompatible_chambers(self):
+    def xtest_remove_incompatible_chambers(self):
         """
         Ensures that this method produces exactly the right sequence of
         chamber sets, and in the design-in order.
         """
         assays = 6
         chambers = 3
-        replicas = 0
+        sim_targets = 3
         dontmix = 1
         targets = 1
 
-        design = ExperimentDesign.make_from_params(assays, chambers, 
-                replicas, dontmix, targets)
+        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
+                sim_targets, dontmix, targets)
         allocator = AvoidsFP(design)
 
         
@@ -96,18 +98,18 @@ class TestAvoidsFP(unittest.TestCase):
 
 
 
-    def test_filter_reserved_chamber_sets(self):
+    def xtest_filter_reserved_chamber_sets(self):
         # Do some allocation so that reserved chamber sets exist.
         # Then make sure the method under test reports these back to us,
         # omitting those specified in the filter.
         assays = 3
         chambers = 3
-        replicas = 0
+        sim_targets = 3
         dontmix = 0
         targets = 0
 
-        design = ExperimentDesign.make_from_params(assays, chambers, 
-                replicas, dontmix, targets)
+        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
+                sim_targets, dontmix, targets)
         allocator = AvoidsFP(design)
         allocator.alloc.allocate('A', frozenset({1,2,3,4}))
         allocator.alloc.allocate('B', frozenset({1,2,3,5}))
@@ -116,17 +118,17 @@ class TestAvoidsFP(unittest.TestCase):
         self.assertEqual(filtered, set([frozenset([1, 2, 3, 5])]))
 
 
-    def test_assemble_chamber_sets_to_consider_for(self):
+    def xtest_assemble_chamber_sets_to_consider_for(self):
         # Make sure that sets that would breach the no mix rules
         # get rejected. And the set size requirement is honoured.
         assays = 4
         chambers = 5
-        replicas = 2
+        sim_targets = 3
         dontmix = 1
         targets = 0
 
-        design = ExperimentDesign.make_from_params(assays, chambers, 
-                replicas, dontmix, targets)
+        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
+                sim_targets, dontmix, targets)
         allocator = AvoidsFP(design)
         allocator.alloc.allocate('A', frozenset({1,2,3}))
         allocator.alloc.allocate('B', frozenset({2,3,4}))
@@ -142,19 +144,19 @@ class TestAvoidsFP(unittest.TestCase):
         self.assertEqual(sets, [frozenset([4, 5])])
 
 
-    def test_all_would_fire(self):
+    def xtest_all_would_fire(self):
         """
         Make sure the utility method _all_would_fire() provides correct
         false and positive conclusions.
         """
         assays = 6
         chambers = 6
-        replicas = 0
+        sim_targets = 3
         dontmix = 0
         targets = 0
 
-        design = ExperimentDesign.make_from_params(assays, chambers, 
-                replicas, dontmix, targets)
+        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
+                sim_targets, dontmix, targets)
         allocator = AvoidsFP(design)
 
         allocator.alloc.allocate('A', frozenset({1,2,3}))
@@ -174,14 +176,15 @@ class TestAvoidsFP(unittest.TestCase):
         self.assertFalse(allocator._all_would_fire(
             chamber_set, reserving_assay, target_set))
 
-    def test_that_skips_already_reserved_chamber_sets(self):
+
+    def xtest_that_skips_already_reserved_chamber_sets(self):
         """
         Checks that this bit of conditional logic in the code gets
         executed.
         """
-        assays = 5; chambers = 6; replicas = 2; dontmix = 0; targets = 0
-        design = ExperimentDesign.make_from_params(assays, chambers, 
-                replicas, dontmix, targets)
+        assays = 5; chambers = 6; sim_targets = 3; dontmix = 0; targets = 0
+        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
+                sim_targets, dontmix, targets)
         allocator = AvoidsFP(design)
         tracer = AssertThisTraceMessageGetsLogged(self,
                 'because already reserved')
@@ -191,14 +194,14 @@ class TestAvoidsFP(unittest.TestCase):
         allocation = allocator.allocate()
         self.fail('Tracer did not receive: %s' % tracer.message_fragment)
 
-    def test_logic_for_avoiding_the_all_firing_tests(self):
+    def xtest_logic_for_avoiding_the_all_firing_tests(self):
         """
         Checks that this bit of conditional logic in the code gets
         executed.
         """
-        assays = 3; chambers = 3; replicas = 3; dontmix = 0; targets = 0
-        design = ExperimentDesign.make_from_params(assays, chambers, 
-                replicas, dontmix, targets)
+        assays = 3; chambers = 3; sim_targets = 3; dontmix = 0; targets = 0
+        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
+                sim_targets, dontmix, targets)
         allocator = AvoidsFP(design)
 
 
@@ -213,7 +216,7 @@ class TestAvoidsFP(unittest.TestCase):
             'B', frozenset({2,3,4}))
         self.fail('Tracer did not receive: %s' % tracer.message_fragment)
 
-    def test_is_allocation_with_assay_P_added_vulnerable(self):
+    def xtest_is_allocation_with_assay_P_added_vulnerable(self):
         """
         reserve 123 for A
         reserve 456 for B
@@ -221,9 +224,9 @@ class TestAvoidsFP(unittest.TestCase):
         Adding C to 234 makes the allocation vulnerable because in the 
         presence of AB, all of 234 fire despite C not being present.
         """
-        assays = 3; chambers = 8; replicas = 3; dontmix = 0; targets = 0
-        design = ExperimentDesign.make_from_params(assays, chambers, 
-                replicas, dontmix, targets)
+        assays = 3; chambers = 8; sim_targets = 3; dontmix = 0; targets = 0
+        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
+                sim_targets, dontmix, targets)
         allocator = AvoidsFP(design)
 
         allocator.alloc.allocate('A', frozenset({1,2,3}))
@@ -241,35 +244,35 @@ class TestAvoidsFP(unittest.TestCase):
         self.assertFalse(vulnerable)
 
 
-    def test_tiny_real_example(self):
+    def xtest_tiny_real_example(self):
         """
-        Cut down the real allocation behaviour by not having any
-        dontmix pairs and use only 2 assay types, each with 3 replicas,
-        into just 4 chambers.
+        Make a tiny example, that a person can reason about.
+        Deploy just the assays A and B, and model the presence of just
+        one target.
         """
         assays = 2
         chambers = 4
-        replicas = 3
+        sim_targets = 1
         dontmix = 0
         targets = 0
 
-        design = ExperimentDesign.make_from_params(assays, chambers, 
-                replicas, dontmix, targets)
+        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
+                sim_targets, dontmix, targets)
         allocator = AvoidsFP(design)
         allocation = allocator.allocate()
 
         self.assertEquals(allocation.chambers_for('A'), set([1, 2, 3]))
         self.assertEquals(allocation.chambers_for('B'), set([1, 2, 4]))
 
-    def test_realistic_sized_example_without_dontmix(self):
+    def xtest_realistic_sized_example_without_dontmix(self):
         assays = 20
         chambers = 24
-        replicas = 5
+        sim_targets = 3
         dontmix = 0
         targets = 0
 
-        design = ExperimentDesign.make_from_params(assays, chambers, 
-                replicas, dontmix, targets)
+        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
+                sim_targets, dontmix, targets)
         allocator = AvoidsFP(design)
         allocation = allocator.allocate()
 
@@ -312,4 +315,5 @@ class AssertThisTraceMessageGetsLogged:
 
     def trace(self, incoming_message):
         if self.message_fragment in incoming_message:
+            pass
             self._testcase.skipTest(None)
