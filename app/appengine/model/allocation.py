@@ -101,10 +101,9 @@ class Allocation:
             start = i *columns
             end = start + columns
             row_chambers = chambers[start: end]
-            row_str = '   '.join(row_chambers)
+            row_str = ' '.join(row_chambers)
             rows.append(row_str)
         return os.linesep.join(rows)
-
 
     def format_chamber(self, chamber, width):
         """
@@ -114,3 +113,14 @@ class Allocation:
         assays = sorted(assays)
         assays = ''.join(assays)
         return '%03d [%-*s]' % (chamber, width, assays)
+
+    def format_calling_table_for(self, assay_sequence):
+        rows = []
+        for assay in assay_sequence:
+            chambers = sorted(self.chambers_for(assay))
+            chambers = [('%2d' % c) for c in chambers]
+            chambers = ' '.join(chambers)
+            line = '%s: %s' % (assay, chambers)
+            rows.append(line)
+        return os.linesep.join(rows)
+        

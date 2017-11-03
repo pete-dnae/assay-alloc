@@ -27,6 +27,8 @@ class ExperimentReporter:
         res['max_targets'] = self.design.sim_targets
 
         res['chamber_table'] = self.alloc.format_chambers(columns=6)
+        res['calling_table'] = self.alloc.format_calling_table_for(
+                self.design.assay_types_in_priority_order())
 
         return res
 
@@ -54,9 +56,7 @@ CHAMBER POPULATION
 CALLING
 -------
 
-{% for assay, chambers in calling_rows %}
-{{assay}}: {{chambers}}
-{% endfor %}
+{{calling_table}}
 """
 
 

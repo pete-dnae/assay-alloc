@@ -9,10 +9,11 @@ o  alter cmd line app report to make report that would be fit for purpose
         *  launching experiment
         o  reporting experiment
             *  scan existing reporter - contents no use
-            o  design what should work as interface
-            o  work up piecemeal data and template
-                o  generalise \n in format chambers
-                o  comment format chambers
+            *  design what should work as interface
+            *  work up piecemeal data and template
+                *  generalise \n in format chambers
+                *  comment format chambers
+            o  move formatters out of allocation
 o  output by defn to report.txt and say so
 o  can we make it work with headroom of 2 with small case?
 o  put in progress output for bigger data sets
