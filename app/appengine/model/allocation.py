@@ -1,5 +1,7 @@
 from collections import defaultdict
 from itertools import combinations
+import math
+import os
 
 class Allocation:
     """
@@ -72,20 +74,43 @@ class Allocation:
 
     def which_assay_reserved_this_chamber_set(self, chamber_set):
         return self._chamber_set_to_reserving_assay[chamber_set]
+
+    def max_colocation(self):
+        """
+        How many assays in the most occupied chamber?
+        """
+        counts = [len(self.assay_types_present_in(c)) for 
+                c in self.all_chambers()]
+        return max(counts)
             
 
     # ------------------------------------------------------------------------
     # Reports
     # ------------------------------------------------------------------------
 
-    def format_chambers(self):
-        lines = []
-        for chamber in self.all_chambers():
-            lines.append(self.format_chamber(chamber))
-        return (lines)
+    def format_chambers(self, columns):
+        """
+        Provides a table showing which assays are in which chambers, in the
+        form of one big single string.
+        """
+        width = self.max_colocation()
+        chambers = [self.format_chamber(chamber, width) for chamber in 
+                    self.all_chambers()] 
+        rows = []
+        for i in range(int(math.ceil(len(chambers) / float(columns)))):
+            start = i *columns
+            end = start + columns
+            row_chambers = chambers[start: end]
+            row_str = '   '.join(row_chambers)
+            rows.append(row_str)
+        return os.linesep.join(rows)
 
-    def format_chamber(self, chamber):
+
+    def format_chamber(self, chamber, width):
+        """
+        Provides a string like this: '007 [BF]'
+        """
         assays = self._chamber_to_assays[chamber]
         assays = sorted(assays)
-        assays = ','.join(assays)
-        return '%03d %s' % (chamber, assays)
+        assays = ''.join(assays)
+        return '%03d [%-*s]' % (chamber, width, assays)

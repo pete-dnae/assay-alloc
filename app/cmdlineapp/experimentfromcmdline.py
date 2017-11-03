@@ -10,7 +10,7 @@ class ExperimentFromCmdLine:
         parser = ArgumentParser()
         parser.usage = \
             'Please provide a command line like this:\n' + \
-            'assay-alloc --assays 10 --max_targets 3 --chambers 12 --dontmix 2'
+            'assay-alloc --assays 6 --max_targets 1 --chambers 10 --dontmix 2'
 
         parser.add_argument("--assays", type=int, required=True,
                             default=20,

@@ -11,6 +11,9 @@ o  alter cmd line app report to make report that would be fit for purpose
             *  scan existing reporter - contents no use
             o  design what should work as interface
             o  work up piecemeal data and template
+                o  generalise \n in format chambers
+                o  comment format chambers
+o  output by defn to report.txt and say so
 o  can we make it work with headroom of 2 with small case?
 o  put in progress output for bigger data sets
 o  put in premature stop if input params doomed
@@ -24,7 +27,7 @@ o  profile it later
 o  Test that proves mutex and cover of allocation?
 o  Make report for Brad even if can't ship yet.
 
-o  Experiment reporter now redundant i think
+o  Experiment reporter now redundant i think (and test)
 o  Full result correctness test
 o  Calling test / or report
 o  What realist targets present set sizes?

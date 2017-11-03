@@ -20,13 +20,43 @@ class ExperimentReporter:
     #-----------------------------------------------------------------------
 
     def _make_template_data(self):
-        return {}
+        res = {}
+        res['assays'] = self.design.all_assay_types_as_single_string()
+        res['num_chambers'] = self.design.num_chambers
+        res['dontmix'] = self.design.dontmix_as_single_string()
+        res['max_targets'] = self.design.sim_targets
+
+        res['chamber_table'] = self.alloc.format_chambers(columns=6)
+
+        return res
 
 
 _TEMPLATE = """
-foo
-bar
-baz
+
+ALLOCATION SETTINGS
+--------------------
+
+              Assays: {{assays}}
+            Chambers: {{num_chambers}}
+      Dont mix pairs: {{dontmix}}
+         Max targets: {{max_targets}} (*)
+
+                      (*) The allocation guarantees that false
+                      positives cannot happen, provided there are no
+                      more than <{{max_targets}}> targets present at the 
+                      same time.
+
+CHAMBER POPULATION
+------------------
+
+{{chamber_table}}
+
+CALLING
+-------
+
+{% for assay, chambers in calling_rows %}
+{{assay}}: {{chambers}}
+{% endfor %}
 """
 
 
