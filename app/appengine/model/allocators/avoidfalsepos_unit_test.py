@@ -29,10 +29,9 @@ class TestAvoidsFP(unittest.TestCase):
         chambers = 5
         sim_targets = 3
         dontmix = 0
-        targets = 0
 
-        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
-                sim_targets, dontmix, targets)
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                sim_targets, dontmix)
         allocator = AvoidsFP(design)
 
         # We arrange for chamber 1 to have lots of occupants,
@@ -65,10 +64,9 @@ class TestAvoidsFP(unittest.TestCase):
         chambers = 3
         sim_targets = 3
         dontmix = 1
-        targets = 1
 
-        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
-                sim_targets, dontmix, targets)
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                sim_targets, dontmix)
         allocator = AvoidsFP(design)
 
         
@@ -104,10 +102,9 @@ class TestAvoidsFP(unittest.TestCase):
         chambers = 3
         sim_targets = 3
         dontmix = 0
-        targets = 0
 
-        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
-                sim_targets, dontmix, targets)
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                sim_targets, dontmix)
         allocator = AvoidsFP(design)
         allocator.alloc.allocate('A', frozenset({1,2,3,4}))
         allocator.alloc.allocate('B', frozenset({1,2,3,5}))
@@ -123,10 +120,9 @@ class TestAvoidsFP(unittest.TestCase):
         chambers = 5
         sim_targets = 1
         dontmix = 1
-        targets = 0
 
-        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
-                sim_targets, dontmix, targets)
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                sim_targets, dontmix)
         allocator = AvoidsFP(design)
         allocator.alloc.allocate('A', frozenset({1,2}))
         allocator.alloc.allocate('B', frozenset({3,4}))
@@ -152,10 +148,9 @@ class TestAvoidsFP(unittest.TestCase):
         chambers = 6
         sim_targets = 3
         dontmix = 0
-        targets = 0
 
-        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
-                sim_targets, dontmix, targets)
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                sim_targets, dontmix)
         allocator = AvoidsFP(design)
 
         allocator.alloc.allocate('A', frozenset({1,2,3}))
@@ -180,9 +175,9 @@ class TestAvoidsFP(unittest.TestCase):
         """
         Checks bypasses reserved chamber.
         """
-        assays = 5; chambers = 6; sim_targets = 3; dontmix = 0; targets = 0
-        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
-                sim_targets, dontmix, targets)
+        assays = 5; chambers = 6; sim_targets = 3; dontmix = 0; 
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                sim_targets, dontmix)
         allocator = AvoidsFP(design)
         tracer = AssertThisTraceMessageGetsLogged(self,
                 'because already reserved')
@@ -196,9 +191,9 @@ class TestAvoidsFP(unittest.TestCase):
         """
         Checks avoids all firing test.
         """
-        assays = 3; chambers = 3; sim_targets = 3; dontmix = 0; targets = 0
-        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
-                sim_targets, dontmix, targets)
+        assays = 3; chambers = 3; sim_targets = 3; dontmix = 0; 
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                sim_targets, dontmix)
         allocator = AvoidsFP(design)
 
         allocator.alloc.allocate('A', frozenset({1,2,3}))
@@ -220,9 +215,9 @@ class TestAvoidsFP(unittest.TestCase):
         Adding C to 234 makes the allocation vulnerable because in the 
         presence of AB, all of 234 fire despite C not being present.
         """
-        assays = 3; chambers = 8; sim_targets = 2; dontmix = 0; targets = 0
-        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
-                sim_targets, dontmix, targets)
+        assays = 3; chambers = 8; sim_targets = 2; dontmix = 0; 
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                sim_targets, dontmix)
         allocator = AvoidsFP(design)
 
         allocator.alloc.allocate('A', frozenset({1,2,3}))
@@ -250,52 +245,14 @@ class TestAvoidsFP(unittest.TestCase):
         chambers = 4
         sim_targets = 2
         dontmix = 0
-        targets = 0
 
-        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
-                sim_targets, dontmix, targets)
+        design = ExperimentDesign.make_from_params(assays, chambers, 
+                sim_targets, dontmix)
         allocator = AvoidsFP(design)
         allocation = allocator.allocate()
 
         self.assertEquals(allocation.chambers_for('A'), set([1, 2, 3]))
         self.assertEquals(allocation.chambers_for('B'), set([1, 2, 4]))
-
-    def test_realistic_sized_example_without_dontmix(self):
-        assays = 20
-        chambers = 24
-        sim_targets = 3
-        dontmix = 0
-        targets = 0
-
-        design = ExperimentDesign.make_from_paramsx(assays, chambers, 
-                sim_targets, dontmix, targets)
-        allocator = AvoidsFP(design)
-        allocation = allocator.allocate()
-
-        # A sprinkling of representative direct tests...
-        self.assertEquals(allocation.chambers_for(
-                'A'), frozenset([1, 2, 3, 4, 5]))
-        self.assertEquals(allocation.chambers_for(
-                'B'), frozenset([8, 9, 10, 6, 7]))
-        self.assertEquals(allocation.chambers_for(
-                'F'), frozenset([11, 2, 3, 4, 6]))
-
-        # Now we collect the chamber set for every one of our assays to
-        # provide some data to inspect.
-
-        chamber_sets = set() # Set of frozenset of chamber numbers.
-        assays = design.assay_types_in_priority_order()
-        for assay in assays:
-            chamber_set = allocation.chambers_for(assay)
-            chamber_sets.add(frozenset(chamber_set))
-
-        # There should be exactly 20 chamber sets.
-        # Their being in a set, proves there are no two the same.
-        self.assertEqual(len(chamber_sets), 20)
-
-        # They should all be of length 5
-        for chamber_set in chamber_sets:
-            self.assertEqual(len(chamber_set), 5)
 
 
 class AssertThisTraceMessageGetsLogged:

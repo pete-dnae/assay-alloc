@@ -379,7 +379,7 @@ class AvoidsFP:     # FP = False-Positive
         chambers_to_remove = set()
         for chamber in chambers:
             occupants = self.alloc.assay_types_present_in(chamber)
-            legal = self._design.can_this_assay_type_go_into_this_mixture(
+            legal = self._design.can_this_assay_go_into_this_mixture(
                 assay_P, occupants)
             if not legal:
                 chambers_to_remove.add(chamber)

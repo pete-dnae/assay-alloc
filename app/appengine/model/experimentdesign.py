@@ -11,41 +11,32 @@ class ExperimentDesign:
         self.sim_targets = None # Simultaneously present targets limit. E.g. 5
         self.dontmix = []  # Of 2-tuples, e.g. ['chalk', 'cheese']
 
-        # Simulated test to run.
-        self.targets_present = set() # Of assay names.
-
 
     @classmethod
     def make_from_html_input_form_dict(cls, form_dict):
+        raise RuntimeError('Not implemented')
         assays = int(form_dict['assays'])
         sim_targets = 0
-        raise RuntimeError('need sim targets')
         chambers = int(form_dict['chambers'])
         dontmix = int(form_dict['dontmix'])
-        targets = int(form_dict['targets'])
 
-        design = cls.make_from_paramsx(
-                assays, sim_targets, chambers, dontmix, targets)
+        design = cls.make_from_params(assays, sim_targets, chambers, dontmix)
         return design
 
     @classmethod
-    def make_from_paramsx(cls, assays, chambers, sim_targets, dontmix, targets):
+    def make_from_params(cls, assays, chambers, sim_targets, dontmix):
         exp = ExperimentDesign()
         exp.assay_types = set([chr(ord('A') + i) for i in range(assays)])
         exp.sim_targets = sim_targets
         exp.num_chambers = chambers
 
-        # Use the first <N> assays as the targets present.
-        sorted_assay_types = sorted(list(exp.assay_types))
-        for i in range(targets):
-            exp.targets_present.add(sorted_assay_types[i])
-
         # Use <N> assay-pairs that draw members from either end of the list as
         # the dontmix pairs.
         exp.dontmix = []
+        sorted_assay_types = exp.assay_types_in_priority_order()
         for i in range(dontmix):
-            a = sorted_assay_types.pop()
-            b = sorted_assay_types.pop(0)
+            a = sorted_assay_types.pop() # last
+            b = sorted_assay_types.pop(0) # first
             exp.dontmix.append([a, b])
 
         return exp
@@ -60,19 +51,14 @@ class ExperimentDesign:
         Is it legal to add the given assay to a chamber that already
         contains the given mixture. (set() of assay types).
         """
-        return self.can_this_assay_type_go_into_this_mixture(
-                assay.type, mixture)
-
-
-    def can_this_assay_type_go_into_this_mixture(self, assay_type, mixture):
         # Not legal if this assay type already present.
-        if assay_type in mixture:
+        if assay in mixture:
             return False
         # Not legal if would create an illegal pairing.
         for chalk, cheese in self.dontmix:
-            if (chalk in mixture) and (assay_type == cheese):
+            if (chalk in mixture) and (assay== cheese):
                 return False
-            if (cheese in mixture) and (assay_type == chalk ):
+            if (cheese in mixture) and (assay == chalk ):
                 return False
         return True
 
@@ -107,8 +93,3 @@ class ExperimentDesign:
             pair = '%s%s' % (chalk, cheese)
             pairs.append(pair)
         return ' '.join(pairs)
-
-    def targets_as_single_string(self):
-        return ''.join(sorted(list(self.targets_present)))
-
-

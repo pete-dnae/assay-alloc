@@ -9,29 +9,28 @@ class ExperimentFromCmdLine:
     def make(cls, argv):
         parser = ArgumentParser()
         parser.usage = \
-            'Please provide command line arguments like this:\n' + \
-            '--assays 20 --replicas 3 ' + \
-            '--chambers 24 --dontmix 3 --targets 2'
+            'Please provide a command line like this:\n' + \
+            'assay-alloc --assays 10 --max_targets 3 --chambers 12 --dontmix 2'
 
         parser.add_argument("--assays", type=int, required=True,
                             default=20,
                             metavar=20,
-                            help="how many assay types to deploy")
-        parser.add_argument("--replicas", type=int, required=True,
-                            help="how many replicas")
+                            help="How many assay types to deploy")
+        parser.add_argument("--max_targets", type=int, required=True,
+                            help="Guarantee no false positives for up to " + \
+                            "this many targets present simultaneously")
         parser.add_argument("--chambers", type=int, required=True,
-                            help="how many chambers")
+                            help="How many chambers")
         parser.add_argument("--dontmix", type=int, required=True,
-                            help="how many assay pairs don't mix")
-        parser.add_argument("--targets", type=int, required=True,
-                            help="how many targets present")
+                            help="Choose the first <N> first/last " + \
+                            "assays as the ones that must not mix.")
 
         args = parser.parse_args()
 
         assays = args.assays
+        max_targets = args.max_targets
         chambers = args.chambers
-        replicas = args.replicas
         dontmix = args.dontmix
-        targets = args.targets
 
-        return cls.make_from_params(assays, chambers, replicas, dontmix, targets)
+        return ExperimentDesign.make_from_params(
+                assays, chambers, max_targets, dontmix)
