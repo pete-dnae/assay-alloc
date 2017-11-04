@@ -1,9 +1,19 @@
-o  pre commit
+*  pre commit
 o  manage cumulative available chamber sets
-    o  give allocator member
-    o  init it based on nreplicas
-    o  change assemble chamber sets to consider to downselect from the
+    *  give allocator member
+    *  init it based on nreplicas
+    *  change assemble chamber sets to consider to downselect from the
        globally available chamber sets, those that do no contravene don't mix.
+    *  at end of alloc all reps of this assay, when allocated:
+        *  remove from pool any chamber sets that have more than one
+           member in common with the reserved chamber set just decided
+           - will include one just reserved
+        *  count how many this removes and retains
+    *  run it to see if firing as expected
+    *  measure how much fast goes
+    o  is the vulnerable test still doing something active
+        o  NO NO NO
+    o  ressurrect and augment avoidFP unit tests
 *  alter cmd line app report to make report that would be fit for purpose 
    to show brad but on simple example.
 o  look at patterns for what happens when dontmix is zero, may be able

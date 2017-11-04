@@ -196,6 +196,10 @@ class AvoidsFP:     # FP = False-Positive
         # placed for each assay, be at least one greater than the largest
         # number of simultaneous targets being considered.
         self._replicas = experiment_design.sim_targets + 1
+        # Prepare the pool of chamber sets, that we can consider when searching
+        # for a home of each assay's replicas. We deplete this as we go.
+        self._available_chamber_sets = \
+                self._initial_set_of_available_chamber_sets(self._replicas)
 
 
     def allocate(self):
@@ -216,27 +220,34 @@ class AvoidsFP:     # FP = False-Positive
     # Private / implementation methods below.
     #------------------------------------------------------------------------
 
+    def _initial_set_of_available_chamber_sets(self, replicas):
+        """
+        Builds the initial set of chamber sets. (A set of sets), which can be 
+        consdidered to house the replicas of each assay.
+        """
+        chambers = self._design.set_of_all_chambers()
+        chamber_sets = self._draw_possible_chamber_sets_of_size(
+                chambers, replicas)
+        return chamber_sets
+
     def _allocate_all_replicas_of_this_assay_type(self, assay_P):
         """
         Find homes for all the replicas of assay_P. In the context of
         having previously allocated the replicas that precede assay P in
         allocation priority order.
         """
-
-        possible_chamber_sets = self._assemble_chamber_sets_to_consider_for(
-            assay_P)
+        print('XXX allocate all of %s' % assay_P)
+        # We have a global (diminishing) pool of available chamber sets,
+        # but whilst dealing with assay_P, we must avoid those that would 
+        # contravene the dont-mix rules for assay_P.
+        legal_chamber_sets = \
+                self._legal_available_chamber_sets_prioritised(assay_P)
 
         # Use the first chamber set we encounter that does not put the overall
         # allocation into a vulnerable state. (Where it can produce false
         # positives.)
 
-        for chamber_set_147 in possible_chamber_sets:
-            # We cannot consider chamber sets which have already been
-            # reserved for another assay.
-            if self.alloc.is_chamber_set_already_reserved(chamber_set_147):
-                self._trace('Skipping %s because already reserved' %
-                        chamber_set_147) 
-                continue
+        for chamber_set_147 in legal_chamber_sets:
             # Would adding assay_P to this chamber set make the allocation
             # as a whole  vulnerable?
             vulnerable = self._is_allocation_with_assay_P_added_vulnerable(
@@ -244,10 +255,15 @@ class AvoidsFP:     # FP = False-Positive
 
             # If it is not vulnerable, we need look no further. We've found a
             # suitable set of chambers for assay_P, so we tell our allocation
-            # object to register and reserve them thus.
+            # object to register and reserve them thus. 
 
             if not vulnerable:
                 self.alloc.allocate(assay_P, chamber_set_147)
+                # We can now remove by inference some sets in our pool
+                # of available chamber sets. This has a major bearing on
+                # performance by pruning our outermost loop.
+                self._ditch_available_chamber_sets_that_inevitably_wont_work(
+                        chamber_set_147)
                 return
             # If we get to here, that chamber set is vulnerable. Never mind,
             # let's move on to the net chamber set hypothesis.
@@ -257,17 +273,27 @@ class AvoidsFP:     # FP = False-Positive
         raise RuntimeError('Cannot allocate: %s' % assay_P)
 
 
-    def _assemble_chamber_sets_to_consider_for(self, assay_P):
+    def _legal_available_chamber_sets_prioritised(self, assay_P):
         """
-        Provide the chamber sets that might be a good place to allocate
-        the replicas of the given assay (P). A set of (frozen) sets.
-        For example: { {1,2,7}, {1,2,8}, ... {3,5,9} ... }
+        Down-select from the global available chamber sets, those that
+        don't contravene the dont-mix rules for assay_P. Then provide them
+        in desirability-order.
         """
-        chambers = self._design.set_of_all_chambers()
-        chambers = self._remove_incompatible_chambers(chambers, assay_P)
-        chamber_sets = self._draw_possible_chamber_sets_of_size(
-                chambers, size=self._replicas)
-        return chamber_sets
+        sets = [cs for cs in self._available_chamber_sets if
+                self._compatible(cs, assay_P)]
+
+        def _how_crowded(chamber_set):
+            return sum([len(self.alloc.assay_types_present_in(c)) 
+                    for c in chamber_set])
+
+        def _alphabetical(chamber_set):
+            frags = ['%02d' % c for c in chamber_set]
+            frags = ''.join(frags)
+            return frags
+
+        sets = sorted(sets, key=_alphabetical)
+        sets = sorted(sets, key=_how_crowded)
+        return sets
 
 
     def _is_allocation_with_assay_P_added_vulnerable(
@@ -307,6 +333,9 @@ class AvoidsFP:     # FP = False-Positive
 
                 # Do inexpensive tests first that avoid the more expensive
                 # all-firing test.
+
+                # If the reserving assay's target is in the possible target set,
+                # then, then it's ok (intended) that all of the chambers fire.
                 if reserving_assay in target_set_ADFN:
                     self._trace('Can avoid all firing test for %s' % 
                             target_set_ADFN) 
@@ -318,6 +347,11 @@ class AvoidsFP:     # FP = False-Positive
                 if all_fire:
                     # The allocation as a whole is vulnerable, but before
                     # we return, let's leave things as we found them.
+                    print('AAAAAAAAAAAA')
+                    """
+                    print('XXXX we found a vulnerability, with %s and %s' % 
+                        (target_set_ADFN, reserved_chamber_set))
+                    """
                     self.alloc.unreserve_alloc_for(assay_P)
                     return True # Is vulnerable.
 
@@ -370,20 +404,18 @@ class AvoidsFP:     # FP = False-Positive
                 return False
         return True
 
-    def _remove_incompatible_chambers(self, chambers, assay_P):
+    def _compatible(self, chamber_set, assay_P):
         """
-        Make (and return) a copy of the given set of chambers, from which
-        have been removed, any chambers with existing occupants incompatible
-        with adding in the given assay_P.
+        Is the given chamber set compatible with assay_P being added, to all
+        of its members - on the basis of assays that must not be mixed.
         """
-        chambers_to_remove = set()
-        for chamber in chambers:
+        for chamber in chamber_set:
             occupants = self.alloc.assay_types_present_in(chamber)
             legal = self._design.can_this_assay_go_into_this_mixture(
                 assay_P, occupants)
             if not legal:
-                chambers_to_remove.add(chamber)
-        return chambers - chambers_to_remove
+                return False
+        return True
 
 
     def _draw_possible_chamber_sets_of_size(self, chambers, size):
@@ -394,14 +426,34 @@ class AvoidsFP:     # FP = False-Positive
         the beginning, and secondly to make the algorithm deterministic to help
         with automated testing.
         """
-        subsets = []
-        [subsets.append(frozenset(c)) for c in combinations(chambers, size)]
+        subsets = set()
+        [subsets.add(frozenset(c)) for c in combinations(chambers, size)]
+        return subsets
 
-        def _how_crowded(chamber_set):
-            return sum([len(self.alloc.assay_types_present_in(c)) 
-                    for c in chamber_set])
-
-        return sorted(subsets, key=_how_crowded)
+    def _ditch_available_chamber_sets_that_inevitably_wont_work(
+            self, chamber_set_147):
+        """
+        If we just added assay_P, and reserved chamber_set_147 for P,
+        we can infer that some of the chamber sets that remain in our
+        pool of available chamber sets, are now useless as contenders for
+        later assays.
+        """
+        # We can jettison any chamber set that has more than one member in
+        # common with {1,4,7}. Reason: Consider the largest targets 
+        # sets we are considering (max_targets) to be 2. Then by definition
+        # our chamber sets have 3 members. (One more). If any chamber set in
+        # our pool, has for example 2 members in common with {1,4,7}, then the
+        # presence of P will cause these 2 chambers to fire. It is then
+        # inevitable that a possible pair of targets exist, that includes P, 
+        # and the one other member will cause the remaining chamber to fire. 
+        # Thus producing a false positive for P.
+        
+        before = len(self._available_chamber_sets)
+        self._available_chamber_sets = [cs for cs in
+                self._available_chamber_sets if
+                len(cs.intersection(chamber_set_147)) <= 1]
+        after = len(self._available_chamber_sets)
+        print('XXX before %d, removed %d' % (before, after - before))
 
 
     def _trace(self, msg):
