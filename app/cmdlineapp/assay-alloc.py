@@ -7,8 +7,6 @@ from experimentfromcmdline import ExperimentFromCmdLine
 
 if __name__ == '__main__':
 
-    print('Program starting...')
-
     experiment_design = ExperimentFromCmdLine.make(sys.argv)
 
     allocator = AvoidsFP(experiment_design)

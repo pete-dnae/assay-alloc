@@ -38,15 +38,15 @@ _TEMPLATE = """
 ALLOCATION SETTINGS
 --------------------
 
-              Assays: {{assays}}
-            Chambers: {{num_chambers}}
-      Dont mix pairs: {{dontmix}}
-         Max targets: {{max_targets}} (*)
+Assays:         {{assays}}
+Chambers:       {{num_chambers}}
+Dont mix pairs: {{dontmix}}
+Max targets:    {{max_targets}} (*)
 
-                      (*) The allocation guarantees that false
-                      positives cannot happen, provided there are no
-                      more than <{{max_targets}}> targets present at the 
-                      same time.
+                (*) The allocation guarantees that false
+                positives cannot happen, provided there are no
+                more than <{{max_targets}}> targets present at the 
+                same time.
 
 CHAMBER POPULATION
 ------------------

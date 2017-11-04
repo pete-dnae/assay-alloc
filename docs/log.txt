@@ -1,19 +1,17 @@
-o  alter cmd line app report to make report that would be fit for purpose 
+o  pre commit
+o  manage cumulative available chamber sets
+    o  give allocator member
+    o  init it based on nreplicas
+    o  change assemble chamber sets to consider to downselect from the
+       globally available chamber sets, those that do no contravene don't mix.
+*  alter cmd line app report to make report that would be fit for purpose 
    to show brad but on simple example.
-    *  scope design
-    *  report implementation design using jinja2 perhaps
-    *  does experiment design need to change?
-    o  re-base the command line app
-        *  reading cmd line args
-            *  design new cmd line args
-        *  launching experiment
-        o  reporting experiment
-            *  scan existing reporter - contents no use
-            *  design what should work as interface
-            *  work up piecemeal data and template
-                *  generalise \n in format chambers
-                *  comment format chambers
-            o  move formatters out of allocation
+o  look at patterns for what happens when dontmix is zero, may be able
+   to exploit it
+    *  what is this pattern?
+    *  what is the root cause?
+    o  how small can we make this model?
+    o  is the possibility maths doable?
 o  output by defn to report.txt and say so
 o  can we make it work with headroom of 2 with small case?
 o  put in progress output for bigger data sets
@@ -21,8 +19,17 @@ o  put in premature stop if input params doomed
 o  report cope with failure
 o  can we make it work with headroom of 2 with realistic case?
 o  how long does realistic test take on its own?
+o  move formatters out of allocation
 
-o  profile it later
+o  optimisations
+    o  optimising chamber sets to try
+        o  find earlier
+        o  prune space
+            o  if A reserves 1234, then there is no point in considering any
+               chamber set that includes more than one of 1,2,3,4
+    o  optimising target sets to try
+        o  find earlier
+        o  prune space
 
 
 o  Test that proves mutex and cover of allocation?
@@ -56,23 +63,61 @@ chambers
 dontmix
 
 ----------------------------------------------------------------------------
-Scope of run for brad
+Observations from no mix
+----------------------------------------------------------------------------
+If A reserves {1,2,3,4}, it follows that we are looking at max_targets of
+size 3. It follows that the chamber set {1,2,11,13} is no use, because
+the presence of A will make {1,2} fire, and it is inevitable that there is a 
+3-target presents set that contains A, in which the other two members make 
+{11,13} fire. To generalise, for all the chamber sets we reserve X, we can rule
+out chambers sets for future allocations which share more than one member with
+X.
+
+If we treat the set of chamber sets that (cumulatively) satisfy the above
+condition as a pool. Can we guarantee that any of those is suitable to allocate
+the next incoming assay. (i.e. a sufficient condition)? Or is it only a 
+necessary condition?
+
+To allocate P, we are considering only target sets of 3, and our pool of 4
+chamber potential sets contains only sets that shares either zero or one chamber
+with any previously reserved chamber set. We know that only the assays up as far
+as O are allocated so far. A false positive occurs when there
+exists a target set (size 3) that will make all the chambers in the set fire.
+
+
+This gives us a cumulatively diminishing pool of chamber sets - which:
+A) will make things faster by reducing the search space
+B_ may give us a sufficient condition to anticipate a sequence of reserved
+   sets
+B) may be possible to model some capacity possibilities / impossibilities
+
+
+
+----------------------------------------------------------------------------
+False Positive Sufficient Condition Statement
 ----------------------------------------------------------------------------
 
-Experiment was:
-    o  Input settings
-        o  Number of assays
-        o  Number of chambers
-        o  Choose first/last <N> assays as the don't mix pairs.
-        o  Guarantee no false positives for up to <N> targets present
-           simultaneously.
-    o  Extrapolated Settings
-        o  Letters chosen to represent assays
-        o  Which non mix assays got chosen
-        o  Replicas needed to guarantee no FP = 7
-    o  Allocation Results - Reserved Chambers
-        o  List of chambers and what allocator put in them
-        o  Calling chamber set for each assay
+Assuming that we insist that num replicas = max targets + 1.
 
+E.g max_targets = 3, and num replicas = 4.
+
+We seek to ensure that no target set of size 3 could make all 4 of its chambers
+fire whilst the reserving assay is present.
+
+A necessary condition for this, is that no single target could make
+
+
+----------------------------------------------------------------------------
+Eureka Moment?
+----------------------------------------------------------------------------
+
+Retain number replicas is max_targets + 1
+
+Start with a pool of chamber sets.
+
+For each assay choose one freely from the pool.
+
+Then befoe considering the next assay, remove from the pool, all sets that
+intersect with the chosen set by more than one.
 
 
