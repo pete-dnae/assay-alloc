@@ -66,51 +66,33 @@ allocating the next assay. And so on.
 
 For the second and subsequent assays, we must also make sure we adhere to its
 don't-mix rules. So instead of using simply the first chamber set from the
-remaining pool, we use the first that we find in the pool that does not
-contravene the mixing rules.
+remaining pool, we look for one in the pool that does not contravene the mixing 
+rules.
 
 
 # WHICH CHAMBER SETS MUST BE REMOVED
 
 Here is an example of what we must avoid. We give the example first, to make it
-easier to then explain the remedy. Let max_targets = 3, and consequently
-replicas = 4.  Say we reserve {1,2,9,14} for P, and then reserve {1,9,11,22}
-for Q.  The problem here is that {1,9,11,22} has *two* chambers in common with
-{1,2,9,14}.  Now consider a potential targets-present set of {P,M,S}. We know
-that the presence of P will cause both {1,9} to fire. Hence we will generate a
-false positive for Q, if {M,S} causes both {11,22} to fire. Which is inevitable
-if we consider all the possibilities for {M,S} - i.e. any pair of targets.
+easier to then explain the remedy.
 
-The generalisation of the situation that must be avoided, is that no chamber
-set can be reserved to call an assay, if that chamber set has more than one
+Let max_targets = 3, and consequently replicas = 4.  Say we reserve {1,2,9,14}
+for P, and then reserve {1,9,11,22} for Q.  The problem here is that {1,9,11,22}
+has *two* chambers in common with {1,2,9,14}.  Now consider a potential
+targets-present set of {P,M,S}. We know that the presence of P will cause both
+{1,9} to fire. Hence we will generate a false positive for Q, if {M,S} causes
+both {11,22} to fire. Which is inevitable if we consider all the possibilities
+for {M,S} - i.e. any pair of targets.
+
+The generalisation of the situation that must be avoided, is that no chamber set
+can be reserved to call an assay, if that chamber set has more than one
 chamber in common, with any of the other reserved chamber sets.
 
 So this defines the chamber sets we must remove from the pool after each assay
 allocation (P). I.e. any chamber set that has more than one chamber in common 
 with the chamber set used for P.
-
-
-# COMPUTATIONAL FEASIBILITY
-
-The algorithm's order of compuational complexity rapidly approaches 
-infeasible levels as we move to larger values of *max_targets*.
-The literature refers to our initial selection of possible chamber sets as the 
-"n choose k" problem. We want to consider all the sets of size(replicas) that 
-can be drawn from the set{of all chambers}. So for us:
-
-    n = number of chamers
-    k = replicas
-
-The number of possible chamber sets is:
-
-    n! / ( k! * (n - k)! )
-
-todo got to here reviewing docs
-
 """
 
 from itertools import combinations
-import random
 
 from model.allocation import Allocation
 from model.possibletargets import PossibleTargets
@@ -128,10 +110,6 @@ class DeductionAllocator:
         Provide an ExperimentDesign object when initialising the allocator..
         """
         self._design = experiment_design
-        # This is a diagnostics channel to support unit testing.
-        # A few parts of the code send it messages to provide evidence that
-        # something happened (if it is none none).
-        self.tracer = None
         # Prepare an Allocation object with which to register allocation
         # decisions as they progress.
         self.alloc = Allocation()
@@ -157,6 +135,8 @@ class DeductionAllocator:
         for assay_P in self._design.assay_types_in_priority_order():
             chamber_set_used = self._allocate_all_replicas_of_this_assay_type(
                     assay_P)
+            # Remove now from the chamber set pool, all those that would
+            # inevitably cause false positives for the assay just allocated..
             self._curate_pool(chamber_set_used)
 
         return self.alloc
@@ -181,9 +161,11 @@ class DeductionAllocator:
         having previously allocated the replicas that precede assay(P) in
         allocation priority order.
         """
-        print('XXX allocate all of %s' % assay)
+        print('Allocating %s, into the %d chamber sets still available.' % 
+                (assay, len(self._pool_of_chamber_sets)))
 
-        # Use any encountered that is legal for dontmix rules.
+        # Use any encountered chamber set from the pool, that is legal for 
+        # dontmix rules.
         chamber_set = self._find_legal_available_chamber_set(assay)
 
         if chamber_set is None:
@@ -193,6 +175,11 @@ class DeductionAllocator:
 
 
     def _find_legal_available_chamber_set(self, assay):
+        """
+        Look for a chamber set in the pool to which the given assay can
+        legally be added to all of its chambers, without contravening any
+        don't-mix rules.
+        """
         for chamber_set in self._pool_of_chamber_sets:
             if self._compatible(chamber_set, assay):
                 return chamber_set
@@ -216,7 +203,7 @@ class DeductionAllocator:
         Remove from our pool of available chamber sets, any that has
         more than one member in common with the given set.
         """
-        to_remove = frozenset([cs for cs in self._pool_of_chamber_sets if 
+        to_remove = set([cs for cs in self._pool_of_chamber_sets if 
                 len(cs.intersection(just_added_chamber_set)) > 1])
         curated = self._pool_of_chamber_sets - to_remove
         self._pool_of_chamber_sets = curated

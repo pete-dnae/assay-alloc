@@ -1,11 +1,9 @@
 *  Is performance fixable - to a degree
 o  Take stock actions
-    o  Make sure docco in sufficient shape.
-    o  Make sure cmd line app tidy
-        o  Upgrade usage message to suggest redirection.
-        o  Provide progress messages.
-        o  Provide size of problem messages.
-    o  Package and test cmd line app 
+    *  Make sure docco in sufficient shape.
+    *  Make sure cmd line app tidy
+        *  Provide progress messages.
+    *  Stash sample output
     o  Write shared report
     o  Write David confidential report
     o  Deploy things ready to refer to
@@ -40,9 +38,11 @@ o  Take stock of where we are
         o  Example output for 3 targets
         o  What I believe is now the correct definitive logic
         o  Reasonably simple doc algorithm to support scrutiny / debate / review
-        o  A tool that can explore space cmd line.
+        o  A tool that can explore space cmd line. 
     o  What have we got that is bad
         o  Practicalities
+            o  Cannot ship to brad today - too slow for web app, and cmd line
+               build process wont work like last time - needs debugging
             o  Very slow run makes quick explore space difficult.
             o  Too slow to use pract in some cases - incl some the biz expects
                to explore

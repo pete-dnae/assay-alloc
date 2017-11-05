@@ -23,7 +23,7 @@ if __name__ == '__main__':
     run()
 
     """
-    Run to profile.
+    #Run to profile.
     cProfile.run('run()', 'stats')
     p = pstats.Stats('stats')
     p.sort_stats('cumulative').print_stats(10)
