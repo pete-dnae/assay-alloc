@@ -1,53 +1,102 @@
-*  pre commit
-o  rewrite new variant with inference only
-    *  hack roughly right
-    *  get to run
-    *  evaluate
-    o  no need for this to be slow for large numbers, not searching
-        o  really?
-    o  fix up unit tests
-o  profile
-o  ditch avoidfp
-o  output by defn to report.txt and say so
-o  put in progress output for bigger data sets
-o  put in premature stop if input params doomed
-o  report cope with failure
+*  Is performance fixable - to a degree
+o  Take stock actions
+    o  Make sure docco in sufficient shape.
+    o  Make sure cmd line app tidy
+        o  Upgrade usage message to suggest redirection.
+        o  Provide progress messages.
+        o  Provide size of problem messages.
+    o  Package and test cmd line app 
+    o  Write shared report
+    o  Write David confidential report
+    o  Deploy things ready to refer to
+    o  Send reports
+    o  Send meeting invitation
+    o  Relax a bit
+
 o  move formatters out of allocation
-
-
-o  Make report for Brad even if can't ship yet.
-
-o  Regression tests and clean out of redundant code.
-o  If works, decide how to update API and get to Brad
-
-o  Merit in seeking more headroom
-
-o  Resilience to failures
-o  Real hard-coded assay names
-o  Calling in clinical terms
-o  Impact of failing chamber
-o  Password protect
-
-o  Make root url take you form
 o  Is all the docker legacy pointless?
 
 ----------------------------------------------------------------------------
-Command line args
+Take Stock
 ----------------------------------------------------------------------------
-assays
-max_targets
-chambers
-dontmix
+o  Take stock of where we are
+    o  Headline
+        o  This is not going well, or as expected - we must take stock
+    o  Significant observations from activity so far
+        o  Devoted large amount of man hours - uncomensurate with what achieved
+           / gained.
+        o  Incl one day over weekend and hours at we and 1 or 2 most eve
+        o  Been round houses for various alt modelling and alg about 6 times - each ending
+           in show-stopping obstacle.
+        o  Major concl about 2 weeks ago, that need absolute model for 
+           when FP will occur. Prev delivered solutions took empirical approach
+           that made them unlikely - but leaves biz in the dark about how
+           likely or from what cause. Took view that should focus instead on
+           guaranteed no false positives, regardelss which targets
+           simultaneously present. (Turns out only comp feasible, and spatially
+           practical, if we cap how many)
+    o  What have we got that is good
+        o  An alg and implementation that guarantees no FP
+        o  Example output for 3 targets
+        o  What I believe is now the correct definitive logic
+        o  Reasonably simple doc algorithm to support scrutiny / debate / review
+        o  A tool that can explore space cmd line.
+    o  What have we got that is bad
+        o  Practicalities
+            o  Very slow run makes quick explore space difficult.
+            o  Too slow to use pract in some cases - incl some the biz expects
+               to explore
+        o  Business / Problem Space
+            o  Mult targets problem
+                o  Biz wants to cope with mult targets present, maybe up to N=3.
+                o  So does software.
+                o  But as N goes much beyond 3, need more than 24 chambers for
+                   20 assays.
+                o  And then v difficult to assess because software takes 
+                   eternity to run cos of factorial reln with both n chambers
+                   and n targets. Quickly reaches infeasible calc.
+            o  The species / genus / MEC_A problem
+                o  Biz sees this as one target, but sw sees as 3. So the N=3 is
+                   'used up' by this alone.
+            o  The replicas problem
+                o  Biz wants replicas to provide redundancy for failed assays
+                   or chambers.
+                o  Soln uses multiple replicas, (one more than N), but this is
+                   not for redundancy. It is min necessary to guarantee no
+                   false pos. And depends on perfect assay behaviour. One
+                   spurious addn chamber fire will gen false positive. One
+                   failure to fire will prevent a call.
+        o  SW Tech / Rough edges
+            o  Hits coping limits too early to be really useful.
+            o  Spread allocs better (rm massive hit on speed)
+        o  Time / Project / Org / Team
+            o  Taking worryingly long
+            o  Stakeholders comms not good enough. Freq and suff shared
+               undestanding of prob.
+        o  Some ideas for discussion
+            o  Improve spread - not dominate first couple chambers
+            o  Few, but, maybe some opp exist to radic improve speed and size
+               coping. But I'm running dry on correctness approaches. Fresh
+               math oriented input might be fertile.
+            o  Partic found no useful logic of the form these chambers fired,
+               but hese did not, and therefore. Considered carefully and
+               several times thought I'd found something, but in every case got
+               waylaid by this exclusivity type logic that works when only a
+               single target is present, but not multiple.
+            o  Theor poss to extend to give some redunancy, but makes existing
+               scale / coping prob above v sig worse .
+
+    o  What deliver / communicate
+        o  A report
+        o  Command line app upgraded for simple case and to let people play
+           with limits. Incl auto log to file.
+        o  Example output
+        o  Main source code file with docco (improved)
+
 
 ----------------------------------------------------------------------------
-False Positive Sufficient Condition Statement
+Profile
 ----------------------------------------------------------------------------
-
-
-----------------------------------------------------------------------------
-Maths relations
-----------------------------------------------------------------------------
-
-20 assays
-24 chambers
-4  replicas
+        import cProfile
+        import re
+        cProfile.run('re.compile("foo|bar")')
