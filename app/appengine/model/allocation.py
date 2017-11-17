@@ -36,6 +36,7 @@ class Allocation:
     # Chamber-centric queries
     # ------------------------------------------------------------------------
 
+
     def reserved_chamber_sets(self):
         """
         Provides information about which chamber sets have been reserved
@@ -60,6 +61,9 @@ class Allocation:
     # ------------------------------------------------------------------------
     # Assay-centric queries
     # ------------------------------------------------------------------------
+
+    def all_assays(self):
+        return self._assay_to_chamber_set.keys()
 
     def assay_types_present_in(self, chamber):
         res =  set([assay for assay in self._chamber_to_assays[chamber]])

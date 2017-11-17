@@ -1,0 +1,156 @@
+Key Aspects of Arthur's Notes
+-----------------------------
+
+Essence
+
+- Some parts of the workings out, require that fewer assays than chambers.
+- Presents an algorithm for allocation that balances chamber utilization while
+  keeping the chamber sets for each assay maximally different from each other
+  for as long as possible.
+- Requires no set operations - all based on simple loops with modulo 
+  arithmetic.
+- He chooses to represent the allocation of assays to chambers as boolean flags
+  in a binary word where each bit position corresponds to a chamber.
+- Then describes what I have called the size of the intersection set, as either
+  crosstalk or correlation. These are conceptually identical.
+- The algorithm deals with each level of multiplicity in successive passes.
+- The algorithm sacrifices correlation progressively.
+
+Exploiting Patterns
+
+- The allocation forms a repeating pattern
+- The first row is the allocation of the first assay, and can be thought of
+  as a bit field.
+- Subsequent rows turn out to be the row above right shifted (wrapping round at
+  the ends) by one bit.
+- The pattern means we can put to one side what has been said before and
+  explore an arithmetic way to generate just the first row, based on the
+  experiment parameters.
+- When viewing the algorithm sequentially, rather than just a pattern shifted
+  successively, we see some modulo arithmetic that cases a 'wrap' around at the
+  right end of the table. Each time this happens, the correlation we are
+  creating goes up (gets worse) by one. So if we can model for given
+  constraints, when this will happen we can predict when we meet the maximum
+  correlation we can tolerate (probable N-2).
+
+To use Arthur's nomenclature:
+    Nc = 8
+    Na = 5
+    Ma = 3
+
+01234567|
+        |         
+A   |A  |                     
+ B  | B |                      
+  C |  C|                       
+   D|   |
+    E   |
+
+To get this far, i.e. half way through the second replicas, all assays sets 
+have zero correlation (intersections).
+
+To finish the second replicas we wrap chamber numbers:
+
+01234567|
+        |         
+A    A  |                     
+ B    B |                      
+  C    C|                       
+D  D    |
+ E  E   |
+
+But it has cost us a correlation (intersection) of 1 for both AD and BE.
+The first time we wrap, correlations of 1 start being produced.
+
+To get the third replica set in we keep going:
+
+01234567|
+        |         
+A A  A  |                     
+ B B  B |                      
+  C C  C|                       
+D  D D  |
+ E  E E |
+
+Required another wrap, so now creating correlations of 2 now.
+Nb. correlations being produced = number of wraps Nw.
+
+What happens if we want 4 reps?
+
+01234567|
+        |         
+A A  A A|                     
+BB B  B |                      
+ CC C  C|                       
+D DD D  |
+ E EE E |
+
+Now up to intersection of 3.
+
+What happens if we want 5 reps?
+
+01234567|
+        |         
+1 3 52 4| which rep diagonal
+++++++++|
+A A AA A|                     
+BB B BB |                      
+ CC C CC|                       
+D DD D D|
+EE EE E |
+++++++++|
+52 41 3 | which rep diagonal
+          
+
+Now up to correlations of 4.
+
+Consider the modulo division based placement of the first row.
+--------------------------------------------------------------
+
+Arthurs description first
+
+Let R = the replica number (zero based)
+
+Denote the chamber index as cR, forming the series c0, c1, c2...
+
+c0 = 0
+c1 = (c0 + Na) % Nc
+c2 = (c1 + Na) % Nc
+c3 = (c2 + Na) % Nc
+etc.
+
+The modulo division is what creates the wrap we spoke of earlier.
+Let R denotes the level of muliplicity for which the chamber index is being
+calculated. (replica number, zero based)
+The result for Na=20 Nc=24 Ma=6 is 
+
+    [0, 20, 16, 12, 8, 4] - chamber index
+     0   1   2   3  4  5  - R
+             w   w  w  w  - w marks where wrapped
+     
+This wrapped 4 times and thus creates correlation of 4 (too much).
+
+What determined that it wrapped 4 times?
+
+Seek a single-shot forumulation for cR...
+
+cR = (Na * R) % Nc
+
+When will this wrap?
+... this is where I am up to
+
+
+
+
+
+
+
+
+
+
+Don't forget the singularity in Arthurs algorithm above that we haven't
+acknoweldged yet - where you start repeating yourself, and have to move along
+to the next available blank. There must be a characteristic associated with
+having to do this. Or something less arbitrary than moving along to the next
+available slot.
+

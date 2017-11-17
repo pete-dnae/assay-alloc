@@ -43,13 +43,19 @@ assay from each of {1,2,9} and combining their targets into a set of 3.
 It follows that we must set ourselves a reasonable upper limit for how many
 targets might be present simultaneously *max_targets*, and then allocate at
 least one more than this number of each assay to avoid inevitable false
-positives scenarios.
+positives scenarios. 
+
+We wish also to be able to call when one chamber fails to file when it should
+have done, and when one chamber does not fire when it should have done.
+So we add an extra two of each assays.
+
+I.e. num_targets + 3.
 
 
 # METHOD
 
 We begin by noting how many replicas of each assay we must allocate. I.e.
-max_targets + 1.
+max_targets + 3.
 
 Then we hypothesis all the possible chamber sets that are available to us at
 the beginning of the process that we could consider to allocate each assay's
@@ -72,24 +78,16 @@ rules.
 
 # WHICH CHAMBER SETS MUST BE REMOVED
 
-Here is an example of what we must avoid. We give the example first, to make it
-easier to then explain the remedy.
+See external PPT for the reason behind this.
 
-Let max_targets = 3, and consequently replicas = 4.  Say we reserve {1,2,9,14}
-for P, and then reserve {1,9,11,22} for Q.  The problem here is that {1,9,11,22}
-has *two* chambers in common with {1,2,9,14}.  Now consider a potential
-targets-present set of {P,M,S}. We know that the presence of P will cause both
-{1,9} to fire. Hence we will generate a false positive for Q, if {M,S} causes
-both {11,22} to fire. Which is inevitable if we consider all the possibilities
-for {M,S} - i.e. any pair of targets.
-
-The generalisation of the situation that must be avoided, is that no chamber set
-can be reserved to call an assay, if that chamber set has more than one
-chamber in common, with any of the other reserved chamber sets.
+The generalisation of the situation that must be avoided, is that no chamber
+set can be reserved to call an assay, if that chamber set has more than 
+(num_targets - 1) chambers in common, with any of the other reserved chamber 
+sets.
 
 So this defines the chamber sets we must remove from the pool after each assay
-allocation (P). I.e. any chamber set that has more than one chamber in common 
-with the chamber set used for P.
+allocation (P). I.e. any chamber set that has more than (num_targets - 1) 
+chambers in common with the chamber set used for P.
 """
 
 from itertools import combinations
@@ -116,7 +114,7 @@ class DeductionAllocator:
         # This algorithm requires that the number of replicas that get
         # placed for each assay, be at least one greater than the largest
         # number of simultaneous targets being considered.
-        self._replicas = experiment_design.sim_targets + 1
+        self._replicas = experiment_design.sim_targets + 3
         # Prepare the pool of chamber sets, that we can consider when searching
         # for a home of each assay's replicas. We deplete this as we go.
         # Nb. For replicas=6, chambers=20, there are approx 38,000 of these.
@@ -161,8 +159,6 @@ class DeductionAllocator:
         having previously allocated the replicas that precede assay(P) in
         allocation priority order.
         """
-        print('Allocating %s, into the %d chamber sets still available.' % 
-                (assay, len(self._pool_of_chamber_sets)))
 
         # Use any encountered chamber set from the pool, that is legal for 
         # dontmix rules.
@@ -201,9 +197,11 @@ class DeductionAllocator:
     def _curate_pool(self, just_added_chamber_set):
         """
         Remove from our pool of available chamber sets, any that has
-        more than one member in common with the given set.
+        more than (max_targets - 1) with the given set.
         """
+        max_intersection = self._design.sim_targets - 1
         to_remove = set([cs for cs in self._pool_of_chamber_sets if 
-                len(cs.intersection(just_added_chamber_set)) > 1])
+                len(cs.intersection(just_added_chamber_set)) > 
+                max_intersection])
         curated = self._pool_of_chamber_sets - to_remove
         self._pool_of_chamber_sets = curated

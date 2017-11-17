@@ -11,7 +11,10 @@ from experimentfromcmdline import ExperimentFromCmdLine
 def run():
     experiment_design = ExperimentFromCmdLine.make(sys.argv)
 
+
+    # CHOOSE ALLOCATOR HERE
     allocator = DeductionAllocator(experiment_design)
+
     assay_allocation = allocator.allocate()
     reporter = ExperimentReporter(experiment_design, assay_allocation)
     report_txt = reporter.report()
