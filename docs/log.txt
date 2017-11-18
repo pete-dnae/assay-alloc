@@ -1,15 +1,31 @@
 ----------------------------------------------------------------------------
-*  Make new version of allocators that implements Arthur's heuristic
-   and plug into cmd line app to do rough explore.
-*  Check logic operating as expected
-*  Make sure failing usefully when hit limits
-*  Upgrade old allocator to do N+3 and N-1 overlap limit
-*  Run side by side to explore limits
-    * Suggests diagonals flawed or mis implemented
-o  Make program to report on limits varying everything
-    o  What would output look like?
-
-
+o  Switch to solely Windows and Python27 env to make exe
+    *  Install anaconda for python 27
+    *  Obvious clean up
+        *  Rm or archive al web or gae specifics (but not folder)
+        *  Make sure lib gone
+        *  Ditch any remaining .pyc files
+    o  Fix up running cmd line app and tests from windows pycharm
+        o  Nav to in pycharm
+        o  Try running single shot command line app to get path inside 
+           pycharm sorted
+        o  And tests
+        o  And doe runner
+o  Push
+o  Refactor into better dir structure using pycharm help
+o  Ressurect unit tests where needed
+o  Switch to dnae repo
+o  Level chambers
+o  Work up doe graph output
+o  Make decent coverage overnight
+o  See if Qt and my builder viable in this env and can be packaged
+o  Assuming so
+o  Work out how to present real assay choices UXP / storage
+o  Make sure existing single point run can work with this input
+o  Make sure reporting can cope with long assay names
+o  Add matrix style alloc to reporting
+o  Develop and package gui app to run and store set of tests as reports
+   incl sharing and storing of evolving assays as xls, or yaml or db
 ----------------------------------------------------------------------------
 Output
 ----------------------------------------------------------------------------

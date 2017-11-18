@@ -1,9 +1,0 @@
-
-    <div class="form-group row">
-        <label for="assays" class="col_2 col-form-label">Assays</label>
-        <div class="col-10">
-            <input class="form-control" type="number"
-                   value={{ input_params.assays }}
-                   id="assays" name="assays">
-        </div>
-    </div>
