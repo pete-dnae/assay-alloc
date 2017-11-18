@@ -1,20 +1,9 @@
 ----------------------------------------------------------------------------
-o  Switch to solely Windows and Python27 env to make exe
-    *  Install anaconda for python 27
-    *  Obvious clean up
-        *  Rm or archive al web or gae specifics (but not folder)
-        *  Make sure lib gone
-        *  Ditch any remaining .pyc files
-    o  Fix up running cmd line app and tests from windows pycharm
-        o  Nav to in pycharm
-        o  Try running single shot command line app to get path inside 
-           pycharm sorted
-        o  And tests
-        o  And doe runner
+*  Switch to solely Windows and Python27 env to make exe
 o  Push
 o  Refactor into better dir structure using pycharm help
 o  Ressurect unit tests where needed
-o  Switch to dnae repo
+o  Add check that no sets intersect by more than foo
 o  Level chambers
 o  Work up doe graph output
 o  Make decent coverage overnight
