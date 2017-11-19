@@ -6,12 +6,10 @@
     *  names and comments
 *  Add check that no sets intersect by more than foo
 o  Level chambers
-    o  Add in capability
-        o  Design how to avoid re counting
-        o  Prep count data
-        o  Add logic
-        o  Test
-    o  Once works can revert pool to being a set and take out shuffle
+    *  Code it and get to run
+    o  Validate
+    o  Bring in alphabetical order of chamber sets to make seem more intuitive.
+    o  Speed it up
 o  Work up doe graph output
 o  Make decent coverage overnight
 o  See if Qt and my builder viable in this env and can be packaged
