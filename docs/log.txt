@@ -1,15 +1,15 @@
-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+Notes to publish
+    o  Interset limit is 2 always (old code discredited)
+---------------------------------------------------------------------------
 *  Switch to solely Windows and Python27 env to make exe
 *  Push
 *  Refactor into better dir structure using pycharm help
     *  hierarchy
     *  names and comments
 *  Add check that no sets intersect by more than foo
-o  Refactor as fast sets of ChamberSet
-    o  Code
-    o  Get to parse
-    o  Debug up
-    o  Add levelling and sorting
+*  Refactor as fast sets of ChamberSet
+o  Make and emit new doe.csv
 o  Work up doe graph output
 o  Make decent coverage overnight
 o  See if Qt and my builder viable in this env and can be packaged
@@ -23,4 +23,45 @@ o  Develop and package gui app to run and store set of tests as reports
 ----------------------------------------------------------------------------
 Output
 ----------------------------------------------------------------------------
+Inevitable?
+
+max targets is 2,
+hence reps is 5
+creating allocs of size 5
+8 chambers avail
+max inter is n-1, which is 1
+
+so alloc a to 1 2 3 4 5
+
+cf 2 5 6 7 8 in offing for B
+
+overlap is 2 5 - greater than 1, so must be removed
+
+can you choose a 5-set from  1 2 3 4 5 6 7 8 that overlaps with
+1 2 3 4 5 by only one?
+
+has be {12345678} - {12345}, plus one of {2,5}
+ie {678} + either 2 or 5
+
+NO!!!! because can only assemble 4 members, not the required 5
+
+What is the generalisation here?
+
+nchambers - nreps + 1 = nreps
+
+or
+
+nchambers = 2 * nreps - 1
+
+subst ntargets
+
+nchambers = 2 * (ntargets + 3) -1
+
+min_nchambers = 2 * ntargets + 5
+
+for ntargets = 2, min chambers is 9
+
+
+
+
 
