@@ -5,11 +5,11 @@
     *  hierarchy
     *  names and comments
 *  Add check that no sets intersect by more than foo
-o  Level chambers
-    *  Code it and get to run
-    o  Validate
-    o  Bring in alphabetical order of chamber sets to make seem more intuitive.
-    o  Speed it up
+o  Refactor as fast sets of ChamberSet
+    o  Code
+    o  Get to parse
+    o  Debug up
+    o  Add levelling and sorting
 o  Work up doe graph output
 o  Make decent coverage overnight
 o  See if Qt and my builder viable in this env and can be packaged
