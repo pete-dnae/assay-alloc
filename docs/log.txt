@@ -1,10 +1,17 @@
 ----------------------------------------------------------------------------
 *  Switch to solely Windows and Python27 env to make exe
-o  Push
-o  Refactor into better dir structure using pycharm help
-o  Ressurect unit tests where needed
-o  Add check that no sets intersect by more than foo
+*  Push
+*  Refactor into better dir structure using pycharm help
+    *  hierarchy
+    *  names and comments
+*  Add check that no sets intersect by more than foo
 o  Level chambers
+    o  Add in capability
+        o  Design how to avoid re counting
+        o  Prep count data
+        o  Add logic
+        o  Test
+    o  Once works can revert pool to being a set and take out shuffle
 o  Work up doe graph output
 o  Make decent coverage overnight
 o  See if Qt and my builder viable in this env and can be packaged

@@ -6,13 +6,13 @@ import sys
 
 from lib.model.experimentreporter import ExperimentReporter
 
-from lib.model.allocators.deduction import DeductionAllocator
+from lib.model.depletingpoolallocator import DepletingPoolAllocator
 from lib.model.experimentfromcmdline import ExperimentFromCmdLine
 
 
 def run():
     experiment_design = ExperimentFromCmdLine.make(sys.argv)
-    allocator = DeductionAllocator(experiment_design)
+    allocator = DepletingPoolAllocator(experiment_design)
     assay_allocation = allocator.allocate()
     reporter = ExperimentReporter(experiment_design, assay_allocation)
     report_txt = reporter.report()
