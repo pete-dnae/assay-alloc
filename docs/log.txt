@@ -1,3 +1,15 @@
+o  Finish binary style output, incl. code home
+    o  Get to look right
+    o  Check in
+    o  Isolate alloc formatting and robustify a bit
+    o  Check in
+o  Get to bottom of Chris' found flaw
+
+Capture Chris found flaw
+
+o  --assays 15 --max_targets 3 --chambers 20 --dontmix 0 > foo.txt
+o  broke abc vs def
+
 -----------------------------------------------------------------------------
 Notes to publish
     o  Interset limit is 2 always (old code discredited)
@@ -61,7 +73,60 @@ min_nchambers = 2 * ntargets + 5
 
 for ntargets = 2, min chambers is 9
 
+----------------------------------------------------------------------------
+Take Stock
+----------------------------------------------------------------------------
+Fundamental limits
 
+    # First with zero fault tolerance
+
+    Consider response of targets across chambers as bits in a word.
+    Like this 01011001010101101110010
+    Length is num chambers.
+    If want to cope with 3 simultaneous targets, no two possible sets of 3 
+    targets may produce the same bit pattern, otherwise we cannot, by 
+    definition, tell them apart.
+    E.g. {ABC} must not produce the same bit pattern as {DEF}.
+    If we are trying to identify 20 targets, and we want to cope with groups
+    of 3, there are 1140 possibilities.
+
+    This is the n-choose-k problem see calc here:
+    https://www.hackmath.net/en/calculator/n-choose-k
+
+    How many unique bit strings can different numbers of chambers give us?
+
+    8 chambers/bits -> 256 possibilities (2^^8)
+    9                  512               (2^^9)
+    10                1024
+    11                2048
+
+    So for 3 targets and 20 assays we need 11 chambers.
+
+    Invert to find number of chambers needed for U unique bit strings.
+
+        chambers = log-base-2(U) // rounded up to nearest integer
+
+    But we also know how many unique bit strings we must have as a function
+    of sim-targets and number of assays is the n-choose-k problem.
+
+        Where
+            n = number of assays
+            k = sim targets
+
+        U = n! / (k! * (n-k)!)
+
+    Combining
+
+        chambers = log-base-2( n! / (k! * (n-k)!) )
+
+    We write with meaningful names
+
+        chambers = ceil(log-base-2( assays! / (sim_targets! * (assays-sim_targets)!) ))
+
+    resilience to failures
+        if we want to cope with one failing to fire, doesn't that mean we have
+        to double up the number of assays?
+        
 
 
 
